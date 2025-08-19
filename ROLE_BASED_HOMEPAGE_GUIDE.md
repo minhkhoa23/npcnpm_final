@@ -63,7 +63,7 @@ src/assets/styles/
 ## Cách sử dụng
 
 ### 1. Nút "Trang chủ" trong HTML
-Thêm attribute `data-home-nav` vào các nút trang chủ:
+Th��m attribute `data-home-nav` vào các nút trang chủ:
 
 ```html
 <!-- Cho dashboard.html -->
@@ -116,8 +116,10 @@ router.navigate('/organizer-home'); // Organizer dashboard
 
 1. **Event listener** trong router bắt click trên elements có `data-home-nav`
 2. **Gọi `navigateToHome()`**
-3. **Kiểm tra authentication & role**
-4. **Navigate đến route tương ứng**
+3. **Kiểm tra authentication đầu tiên**
+   - Nếu **chưa đăng nhập** → Navigate đến `/` (index.html)
+   - Nếu **đã đăng nhập** → Tiếp tục bước 4
+4. **Kiểm tra role và navigate tương ứng**
 
 ## Testing
 
