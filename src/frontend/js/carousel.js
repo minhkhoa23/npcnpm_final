@@ -149,14 +149,10 @@ export class NewsCarousel extends Carousel {
 
   renderItem(news) {
     return `
-      <div class="news-card" data-news-id="${news._id}" onclick="window.location.href='/src/frontend/view-news.html?id=${news._id}'">
+      <div class="news-card simplified" data-news-id="${news._id}" onclick="window.location.href='/src/frontend/view-news.html?id=${news._id}'" title="${news.title}">
         <div class="news-image" style="background-image: url('${(news.images && news.images[0]) || ''}')"></div>
-        <div class="news-content">
+        <div class="news-overlay">
           <h4 class="news-title">${news.title}</h4>
-          <p class="news-excerpt">${(news.content || '').substring(0, 100)}...</p>
-          <div class="news-meta">
-            <span class="news-date">${news.publishedAt ? new Date(news.publishedAt).toLocaleDateString('vi-VN') : ''}</span>
-          </div>
         </div>
       </div>
     `;
