@@ -10,8 +10,11 @@ Hệ thống này tạo ra hai giao diện trang chủ khác nhau dựa trên ro
 ## Tính năng chính
 
 ### 🏠 Điều hướng thông minh
-- Khi người dùng **đã đăng nhập** và bấm nút "Trang chủ" → chuyển về trang chủ tương ứng với role
-- Khi người dùng **chưa đăng nhập** → hiển thị giao diện guest với nút đăng nhập/đăng ký
+- **Người dùng chưa đăng nhập**:
+  - Từ **bất kỳ trang nào** (login, register, v.v.) bấm "Trang chủ" → luôn về `index.html` (guest view)
+  - Hiển thị giao diện guest với nút đăng nhập/đăng ký
+- **Người dùng đã đăng nhập**:
+  - Bấm "Trang chủ" → chuyển về trang chủ tương ứng với role
 
 ### 🔄 Auto-redirect sau đăng nhập
 - **User role** → chuyển đến `/user-home` (hiển thị dashboard.html)
@@ -98,7 +101,7 @@ router.navigate('/organizer-home'); // Organizer dashboard
 ### Khi người dùng truy cập `/` (trang chủ):
 
 1. **Kiểm tra authentication**
-   - Nếu chưa đăng nhập → Hi���n thị `guestView.js`
+   - Nếu chưa đăng nhập → Hiển thị `guestView.js`
    - Nếu đã đăng nhập → Tiếp tục bước 2
 
 2. **Lấy thông tin user profile**
