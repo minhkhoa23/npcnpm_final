@@ -336,11 +336,43 @@
   width: 100%;
   height: 100%;
   background: #ECE6F0;
-  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="%23ECE6F0"/><rect x="20" y="20" width="60" height="8" fill="%23999"/><rect x="20" y="35" width="40" height="6" fill="%23999"/><rect x="20" y="50" width="50" height="6" fill="%23999"/></svg>');
-  background-size: 50% 50%;
+  background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+}
+
+.news-image:not([style*="background-image"]) {
+  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="%23ECE6F0"/><rect x="20" y="20" width="60" height="8" fill="%23999"/><rect x="20" y="35" width="40" height="6" fill="%23999"/><rect x="20" y="50" width="50" height="6" fill="%23999"/></svg>');
+  background-size: 50% 50%;
   mix-blend-mode: luminosity;
+}
+
+/* Simplified news card styles */
+.news-card.simplified {
+  position: relative;
+}
+
+.news-card.simplified .news-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.4) 50%, transparent 100%);
+  color: white;
+  padding: 20px;
+  transform: translateY(100%);
+  transition: transform 0.3s ease;
+}
+
+.news-card.simplified:hover .news-overlay {
+  transform: translateY(0);
+}
+
+.news-card.simplified .news-title {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0;
+  line-height: 1.2;
 }
 
 .search-icon {

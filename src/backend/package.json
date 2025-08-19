@@ -4,7 +4,7 @@
     "main": "server.js",
     "scripts": {
         "start": "node server.js",
-        "dev": "nodemon server.js",
+        "dev": "node server.js",
         "init-db": "node utils/initData.js"
     },
     "dependencies": {
@@ -20,6 +20,6 @@
         "validator": "^13.11.0"
     },
     "devDependencies": {
-        "nodemon": "^3.0.1"
+        "nodemon": "^3.1.10"
     }
 }
