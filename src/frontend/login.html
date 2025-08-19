@@ -197,6 +197,18 @@
   <script type="module" src="./js/models/User.js"></script>
   <script type="module" src="./js/controllers/UserController.js"></script>
   <script type="module" src="./js/lang.js"></script>
+  <script type="module">
+    // Import router for home navigation
+    import { router } from './js/router.js';
+    import { authController } from './js/controllers/auth.js';
+
+    // Make router available globally for home navigation
+    window.router = router;
+    window.authController = authController;
+
+    // Setup router navigation
+    router.setupGlobalNavigation();
+  </script>
   <script>
     // Password toggle functionality
     document.getElementById('passwordToggle').addEventListener('click', function() {
