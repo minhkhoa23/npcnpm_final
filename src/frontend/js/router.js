@@ -21,6 +21,8 @@ class Router {
         // Register routes
         this.addRoute('/', () => this.renderHomePage());
         this.addRoute('/home', () => this.renderHomePage());
+        this.addRoute('/user-home', () => this.renderUserHomePage());
+        this.addRoute('/organizer-home', () => this.renderOrganizerHomePage());
         this.addRoute('/login', () => this.renderLoginPage());
         this.addRoute('/register', () => this.renderRegisterPage());
         this.addRoute('/dashboard', () => this.renderDashboardPage());
@@ -92,6 +94,26 @@ class Router {
     async renderHomePage() {
         this.showLoading();
         try {
+            // Check if user is authenticated and redirect to role-based homepage
+            if (TokenManager.isAuthenticated()) {
+                const userProfile = await this.getUserProfile();
+                if (userProfile) {
+                    switch (userProfile.role) {
+                        case 'organizer':
+                            await this.loadHTMLPage('organizer-dashboard.html');
+                            this.setupOrganizerDashboardEvents();
+                            break;
+                        case 'user':
+                        default:
+                            await this.loadHTMLPage('dashboard.html');
+                            this.setupUserDashboardEvents();
+                            break;
+                    }
+                    return;
+                }
+            }
+
+            // If not authenticated, show guest view
             await renderGuestView();
             this.setupHomePageEvents();
         } catch (error) {
@@ -119,6 +141,40 @@ class Router {
         } catch (error) {
             console.error('Error rendering register page:', error);
             this.showError('Lỗi tải trang đăng ký');
+        }
+    }
+
+    // Render user home page (dashboard.html)
+    async renderUserHomePage() {
+        if (!TokenManager.isAuthenticated()) {
+            this.navigate('/login');
+            return;
+        }
+
+        this.showLoading();
+        try {
+            await this.loadHTMLPage('dashboard.html');
+            this.setupUserDashboardEvents();
+        } catch (error) {
+            console.error('Error rendering user home page:', error);
+            this.showError('Lỗi tải trang chủ người dùng');
+        }
+    }
+
+    // Render organizer home page (organizer-dashboard.html)
+    async renderOrganizerHomePage() {
+        if (!TokenManager.isAuthenticated()) {
+            this.navigate('/login');
+            return;
+        }
+
+        this.showLoading();
+        try {
+            await this.loadHTMLPage('organizer-dashboard.html');
+            this.setupOrganizerDashboardEvents();
+        } catch (error) {
+            console.error('Error rendering organizer home page:', error);
+            this.showError('Lỗi tải trang chủ nhà tổ chức');
         }
     }
 
@@ -474,6 +530,13 @@ class Router {
                 const route = link.getAttribute('data-route');
                 this.navigate(route);
             }
+
+            // Handle home button clicks with role-based navigation
+            const homeBtn = e.target.closest('.home-button, .nav-item');
+            if (homeBtn && (homeBtn.classList.contains('home-button') || homeBtn.querySelector('.nav-text')?.textContent === 'Trang chủ')) {
+                e.preventDefault();
+                this.navigateToHome();
+            }
         });
 
         // Setup logout functionality
@@ -701,6 +764,304 @@ class Router {
         `;
         
         document.head.appendChild(styles);
+    }
+
+    // Navigate to role-based home page
+    async navigateToHome() {
+        try {
+            if (TokenManager.isAuthenticated()) {
+                const userProfile = await this.getUserProfile();
+                if (userProfile) {
+                    switch (userProfile.role) {
+                        case 'organizer':
+                            this.navigate('/organizer-home');
+                            break;
+                        case 'user':
+                        default:
+                            this.navigate('/user-home');
+                            break;
+                    }
+                    return;
+                }
+            }
+
+            // If not authenticated, go to guest home
+            this.navigate('/');
+        } catch (error) {
+            console.error('Error navigating to home:', error);
+            this.navigate('/');
+        }
+    }
+
+    // Get user profile from API or auth controller
+    async getUserProfile() {
+        try {
+            // First try to get from auth controller
+            if (authController && authController.getCurrentUser) {
+                const user = authController.getCurrentUser();
+                if (user) return user;
+            }
+
+            // If not available, fetch from API
+            const result = await apiCall(API_ENDPOINTS.AUTH.PROFILE, {}, 'GET', true);
+            if (result.success) {
+                return result.user;
+            }
+        } catch (error) {
+            console.error('Error getting user profile:', error);
+        }
+        return null;
+    }
+
+    // Setup user dashboard events
+    setupUserDashboardEvents() {
+        this.setupGlobalNavigation();
+        this.setupUserDashboardCarousels();
+    }
+
+    // Setup organizer dashboard events
+    setupOrganizerDashboardEvents() {
+        this.setupGlobalNavigation();
+        this.setupOrganizerDashboardCarousels();
+        this.setupOrganizerActions();
+    }
+
+    // Setup user dashboard carousels
+    setupUserDashboardCarousels() {
+        // Load tournaments, news, highlights for user dashboard
+        this.loadUserDashboardContent();
+    }
+
+    // Setup organizer dashboard carousels
+    setupOrganizerDashboardCarousels() {
+        // Load organizer-specific content
+        this.loadOrganizerDashboardContent();
+    }
+
+    // Setup organizer-specific actions
+    setupOrganizerActions() {
+        // Tournament management buttons
+        const createTournamentBtn = document.querySelector('.create-tournament-btn');
+        if (createTournamentBtn) {
+            createTournamentBtn.addEventListener('click', () => {
+                this.navigate('/create-tournament-1');
+            });
+        }
+
+        const viewListBtn = document.querySelector('.view-list-btn');
+        if (viewListBtn) {
+            viewListBtn.addEventListener('click', () => {
+                this.navigate('/tournament-management');
+            });
+        }
+
+        // News management buttons
+        const manageNewsBtn = document.querySelector('.manage-news-btn');
+        if (manageNewsBtn) {
+            manageNewsBtn.addEventListener('click', () => {
+                this.navigate('/news-management');
+            });
+        }
+
+        const addNewsBtn = document.querySelector('.add-news-btn');
+        if (addNewsBtn) {
+            addNewsBtn.addEventListener('click', () => {
+                this.navigate('/create-news');
+            });
+        }
+
+        // Highlights management buttons
+        const manageHighlightsBtn = document.querySelector('.manage-highlights-btn');
+        if (manageHighlightsBtn) {
+            manageHighlightsBtn.addEventListener('click', () => {
+                this.navigate('/highlight-management');
+            });
+        }
+
+        const createHighlightsBtn = document.querySelector('.create-highlights-btn');
+        if (createHighlightsBtn) {
+            createHighlightsBtn.addEventListener('click', () => {
+                this.navigate('/create-highlight');
+            });
+        }
+    }
+
+    // Load user dashboard content
+    async loadUserDashboardContent() {
+        try {
+            // Load tournaments, news, highlights using existing carousel loaders
+            await Promise.all([
+                this.loadTournamentsForUser(),
+                this.loadNewsForUser(),
+                this.loadHighlightsForUser()
+            ]);
+        } catch (error) {
+            console.error('Error loading user dashboard content:', error);
+        }
+    }
+
+    // Load organizer dashboard content
+    async loadOrganizerDashboardContent() {
+        try {
+            // Load organizer-specific content
+            await Promise.all([
+                this.loadOrganizerTournaments(),
+                this.loadOrganizerNews(),
+                this.loadOrganizerHighlights()
+            ]);
+        } catch (error) {
+            console.error('Error loading organizer dashboard content:', error);
+        }
+    }
+
+    // Load tournaments for user dashboard
+    async loadTournamentsForUser() {
+        try {
+            // Import carousel loader dynamically if needed
+            const { loadTournamentsCarousel } = await import('./utils/carouselLoaders.js');
+            await loadTournamentsCarousel('tournamentContainer', 3);
+        } catch (error) {
+            console.error('Error loading tournaments for user:', error);
+        }
+    }
+
+    // Load news for user dashboard
+    async loadNewsForUser() {
+        try {
+            const { loadNewsCarousel } = await import('./utils/carouselLoaders.js');
+            await loadNewsCarousel('newsContainer', 3);
+        } catch (error) {
+            console.error('Error loading news for user:', error);
+        }
+    }
+
+    // Load highlights for user dashboard
+    async loadHighlightsForUser() {
+        try {
+            const { loadHighlightsCarousel } = await import('./utils/carouselLoaders.js');
+            await loadHighlightsCarousel('highlightsContainer', 1);
+        } catch (error) {
+            console.error('Error loading highlights for user:', error);
+        }
+    }
+
+    // Load organizer tournaments
+    async loadOrganizerTournaments() {
+        try {
+            const user = await this.getUserProfile();
+            if (!user) return;
+
+            const result = await apiCall(`${API_ENDPOINTS.TOURNAMENTS.BASE}/organizer/${user.id}`, {}, 'GET', true);
+            if (result.success && result.data) {
+                this.renderOrganizerTournaments(result.data.tournaments || []);
+            }
+        } catch (error) {
+            console.error('Error loading organizer tournaments:', error);
+        }
+    }
+
+    // Load organizer news
+    async loadOrganizerNews() {
+        try {
+            const user = await this.getUserProfile();
+            if (!user) return;
+
+            const result = await apiCall(`${API_ENDPOINTS.NEWS.BASE}/organizer/${user.id}`, {}, 'GET', true);
+            if (result.success && result.data) {
+                this.renderOrganizerNews(result.data.news || []);
+            }
+        } catch (error) {
+            console.error('Error loading organizer news:', error);
+        }
+    }
+
+    // Load organizer highlights
+    async loadOrganizerHighlights() {
+        try {
+            const user = await this.getUserProfile();
+            if (!user) return;
+
+            const result = await apiCall(`${API_ENDPOINTS.HIGHLIGHTS.BASE}/organizer/${user.id}`, {}, 'GET', true);
+            if (result.success && result.data) {
+                this.renderOrganizerHighlights(result.data.highlights || []);
+            }
+        } catch (error) {
+            console.error('Error loading organizer highlights:', error);
+        }
+    }
+
+    // Render organizer tournaments
+    renderOrganizerTournaments(tournaments) {
+        const container = document.getElementById('tournaments-grid');
+        if (!container) return;
+
+        if (tournaments.length === 0) {
+            container.innerHTML = '<div class="empty-state">Bạn chưa tạo giải đấu nào</div>';
+            return;
+        }
+
+        container.innerHTML = tournaments.map(tournament => `
+            <div class="tournament-card" onclick="window.location.href='tournament-detail.html?id=${tournament.id}'">
+                <div class="tournament-image">
+                    <img src="${tournament.image || 'https://via.placeholder.com/364x200'}" alt="${tournament.name}">
+                </div>
+                <div class="tournament-info">
+                    <h3>${tournament.name}</h3>
+                    <p>${this.getStatusLabel(tournament.status)}</p>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    // Render organizer news
+    renderOrganizerNews(news) {
+        const container = document.getElementById('news-grid');
+        if (!container) return;
+
+        if (news.length === 0) {
+            container.innerHTML = '<div class="empty-state">Bạn chưa tạo tin tức nào</div>';
+            return;
+        }
+
+        container.innerHTML = news.map(newsItem => `
+            <div class="news-card" onclick="window.location.href='view-news.html?id=${newsItem.id}'">
+                <div class="news-image">
+                    <img src="${newsItem.image || 'https://via.placeholder.com/446x200'}" alt="${newsItem.title}">
+                </div>
+                <div class="news-info">
+                    <h3>${newsItem.title}</h3>
+                    <p>${new Date(newsItem.publishedAt || newsItem.createdAt).toLocaleDateString('vi-VN')}</p>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    // Render organizer highlights
+    renderOrganizerHighlights(highlights) {
+        const container = document.getElementById('highlights-grid');
+        if (!container) return;
+
+        if (highlights.length === 0) {
+            container.innerHTML = '<div class="empty-state">Bạn chưa tạo highlight nào</div>';
+            return;
+        }
+
+        container.innerHTML = highlights.map(highlight => `
+            <div class="highlight-card">
+                <div class="highlight-image">
+                    <img src="${highlight.thumbnail || 'https://via.placeholder.com/446x200'}" alt="${highlight.title}">
+                    <div class="play-button">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                            <path d="M8 5v14l11-7z" fill="#fff"/>
+                        </svg>
+                    </div>
+                </div>
+                <div class="highlight-info">
+                    <h3>${highlight.title}</h3>
+                    <p>${highlight.duration || '0:00'}</p>
+                </div>
+            </div>
+        `).join('');
     }
 
     addNewsDetailStyles() {
