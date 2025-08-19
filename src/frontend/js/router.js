@@ -1,6 +1,8 @@
 // Router for Single Page Application
 import { apiCall, API_ENDPOINTS, TokenManager } from './api.js';
 import { renderGuestView } from './views/guestView.js';
+import { renderUserView } from './views/userView.js';
+import { renderOrganizerView } from './views/organizerView.js';
 import { authController } from './controllers/auth.js';
 import { tournamentController } from './controllers/tournaments.js';
 import { newsController } from './controllers/news.js';
@@ -204,7 +206,7 @@ class Router {
                     <header class="page-header">
                         <div class="header-content">
                             <h1>🏆 Quản lý Giải đấu</h1>
-                            <p>Tìm kiếm và quản lý các giải đấu</p>
+                            <p>Tìm kiếm và quản lý c��c giải đấu</p>
                         </div>
                         
                         <div class="header-actions">
