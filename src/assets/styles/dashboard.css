@@ -343,6 +343,34 @@
   mix-blend-mode: luminosity;
 }
 
+/* Simplified news card styles */
+.news-card.simplified {
+  position: relative;
+}
+
+.news-card.simplified .news-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.4) 50%, transparent 100%);
+  color: white;
+  padding: 20px;
+  transform: translateY(100%);
+  transition: transform 0.3s ease;
+}
+
+.news-card.simplified:hover .news-overlay {
+  transform: translateY(0);
+}
+
+.news-card.simplified .news-title {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0;
+  line-height: 1.2;
+}
+
 .search-icon {
   position: absolute;
   top: 40px;
