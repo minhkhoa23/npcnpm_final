@@ -564,6 +564,11 @@ class Router {
         }
     }
 
+    hideLoading() {
+        // Loading is hidden automatically when content is rendered
+        // This method exists for consistency and potential future use
+    }
+
     showError(message) {
         const contentElement = document.getElementById('content');
         if (contentElement) {
