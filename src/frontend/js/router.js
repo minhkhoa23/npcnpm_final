@@ -524,27 +524,41 @@ class Router {
 
     // Setup global navigation
     setupGlobalNavigation() {
-        // Handle all navigation links
-        document.addEventListener('click', (e) => {
+        // Remove existing listeners to avoid duplicates
+        document.removeEventListener('click', this.globalClickHandler);
+
+        // Create a bound handler for proper removal
+        this.globalClickHandler = (e) => {
             const link = e.target.closest('[data-route]');
             if (link) {
                 e.preventDefault();
                 const route = link.getAttribute('data-route');
                 this.navigate(route);
+                return;
             }
 
             // Handle home button clicks with role-based navigation
-            const homeBtn = e.target.closest('.home-button, .nav-item');
-            if (homeBtn && (homeBtn.classList.contains('home-button') || homeBtn.querySelector('.nav-text')?.textContent === 'Trang chủ')) {
+            const homeBtn = e.target.closest('.home-button, .nav-item[data-home-nav], .home-nav-item');
+            if (homeBtn && (
+                homeBtn.classList.contains('home-button') ||
+                homeBtn.hasAttribute('data-home-nav') ||
+                homeBtn.classList.contains('home-nav-item') ||
+                homeBtn.querySelector('.nav-text')?.textContent === 'Trang chủ'
+            )) {
                 e.preventDefault();
                 this.navigateToHome();
+                return;
             }
-        });
+        };
+
+        // Add the click handler
+        document.addEventListener('click', this.globalClickHandler);
 
         // Setup logout functionality
         const logoutBtn = document.getElementById('logoutBtn');
         if (logoutBtn) {
-            logoutBtn.addEventListener('click', () => {
+            logoutBtn.addEventListener('click', (e) => {
+                e.preventDefault();
                 authController.logout();
                 this.navigate('/');
             });
