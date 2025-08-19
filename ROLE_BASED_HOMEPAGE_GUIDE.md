@@ -52,7 +52,7 @@ src/assets/styles/
 └── organizer-dashboard.css  # CSS cho organizer homepage
 ```
 
-## Routes ��ược thêm mới
+## Routes được thêm mới
 
 | Route | Mô tả | Yêu cầu authentication |
 |-------|-------|----------------------|
@@ -125,7 +125,7 @@ router.navigate('/organizer-home'); // Organizer dashboard
 
 ### Chạy test tự động:
 ```javascript
-// Test toàn bộ hệ thống
+// Test toàn bộ hệ thống role-based
 window.testRoleNavigation.test();
 
 // Simulate role cụ thể
@@ -134,13 +134,18 @@ window.testRoleNavigation.simulateRole("organizer");
 
 // Test home button click
 window.testRoleNavigation.testHomeClick();
+
+// Test unauthenticated navigation
+window.testUnauthenticatedNav.test();
+window.testUnauthenticatedNav.testPages();
+window.testUnauthenticatedNav.testFlow();
 ```
 
 ### Test thủ công:
 1. **Test khi chưa đăng nhập**:
    - Từ trang login bấm "Trang chủ" → Phải về index.html
    - Từ trang register bấm "Trang chủ" → Phải về index.html
-   - Từ bất kỳ trang nào khi chưa đăng nhập → Phải về index.html
+   - Từ bất kỳ trang nào khi chưa đ��ng nhập → Phải về index.html
 2. **Test khi đã đăng nhập**:
    - Đăng nhập với user role → Kiểm tra trang chủ có đúng là user dashboard
    - Đăng nhập với organizer role → Kiểm tra trang chủ có đúng là organizer dashboard
