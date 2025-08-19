@@ -19,18 +19,26 @@ const userRoutes = require('./routes/userRoutes');
 const app = express();
 const port = config.port;
 
-// Connect to MongoDB
+// Initialize mock mode
+global.mockMode = process.env.FORCE_MOCK_MODE === 'true';
+
+// Connect to MongoDB (unless forced into mock mode)
 (async () => {
+    if (global.mockMode) {
+        console.log('🔄 Server running in FORCED mock mode with JSON files');
+        return;
+    }
+
     try {
         const connected = await connectDB();
         if (connected) {
-            console.log('Server running with MongoDB connection');
+            console.log('🚀 Server running with MongoDB connection');
         } else {
-            console.log('Server running in mock mode with JSON files');
+            console.log('📁 Server running in mock mode with JSON files');
         }
     } catch (error) {
         console.error('Database connection error:', error);
-        console.log('Falling back to mock mode with JSON files');
+        console.log('📁 Falling back to mock mode with JSON files');
         global.mockMode = true;
     }
 })();
