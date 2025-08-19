@@ -155,10 +155,12 @@ window.testUnauthenticatedNav.testFlow();
 ## Files được thay đổi
 
 ### Files mới:
-- `src/frontend/js/views/userView.js`
-- `src/frontend/js/views/organizerView.js`
-- `src/assets/styles/role-based-styles.css`
-- `src/frontend/js/test-role-navigation.js`
+- `src/frontend/js/views/userView.js` - User homepage view
+- `src/frontend/js/views/organizerView.js` - Organizer homepage view
+- `src/assets/styles/role-based-styles.css` - CSS cho navigation và UI
+- `src/frontend/js/test-role-navigation.js` - Test utilities cho role-based navigation
+- `src/frontend/js/test-unauthenticated-navigation.js` - Test utilities cho unauthenticated navigation
+- `ROLE_BASED_HOMEPAGE_GUIDE.md` - Hướng dẫn chi tiết
 
 ### Files được cập nhật:
 - `src/frontend/js/router.js` - Thêm logic role-based navigation
