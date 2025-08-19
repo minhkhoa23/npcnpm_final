@@ -790,26 +790,37 @@ class Router {
     // Navigate to role-based home page
     async navigateToHome() {
         try {
-            if (TokenManager.isAuthenticated()) {
-                const userProfile = await this.getUserProfile();
-                if (userProfile) {
-                    switch (userProfile.role) {
-                        case 'organizer':
-                            this.navigate('/organizer-home');
-                            break;
-                        case 'user':
-                        default:
-                            this.navigate('/user-home');
-                            break;
-                    }
-                    return;
-                }
+            // Always check authentication status first
+            if (!TokenManager.isAuthenticated()) {
+                // If not authenticated, always go to index.html (guest view)
+                this.navigate('/');
+                return;
             }
 
-            // If not authenticated, go to guest home
-            this.navigate('/');
+            // If authenticated, get user profile and navigate based on role
+            const userProfile = await this.getUserProfile();
+            if (userProfile) {
+                switch (userProfile.role) {
+                    case 'organizer':
+                        this.navigate('/organizer-home');
+                        break;
+                    case 'admin':
+                        this.navigate('/dashboard');
+                        break;
+                    case 'user':
+                    default:
+                        this.navigate('/user-home');
+                        break;
+                }
+            } else {
+                // If can't get user profile, treat as unauthenticated
+                TokenManager.removeToken(); // Clear invalid token
+                this.navigate('/');
+            }
         } catch (error) {
             console.error('Error navigating to home:', error);
+            // On any error, clear token and go to guest home
+            TokenManager.removeToken();
             this.navigate('/');
         }
     }
