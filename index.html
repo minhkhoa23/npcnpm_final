@@ -211,21 +211,25 @@
     async function startApp() {
       try {
         updateStatus('Đang tải giao diện...');
-        
-        // Initialize both systems
+
+        // Make global references available
+        window.router = router;
+        window.authController = authController;
+
+        // Initialize guest controller for fallback
         const guestController = new GuestController();
         window.guestController = guestController;
-        
-        // Load guest view as fallback (có nút Đăng nhập/Đăng ký và carousel nhiều mục)
-        await guestController.renderGuestView();
-        
+
+        // Hide loading screen first
+        hideLoadingScreen();
+
+        // Use router to handle initial navigation based on authentication
+        router.handleRoute();
+
         updateStatus('✅ Hệ thống đã sẵn sàng!');
-        
-        // Hide loading screen after a short delay
-        setTimeout(hideLoadingScreen, 1000);
-        
+
         console.log('🎉 Tournament Management System started successfully!');
-        
+
       } catch (error) {
         console.error('App startup error:', error);
         showError('Có lỗi khi tải giao diện: ' + error.message);
