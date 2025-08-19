@@ -336,10 +336,14 @@
   width: 100%;
   height: 100%;
   background: #ECE6F0;
-  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="%23ECE6F0"/><rect x="20" y="20" width="60" height="8" fill="%23999"/><rect x="20" y="35" width="40" height="6" fill="%23999"/><rect x="20" y="50" width="50" height="6" fill="%23999"/></svg>');
-  background-size: 50% 50%;
+  background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+}
+
+.news-image:not([style*="background-image"]) {
+  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="%23ECE6F0"/><rect x="20" y="20" width="60" height="8" fill="%23999"/><rect x="20" y="35" width="40" height="6" fill="%23999"/><rect x="20" y="50" width="50" height="6" fill="%23999"/></svg>');
+  background-size: 50% 50%;
   mix-blend-mode: luminosity;
 }
 
