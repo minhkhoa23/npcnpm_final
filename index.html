@@ -114,8 +114,10 @@
   <!-- Initialize Application -->
   <script type="module">
     import App from './src/frontend/js/app.js';
+    import { router } from './src/frontend/js/router.js';
     import { renderGuestView } from './src/frontend/js/views/guestView.js';
     import GuestController from './src/frontend/js/controllers/GuestController.js';
+    import { authController } from './src/frontend/js/controllers/auth.js';
     import { backendStarter } from './src/frontend/js/backend-starter.js';
 
     // Show loading status
