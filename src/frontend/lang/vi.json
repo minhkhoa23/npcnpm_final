@@ -1,0 +1,10 @@
+{
+    "title": "Quản lý Giải đấu",
+    "loginTitle": "Đăng nhập",
+    "registerLink": "Chưa có tài khoản? <a href='index.html'>Đăng ký</a>",
+    "searchPlaceholder": "Tìm kiếm giải đấu...",
+    "loginButton": "Đăng nhập",
+    "registerButton": "Đăng ký",
+    "createTournamentButton": "Tạo Giải đấu",
+    "toggleDarkMode": "Chuyển chế độ tối"
+}

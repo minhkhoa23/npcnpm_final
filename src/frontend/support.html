@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hỗ trợ - Tournament Manager</title>
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@400;500;600;700&family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="../assets/styles/base.css" />
+  <link rel="stylesheet" href="../assets/styles/theme.css" />
+  <link rel="stylesheet" href="../assets/styles/components.css" />
+  <link rel="stylesheet" href="../assets/styles/layout.css" />
+  <style>
+    .info-page {
+      min-height: 100vh;
+      background: #383535;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .info-header {
+      background: #1E1E1E;
+      height: 70px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .header-nav {
+      display: flex;
+      align-items: center;
+      gap: 40px;
+    }
+
+    .nav-link {
+      color: #D9D9D9;
+      font-family: Inter, sans-serif;
+      font-size: 20px;
+      font-weight: 400;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+
+    .nav-link:hover {
+      color: #fff;
+    }
+
+    .nav-icon {
+      stroke: #F5F5F5;
+    }
+
+    .search-container {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 16px;
+      border-radius: 9999px;
+      border: 1px solid #D9D9D9;
+      background: #fff;
+      width: 239px;
+    }
+
+    .search-input {
+      flex: 1;
+      border: none;
+      outline: none;
+      font-family: Inter, sans-serif;
+      font-size: 16px;
+      color: #1E1E1E;
+    }
+
+    .search-input::placeholder {
+      color: #666;
+    }
+
+    .content-section {
+      flex: 1;
+      padding: 120px 54px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .page-title {
+      color: #fff;
+      text-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+      -webkit-text-stroke-width: 3px;
+      -webkit-text-stroke-color: #1E1E1E;
+      font-family: Montserrat, sans-serif;
+      font-size: 48px;
+      font-weight: 400;
+      margin-bottom: 70px;
+      text-align: center;
+    }
+
+    .content-container {
+      width: 100%;
+      max-width: 1334px;
+      background: #F3F3F3;
+      border-radius: 74px;
+      padding: 60px;
+      min-height: 1841px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    }
+
+    .faq-list {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .faq-item {
+      background: #D9D9D9;
+      border-radius: 56px;
+      height: 54px;
+      display: flex;
+      align-items: center;
+      padding: 0 30px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      overflow: hidden;
+    }
+
+    .faq-item:hover {
+      background: #C9C9C9;
+    }
+
+    .faq-item.active {
+      height: auto;
+      min-height: 54px;
+      background: #E9E9E9;
+      border-radius: 28px;
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 20px 30px;
+    }
+
+    .faq-question {
+      font-family: Inter, sans-serif;
+      font-size: 16px;
+      font-weight: 600;
+      color: #1E1E1E;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      cursor: pointer;
+    }
+
+    .faq-toggle {
+      font-size: 20px;
+      font-weight: bold;
+      color: #666;
+      transition: transform 0.3s ease;
+    }
+
+    .faq-item.active .faq-toggle {
+      transform: rotate(45deg);
+    }
+
+    .faq-answer {
+      font-family: Inter, sans-serif;
+      font-size: 14px;
+      line-height: 1.6;
+      color: #333;
+      margin-top: 15px;
+      display: none;
+    }
+
+    .faq-item.active .faq-answer {
+      display: block;
+    }
+
+    .info-footer {
+      background: #1E1E1E;
+      padding: 40px 24px;
+    }
+
+    .footer-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      max-width: 1440px;
+      margin: 0 auto;
+      gap: 40px;
+    }
+
+    .footer-section {
+      flex: 1;
+    }
+
+    .footer-section h3 {
+      color: #fff;
+      font-family: Inter, sans-serif;
+      font-size: 24px;
+      font-weight: 400;
+      margin-bottom: 20px;
+    }
+
+    .social-links {
+      display: flex;
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+
+    .social-link {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 48px;
+      height: 48px;
+      transition: transform 0.2s;
+    }
+
+    .social-link:hover {
+      transform: scale(1.1);
+    }
+
+    .contact-email {
+      color: #fff;
+      font-family: Inter, sans-serif;
+      font-size: 24px;
+      margin: 0;
+    }
+
+    .info-list {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .info-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: #fff;
+      font-family: Inter, sans-serif;
+      font-size: 20px;
+      text-decoration: none;
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+
+    .info-item:hover {
+      color: #D9D9D9;
+    }
+
+    .info-icon {
+      stroke: #F3F3F3;
+    }
+
+    .footer-preview {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .footer-thumbnail {
+      width: 280px;
+      height: 215px;
+      border-radius: 16px;
+      background: url('https://api.builder.io/api/v1/image/assets/TEMP/96f039df3e0ce9f4672f91e5a2c6829e29770051?width=560') lightgray 50% / cover no-repeat;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .footer-controls {
+      display: flex;
+      gap: 10px;
+    }
+
+    .footer-control-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 8px;
+      border-radius: 8px;
+      transition: background-color 0.2s;
+    }
+
+    .footer-control-btn:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .footer-bottom {
+      text-align: center;
+      margin-top: 40px;
+      padding-top: 20px;
+      border-top: 1px solid #333;
+    }
+
+    .copyright {
+      color: #fff;
+      font-family: Inter, sans-serif;
+      font-size: 20px;
+      margin: 0;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 1024px) {
+      .header-nav {
+        gap: 20px;
+      }
+
+      .search-container {
+        width: 180px;
+      }
+
+      .content-section {
+        padding: 80px 24px;
+      }
+
+      .page-title {
+        font-size: 36px;
+      }
+
+      .content-container {
+        padding: 40px;
+        border-radius: 40px;
+      }
+
+      .footer-content {
+        flex-direction: column;
+        gap: 30px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .info-header {
+        padding: 0 16px;
+        height: 60px;
+      }
+
+      .header-nav {
+        gap: 16px;
+      }
+
+      .nav-link {
+        font-size: 16px;
+      }
+
+      .search-container {
+        width: 150px;
+        padding: 8px 12px;
+      }
+
+      .search-input {
+        font-size: 14px;
+      }
+
+      .content-section {
+        padding: 60px 16px;
+      }
+
+      .page-title {
+        font-size: 28px;
+        margin-bottom: 40px;
+      }
+
+      .content-container {
+        padding: 30px;
+        border-radius: 30px;
+        min-height: auto;
+      }
+
+      .faq-item {
+        padding: 0 20px;
+      }
+
+      .faq-item.active {
+        padding: 15px 20px;
+      }
+
+      .footer-content {
+        text-align: center;
+      }
+
+      .social-links {
+        justify-content: center;
+      }
+
+      .footer-thumbnail {
+        width: 200px;
+        height: 150px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="info-page">
+    <!-- Header -->
+    <header class="info-header">
+      <div class="header-nav">
+        <a href="../../index.html" class="nav-link">
+          <svg class="nav-icon" width="40" height="40" viewBox="0 0 40 40" fill="none">
+            <path d="M15 36.6666V19.9999H25V36.6666M5 14.9999L20 3.33325L35 14.9999V33.3333C35 34.2173 34.6488 35.0652 34.0237 35.6903C33.3986 36.3154 32.5507 36.6666 31.6667 36.6666H8.33333C7.44928 36.6666 6.60143 36.3154 5.97631 35.6903C5.35119 35.0652 5 34.2173 5 33.3333V14.9999Z" stroke="#F5F5F5" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Trang chủ
+        </a>
+        <div class="search-container">
+          <input type="text" class="search-input" placeholder="Tìm kiếm">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M12 4L4 12M4 4L12 12" stroke="#1E1E1E" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+      </div>
+      <div class="header-nav">
+        <a href="./support.html" class="nav-link">
+          <svg class="nav-icon" width="40" height="40" viewBox="0 0 40 40" fill="none">
+            <path d="M15.15 14.9999C15.5419 13.886 16.3153 12.9468 17.3333 12.3485C18.3513 11.7502 19.5482 11.5315 20.712 11.7311C21.8758 11.9307 22.9314 12.5358 23.6918 13.4391C24.4522 14.3425 24.8684 15.4858 24.8667 16.6666C24.8667 19.9999 19.8667 21.6666 19.8667 21.6666M20 28.3333H20.0167M36.6667 19.9999C36.6667 29.2047 29.2048 36.6666 20 36.6666C10.7953 36.6666 3.33334 29.2047 3.33334 19.9999C3.33334 10.7952 10.7953 3.33325 20 3.33325C29.2048 3.33325 36.6667 10.7952 36.6667 19.9999Z" stroke="#F3F3F3" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Hỗ trợ
+        </a>
+        <a href="./usage-information.html" class="nav-link">
+          <svg class="nav-icon" width="40" height="40" viewBox="0 0 40 40" fill="none">
+            <path d="M20 26.6666V19.9999M20 13.3333H20.0167M36.6667 19.9999C36.6667 29.2047 29.2048 36.6666 20 36.6666C10.7953 36.6666 3.33334 29.2047 3.33334 19.9999C3.33334 10.7952 10.7953 3.33325 20 3.33325C29.2048 3.33325 36.6667 10.7952 36.6667 19.9999Z" stroke="#F3F3F3" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Thông tin
+        </a>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <section class="content-section">
+      <h1 class="page-title">Các câu hỏi thường gặp</h1>
+      <div class="content-container">
+        <div class="faq-list">
+          <div class="faq-item">
+            <div class="faq-question">
+              Làm thế nào để tạo một giải đấu mới?
+              <span class="faq-toggle">+</span>
+            </div>
+            <div class="faq-answer">
+              Để tạo giải đấu mới, bạn cần đăng ký tài khoản Ban tổ chức, sau đó vào trang Dashboard và chọn "Tạo giải đấu mới". Điền đầy đủ thông tin về giải đấu bao gồm tên, mô tả, thể thức thi đấu, và thời gian tổ chức.
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-question">
+              Tôi có thể tham gia bao nhiêu giải đấu cùng lúc?
+              <span class="faq-toggle">+</span>
+            </div>
+            <div class="faq-answer">
+              Hiện tại không có giới hạn về số lượng giải đấu mà bạn có thể tham gia. Tuy nhiên, hãy đảm bảo bạn có đủ thời gian để tham gia tất cả các trận đấu đã đăng ký.
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-question">
+              Làm sao để thay đổi thông tin cá nhân?
+              <span class="faq-toggle">+</span>
+            </div>
+            <div class="faq-answer">
+              Bạn có thể thay đổi thông tin cá nhân bằng cách vào trang Profile trong Dashboard. Tại đây bạn có thể cập nhật tên hiển thị, avatar, và các thông tin liên hệ khác.
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-question">
+              Tôi quên mật khẩu, phải làm gì?
+              <span class="faq-toggle">+</span>
+            </div>
+            <div class="faq-answer">
+              Tại trang đăng nhập, bạn có thể chọn "Quên mật khẩu" và nhập email đã đăng ký. Hệ thống sẽ gửi link đặt lại mật khẩu về email của bạn.
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-question">
+              Các thể thức giải đấu nào được hỗ trợ?
+              <span class="faq-toggle">+</span>
+            </div>
+            <div class="faq-answer">
+              Chúng tôi hỗ trợ nhiều thể thức khác nhau bao gồm: Loại trực tiếp (Single Elimination), Vòng tròn (Round Robin), Loại kép (Double Elimination), và Swiss System.
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-question">
+              Làm thế nào để báo cáo kết quả trận đấu?
+              <span class="faq-toggle">+</span>
+            </div>
+            <div class="faq-answer">
+              Sau khi trận đấu kết thúc, bạn có thể vào phần "Trận đấu của tôi" trong Dashboard để báo cáo kết quả. Cả hai đối thủ đều cần xác nhận kết quả để hoàn tất.
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-question">
+              Tôi có thể hủy đăng ký khỏi giải đấu không?
+              <span class="faq-toggle">+</span>
+            </div>
+            <div class="faq-answer">
+              Có, bạn có thể hủy đăng ký trước thời hạn đăng ký kết thúc. Sau khi giải đấu bắt đầu, việc hủy đăng ký có thể ảnh hưởng đến thể thức thi đấu và các đối thủ khác.
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-question">
+              Website có hỗ trợ trên điện thoại di động không?
+              <span class="faq-toggle">+</span>
+            </div>
+            <div class="faq-answer">
+              Có, website được thiết kế responsive và hoạt động tốt trên tất cả các thiết bị bao gồm điện thoại, tablet và máy tính.
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-question">
+              Làm thế nào để liên hệ hỗ trợ kỹ thuật?
+              <span class="faq-toggle">+</span>
+            </div>
+            <div class="faq-answer">
+              Bạn có thể liên hệ với chúng tôi qua email xxxxx@gmail.com hoặc thông qua các kênh mạng xã hội được liệt kê ở cuối trang.
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-question">
+              Có phí tham gia giải đấu không?
+              <span class="faq-toggle">+</span>
+            </div>
+            <div class="faq-answer">
+              Phí tham gia tùy thuộc vào từng giải đấu cụ thể. Một số giải đấu miễn phí, một số khác có thể có phí tham gia. Thông tin chi tiết sẽ được hiển thị rõ ràng khi đăng ký.
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-question">
+              Tôi có thể xem lại lịch sử các trận đấu đã tham gia không?
+              <span class="faq-toggle">+</span>
+            </div>
+            <div class="faq-answer">
+              Có, trong phần Profile của bạn có mục "Lịch sử thi đấu" nơi lưu trữ tất cả các trận đấu và giải đấu bạn đã tham gia cùng với kết quả.
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-question">
+              Làm thế nào để theo dõi giải đấu yêu thích?
+              <span class="faq-toggle">+</span>
+            </div>
+            <div class="faq-answer">
+              Bạn có thể nhấn nút "Theo dõi" trên trang chi tiết giải đấu. Các giải đấu bạn theo dõi sẽ hiển thị trong phần "Giải đấu theo dõi" và bạn sẽ nhận được thông báo về các cập nhật.
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-question">
+              Website có hỗ trợ nhiều ngôn ngữ không?
+              <span class="faq-toggle">+</span>
+            </div>
+            <div class="faq-answer">
+              Hiện tại website hỗ trợ tiếng Việt và tiếng Anh. Bạn có thể thay đổi ngôn ngữ thông qua menu cài đặt trong tài khoản của mình.
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-question">
+              Thông tin cá nhân của tôi có được bảo mật không?
+              <span class="faq-toggle">+</span>
+            </div>
+            <div class="faq-answer">
+              Chúng tôi cam kết bảo vệ thông tin cá nhân của người dùng theo chính sách bảo mật nghiêm ngặt. Thông tin của bạn chỉ được sử dụng cho mục đích vận hành website và không được chia sẻ cho bên thứ ba.
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-question">
+              Tôi có thể tạo đội nhóm để tham gia giải đấu không?
+              <span class="faq-toggle">+</span>
+            </div>
+            <div class="faq-answer">
+              Có, đối với các giải đấu đồng đội, bạn có thể tạo team và mời các thành viên khác tham gia. Mỗi team cần có đủ số lượng thành viên theo quy định của gi��i đấu.
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-question">
+              Làm thế nào để cập nhật trạng thái online/offline?
+              <span class="faq-toggle">+</span>
+            </div>
+            <div class="faq-answer">
+              Trạng thái online/offline được cập nhật tự động dựa trên hoạt động của bạn trên website. Bạn cũng có thể thay đổi thủ công trong phần cài đặt profile.
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-question">
+              Website có ứng dụng di động không?
+              <span class="faq-toggle">+</span>
+            </div>
+            <div class="faq-answer">
+              Hiện tại chúng tôi chưa có ứng dụng di động riêng, nhưng website được tối ưu hóa hoàn toàn cho mobile và hoạt động mượt mà như một ứng dụng native.
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-question">
+              Tôi có thể stream trận đấu của mình không?
+              <span class="faq-toggle">+</span>
+            </div>
+            <div class="faq-answer">
+              Có, bạn hoàn toàn có thể stream các trận đấu của mình. Chúng tôi khuyến khích điều này để tăng tính giải trí và thu hút nhiều người xem hơn cho giải đấu.
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-question">
+              Làm thế nào để báo cáo hành vi không fair play?
+              <span class="faq-toggle">+</span>
+            </div>
+            <div class="faq-answer">
+              Nếu bạn phát hiện hành vi gian lận hoặc không fair play, hãy sử dụng chức năng "Báo cáo" trong trận đấu hoặc liên hệ trực tiếp với ban tổ chức qua email hỗ trợ.
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-question">
+              Tôi có thể xem replay của các trận đấu không?
+              <span class="faq-toggle">+</span>
+            </div>
+            <div class="faq-answer">
+              Tính năng replay phụ thuộc vào game và giải đấu cụ thể. Một số giải đấu sẽ có highlight và replay được lưu trữ trong phần "Highlights" của website.
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-question">
+              Website có hỗ trợ thanh toán online không?
+              <span class="faq-toggle">+</span>
+            </div>
+            <div class="faq-answer">
+              Có, chúng tôi hỗ trợ các phương thức thanh toán online phổ biến bao gồm thẻ tín dụng, ví điện tử và chuyển khoản ngân hàng cho các giải đấu có phí tham gia.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="info-footer">
+      <div class="footer-content">
+        <div class="footer-section">
+          <h3>Liên hệ với chúng tôi:</h3>
+          <div class="social-links">
+            <a href="#" class="social-link">
+              <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+                <g clip-path="url(#clip0_61_2818)">
+                  <path d="M45.08 12.84C44.8424 11.8908 44.3586 11.0211 43.6773 10.3188C42.996 9.61648 42.1415 9.10637 41.2 8.84C37.76 8 24 8 24 8C24 8 10.24 8 6.79998 8.92C5.85848 9.18637 5.00394 9.69648 4.32268 10.3988C3.64142 11.1011 3.15756 11.9708 2.91998 12.92C2.29041 16.4111 1.98246 19.9526 1.99998 23.5C1.97754 27.0741 2.28552 30.6426 2.91998 34.16C3.1819 35.0797 3.6766 35.9163 4.35627 36.589C5.03595 37.2616 5.87762 37.7476 6.79998 38C10.24 38.92 24 38.92 24 38.92C24 38.92 37.76 38.92 41.2 38C42.1415 37.7336 42.996 37.2235 43.6773 36.5212C44.3586 35.8189 44.8424 34.9492 45.08 34C45.7047 30.5352 46.0126 27.0207 46 23.5C46.0224 19.9259 45.7145 16.3574 45.08 12.84Z" stroke="#F5F5F5" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M19.5 30.04L31 23.5L19.5 16.96V30.04Z" stroke="#F5F5F5" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                </g>
+              </svg>
+            </a>
+            <a href="#" class="social-link">
+              <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+                <path d="M35 13H35.02M14 4H34C39.5228 4 44 8.47715 44 14V34C44 39.5228 39.5228 44 34 44H14C8.47715 44 4 39.5228 4 34V14C4 8.47715 8.47715 4 14 4ZM32 22.74C32.2468 24.4045 31.9625 26.1044 31.1875 27.598C30.4125 29.0916 29.1863 30.3028 27.6833 31.0593C26.1802 31.8159 24.4769 32.0792 22.8156 31.8119C21.1543 31.5445 19.6195 30.7602 18.4297 29.5703C17.2398 28.3805 16.4555 26.8457 16.1881 25.1844C15.9208 23.5231 16.1841 21.8198 16.9407 20.3167C17.6972 18.8137 18.9084 17.5875 20.402 16.8125C21.8956 16.0375 23.5955 15.7532 25.26 16C26.9578 16.2518 28.5297 17.0429 29.7434 18.2566C30.9571 19.4703 31.7482 21.0422 32 22.74Z" stroke="#F3F3F3" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </a>
+            <a href="#" class="social-link">
+              <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+                <path d="M36 4H30C27.3478 4 24.8043 5.05357 22.9289 6.92893C21.0536 8.8043 20 11.3478 20 14V20H14V28H20V44H28V28H34L36 20H28V14C28 13.4696 28.2107 12.9609 28.5858 12.5858C28.9609 12.2107 29.4696 12 30 12H36V4Z" stroke="#F5F5F5" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </a>
+            <a href="#" class="social-link">
+              <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+                <path d="M22 22V14M32 22V14M42 4H6V36H16V44L24 36H34L42 28V4Z" stroke="#F3F3F3" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </a>
+          </div>
+          <p class="contact-email">xxxxx@gmail.com</p>
+        </div>
+
+        <div class="footer-section">
+          <div class="info-list">
+            <a href="./usage-information.html" class="info-item">
+              <svg class="info-icon" width="40" height="40" viewBox="0 0 40 40" fill="none">
+                <path d="M20 26.6667V20M20 13.3334H20.0167M36.6667 20C36.6667 29.2048 29.2047 36.6667 20 36.6667C10.7952 36.6667 3.33333 29.2048 3.33333 20C3.33333 10.7953 10.7952 3.33337 20 3.33337C29.2047 3.33337 36.6667 10.7953 36.6667 20Z" stroke="#F3F3F3" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <span>Thông tin sử dụng</span>
+            </a>
+            <a href="./privacy-policy.html" class="info-item">
+              <svg class="info-icon" width="40" height="40" viewBox="0 0 40 40" fill="none">
+                <path d="M20 26.6667V20M20 13.3334H20.0167M36.6667 20C36.6667 29.2048 29.2047 36.6667 20 36.6667C10.7952 36.6667 3.33333 29.2048 3.33333 20C3.33333 10.7953 10.7952 3.33337 20 3.33337C29.2047 3.33337 36.6667 10.7953 36.6667 20Z" stroke="#F3F3F3" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <span>Chính sách bảo mật</span>
+            </a>
+            <a href="./terms-of-use.html" class="info-item">
+              <svg class="info-icon" width="40" height="40" viewBox="0 0 40 40" fill="none">
+                <path d="M20 26.6667V20M20 13.3334H20.0167M36.6667 20C36.6667 29.2048 29.2047 36.6667 20 36.6667C10.7952 36.6667 3.33333 29.2048 3.33333 20C3.33333 10.7953 10.7952 3.33337 20 3.33337C29.2047 3.33337 36.6667 10.7953 36.6667 20Z" stroke="#F3F3F3" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <span>Điều khoản sử dụng</span>
+            </a>
+          </div>
+        </div>
+
+        <div class="footer-section footer-preview">
+          <div class="footer-thumbnail">
+            <img src="https://api.builder.io/api/v1/image/assets/TEMP/0501f8af4749a1fd73d0190635771fc5440efcf1?width=560" alt="Logo" style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px;" />
+          </div>
+          <div class="footer-controls">
+            <button class="footer-control-btn">
+              <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+                <path d="M42 42L33.3 33.3M22 16V28M16 22H28M38 22C38 30.8366 30.8366 38 22 38C13.1634 38 6 30.8366 6 22C6 13.1634 13.1634 6 22 6C30.8366 6 38 13.1634 38 22Z" stroke="#F3F3F3" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+            <button class="footer-control-btn">
+              <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+                <path d="M42 42L33.3 33.3M16 22H28M38 22C38 30.8366 30.8366 38 22 38C13.1634 38 6 30.8366 6 22C6 13.1634 13.1634 6 22 6C30.8366 6 38 13.1634 38 22Z" stroke="#F3F3F3" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p class="copyright">2025 All rights reserved</p>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    // FAQ toggle functionality
+    document.addEventListener('DOMContentLoaded', function() {
+      const faqItems = document.querySelectorAll('.faq-item');
+      
+      faqItems.forEach(item => {
+        const question = item.querySelector('.faq-question');
+        
+        question.addEventListener('click', function() {
+          const isActive = item.classList.contains('active');
+          
+          // Close all FAQ items
+          faqItems.forEach(otherItem => {
+            otherItem.classList.remove('active');
+          });
+          
+          // Toggle current item
+          if (!isActive) {
+            item.classList.add('active');
+          }
+        });
+      });
+    });
+  </script>
+</body>
+</html>

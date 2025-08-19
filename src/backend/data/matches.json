@@ -1,0 +1,142 @@
+[
+    {
+        "_id": "507f1f77bcf86cd799439071",
+        "tournamentId": "507f1f77bcf86cd799439011",
+        "teamA": "507f1f77bcf86cd799439031",
+        "teamB": "507f1f77bcf86cd799439032",
+        "scheduledAt": "2026-06-02T10:00:00.000Z",
+        "score": {
+            "a": 3,
+            "b": 1
+        },
+        "status": "completed",
+        "gameType": "League of Legends",
+        "format": "Best of 5"
+    },
+    {
+        "_id": "507f1f77bcf86cd799439072",
+        "tournamentId": "507f1f77bcf86cd799439011",
+        "teamA": "507f1f77bcf86cd799439033",
+        "teamB": "507f1f77bcf86cd799439034",
+        "scheduledAt": "2026-06-03T14:00:00.000Z",
+        "score": {
+            "a": 2,
+            "b": 3
+        },
+        "status": "completed",
+        "gameType": "League of Legends",
+        "format": "Best of 5"
+    },
+    {
+        "_id": "507f1f77bcf86cd799439073",
+        "tournamentId": "507f1f77bcf86cd799439012",
+        "teamA": "507f1f77bcf86cd799439035",
+        "teamB": "507f1f77bcf86cd799439036",
+        "scheduledAt": "2026-12-01T16:00:00.000Z",
+        "score": {
+            "a": 16,
+            "b": 14
+        },
+        "status": "completed",
+        "gameType": "Counter-Strike 2",
+        "format": "Best of 3"
+    },
+    {
+        "_id": "507f1f77bcf86cd799439074",
+        "tournamentId": "507f1f77bcf86cd799439012",
+        "teamA": "507f1f77bcf86cd799439037",
+        "teamB": "507f1f77bcf86cd799439038",
+        "scheduledAt": "2026-12-02T18:00:00.000Z",
+        "score": {
+            "a": 0,
+            "b": 0
+        },
+        "status": "pending",
+        "gameType": "Counter-Strike 2",
+        "format": "Best of 3"
+    },
+    {
+        "_id": "507f1f77bcf86cd799439075",
+        "tournamentId": "507f1f77bcf86cd799439013",
+        "teamA": "507f1f77bcf86cd799439039",
+        "teamB": "507f1f77bcf86cd799439040",
+        "scheduledAt": "2026-08-01T20:00:00.000Z",
+        "score": {
+            "a": 13,
+            "b": 11
+        },
+        "status": "completed",
+        "gameType": "Valorant",
+        "format": "Best of 3"
+    },
+    {
+        "_id": "507f1f77bcf86cd799439076",
+        "tournamentId": "507f1f77bcf86cd799439013",
+        "teamA": "507f1f77bcf86cd799439041",
+        "teamB": "507f1f77bcf86cd799439042",
+        "scheduledAt": "2026-08-02T22:00:00.000Z",
+        "score": {
+            "a": 0,
+            "b": 0
+        },
+        "status": "pending",
+        "gameType": "Valorant",
+        "format": "Best of 3"
+    },
+    {
+        "_id": "507f1f77bcf86cd799439077",
+        "tournamentId": "507f1f77bcf86cd799439014",
+        "teamA": "507f1f77bcf86cd799439043",
+        "teamB": "507f1f77bcf86cd799439044",
+        "scheduledAt": "2026-03-15T12:00:00.000Z",
+        "score": {
+            "a": 2,
+            "b": 1
+        },
+        "status": "completed",
+        "gameType": "Dota 2",
+        "format": "Best of 3"
+    },
+    {
+        "_id": "507f1f77bcf86cd799439078",
+        "tournamentId": "507f1f77bcf86cd799439014",
+        "teamA": "507f1f77bcf86cd799439045",
+        "teamB": "507f1f77bcf86cd799439046",
+        "scheduledAt": "2026-03-16T14:00:00.000Z",
+        "score": {
+            "a": 0,
+            "b": 0
+        },
+        "status": "pending",
+        "gameType": "Dota 2",
+        "format": "Best of 3"
+    },
+    {
+        "_id": "507f1f77bcf86cd799439079",
+        "tournamentId": "507f1f77bcf86cd799439015",
+        "teamA": "507f1f77bcf86cd799439047",
+        "teamB": "507f1f77bcf86cd799439048",
+        "scheduledAt": "2026-04-01T10:00:00.000Z",
+        "score": {
+            "a": 15,
+            "b": 12
+        },
+        "status": "completed",
+        "gameType": "PUBG Mobile",
+        "format": "Battle Royale"
+    },
+    {
+        "_id": "507f1f77bcf86cd799439080",
+        "tournamentId": "507f1f77bcf86cd799439015",
+        "teamA": "507f1f77bcf86cd799439049",
+        "teamB": "507f1f77bcf86cd799439050",
+        "scheduledAt": "2026-04-02T12:00:00.000Z",
+        "score": {
+            "a": 0,
+            "b": 0
+        },
+        "status": "pending",
+        "gameType": "PUBG Mobile",
+        "format": "Battle Royale"
+    }
+]

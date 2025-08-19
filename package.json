@@ -1,0 +1,21 @@
+{
+  "name": "tournament-management-system",
+  "version": "1.0.0",
+  "description": "Tournament Management System with integrated frontend and backend",
+  "main": "simple-server.js",
+  "scripts": {
+    "start": "node simple-server.js",
+    "dev": "cd src/backend && npm run dev",
+    "backend": "cd src/backend && npm start",
+    "test": "node src/backend/tests/utils.node-test.cjs",
+    "install:backend": "cd src/backend && npm install"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5"
+  },
+  "devDependencies": {},
+  "keywords": ["tournament", "management", "gaming", "esports"],
+  "author": "Tournament Management Team",
+  "license": "MIT"
+}

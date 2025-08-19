@@ -1,0 +1,687 @@
+/* Dashboard Page Styles */
+
+.dashboard-main {
+  min-height: 100vh;
+  background: #D9D9D9;
+  padding-top: 90px;
+}
+
+/* Header adjustments for dashboard */
+.nav-item.active .nav-text {
+  color: #F19EDC;
+}
+
+.notification-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  margin-right: 15px;
+}
+
+.user-avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.avatar-image {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+/* Tournament Section */
+.tournament-section {
+  background: #383535;
+  padding: 40px 0;
+  position: relative;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 60px;
+  margin-bottom: 30px;
+}
+
+.section-title {
+  color: #FFF;
+  text-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+  -webkit-text-stroke-width: 3px;
+  -webkit-text-stroke-color: #1E1E1E;
+  font-family: Montserrat, -apple-system, Roboto, Helvetica, sans-serif;
+  font-size: 48px;
+  font-weight: 400;
+  line-height: normal;
+  margin: 0;
+}
+
+.section-controls {
+  display: flex;
+  gap: 15px;
+}
+
+.nav-arrow {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: transform 0.3s ease;
+}
+
+.nav-arrow:hover {
+  transform: scale(1.1);
+}
+
+.nav-arrow:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.nav-arrow:disabled:hover {
+  transform: none;
+}
+
+.tournament-carousel {
+  position: relative;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 60px;
+}
+
+.tournament-container {
+  display: flex;
+  gap: 30px;
+  justify-content: center;
+  transition: opacity 0.3s ease;
+}
+
+.news-container {
+  display: flex;
+  gap: 30px;
+  justify-content: center;
+  transition: opacity 0.3s ease;
+}
+
+.loading-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 200px;
+  color: #666;
+  font-size: 16px;
+  font-style: italic;
+}
+
+.tournament-info {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+  color: white;
+  padding: 20px;
+  transform: translateY(100%);
+  transition: transform 0.3s ease;
+}
+
+.tournament-card:hover .tournament-info {
+  transform: translateY(0);
+}
+
+.tournament-name {
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0 0 8px 0;
+}
+
+.tournament-description {
+  font-size: 14px;
+  margin: 0 0 12px 0;
+  opacity: 0.9;
+}
+
+.tournament-meta {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.tournament-status {
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.status-upcoming {
+  background: #FF9800;
+  color: white;
+}
+
+.status-ongoing {
+  background: #4CAF50;
+  color: white;
+}
+
+.status-completed {
+  background: #9E9E9E;
+  color: white;
+}
+
+.tournament-format {
+  padding: 4px 8px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.2);
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.news-content {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+  color: white;
+  padding: 20px;
+  transform: translateY(100%);
+  transition: transform 0.3s ease;
+}
+
+.news-card:hover .news-content {
+  transform: translateY(0);
+}
+
+.news-title {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0 0 8px 0;
+}
+
+.news-excerpt {
+  font-size: 14px;
+  margin: 0 0 12px 0;
+  opacity: 0.9;
+}
+
+.news-meta {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.news-date {
+  padding: 4px 8px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.2);
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.tournament-card {
+  width: 370px;
+  height: 230px;
+  border-radius: 28px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.tournament-card:hover {
+  transform: translateY(-5px);
+}
+
+.tournament-image {
+  width: 100%;
+  height: 100%;
+  background: #ECE6F0;
+  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="%23ECE6F0"/><circle cx="50" cy="35" r="8" fill="%23999"/><path d="M35 65h30l-5-15h-20z" fill="%23999"/></svg>');
+  background-size: 50% 50%;
+  background-position: center;
+  background-repeat: no-repeat;
+  mix-blend-mode: luminosity;
+}
+
+.carousel-indicator {
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+}
+
+.indicator-dots {
+  display: flex;
+  gap: 10px;
+}
+
+.dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.dot.active {
+  background: #6750A4;
+}
+
+/* News Section */
+.news-section {
+  background: #FFF;
+  padding: 60px 0;
+  position: relative;
+}
+
+.section-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 60px;
+}
+
+.news-section .section-title {
+  color: #1E1E1E;
+  text-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+  -webkit-text-stroke-width: 3px;
+  -webkit-text-stroke-color: #1E1E1E;
+  font-family: Montserrat, -apple-system, Roboto, Helvetica, sans-serif;
+  font-size: 32px;
+  font-weight: 400;
+  margin-bottom: 40px;
+}
+
+.news-grid {
+  display: flex;
+  gap: 30px;
+  justify-content: center;
+  margin-bottom: 40px;
+}
+
+.news-carousel {
+  position: relative;
+  margin-bottom: 40px;
+}
+
+/* Ensure side arrows position relative to the highlights carousel wrapper */
+.highlights-carousel {
+  position: relative;
+}
+
+.news-card {
+  width: 370px;
+  height: 230px;
+  border-radius: 28px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.news-card:hover {
+  transform: translateY(-5px);
+}
+
+.news-image {
+  width: 100%;
+  height: 100%;
+  background: #ECE6F0;
+  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="%23ECE6F0"/><rect x="20" y="20" width="60" height="8" fill="%23999"/><rect x="20" y="35" width="40" height="6" fill="%23999"/><rect x="20" y="50" width="50" height="6" fill="%23999"/></svg>');
+  background-size: 50% 50%;
+  background-position: center;
+  background-repeat: no-repeat;
+  mix-blend-mode: luminosity;
+}
+
+.search-icon {
+  position: absolute;
+  top: 40px;
+  right: 60px;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.search-icon:hover {
+  transform: scale(1.1);
+}
+
+/* Highlights Section */
+.highlights-section {
+  background: #870606;
+  padding: 60px 0;
+}
+
+.highlights-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 60px;
+}
+
+.highlights-section .section-title {
+  color: #FFF;
+  text-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+  -webkit-text-stroke-width: 3px;
+  -webkit-text-stroke-color: #1E1E1E;
+  font-family: Montserrat, -apple-system, Roboto, Helvetica, sans-serif;
+  font-size: 32px;
+  font-weight: 400;
+  margin-bottom: 40px;
+}
+
+.highlights-content {
+  display: flex;
+  gap: 40px;
+  align-items: flex-start;
+}
+
+.highlights-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  width: 491px;
+}
+
+.highlight-item {
+  height: 4px;
+  background: #FFF;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.highlight-item:hover {
+  background: #F19EDC;
+}
+
+.highlights-video {
+  flex: 1;
+  max-width: 712px;
+}
+
+.video-player {
+  background: #ECE6F0;
+  border-radius: 28px;
+  height: 406px;
+  position: relative;
+  overflow: hidden;
+}
+
+.video-placeholder {
+  width: 100%;
+  height: 100%;
+  background: #ECE6F0;
+  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="%23ECE6F0"/><polygon points="40,30 40,70 70,50" fill="%23999"/></svg>');
+  background-size: 30% 30%;
+  background-position: center;
+  background-repeat: no-repeat;
+  mix-blend-mode: luminosity;
+}
+
+.video-controls {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
+
+.video-control-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: transform 0.3s ease;
+}
+
+.video-control-btn:hover {
+  transform: scale(1.1);
+}
+
+/* Organizers Section */
+.organizers-section {
+  background: #FFF;
+  padding: 60px 0;
+  position: relative;
+}
+
+.organizers-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 60px;
+}
+
+.organizers-section .section-title {
+  color: #1E1E1E;
+  text-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+  -webkit-text-stroke-width: 3px;
+  -webkit-text-stroke-color: #1E1E1E;
+  font-family: Montserrat, -apple-system, Roboto, Helvetica, sans-serif;
+  font-size: 32px;
+  font-weight: 400;
+  margin-bottom: 40px;
+  text-align: center;
+  line-height: 1.2;
+}
+
+.organizers-grid {
+  display: flex;
+  gap: 30px;
+  justify-content: center;
+  margin-bottom: 40px;
+}
+
+.organizer-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+}
+
+.organizer-image {
+  width: 223px;
+  height: 227px;
+  border-radius: 16px;
+  background: #ECE6F0;
+  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="%23ECE6F0"/><circle cx="50" cy="35" r="8" fill="%23999"/><path d="M35 65h30l-5-15h-20z" fill="%23999"/></svg>');
+  background-size: 40% 40%;
+  background-position: center;
+  background-repeat: no-repeat;
+  mix-blend-mode: luminosity;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.organizer-image:hover {
+  transform: translateY(-5px);
+}
+
+.follow-btn {
+  padding: 12px 25px;
+  border-radius: 8px;
+  border: 1px solid rgba(192, 15, 12, 1);
+  background: rgba(236, 34, 31, 1);
+  color: rgba(254, 233, 231, 1);
+  font-family: Inter, -apple-system, Roboto, Helvetica, sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.follow-btn:hover {
+  background: rgba(220, 20, 17, 1);
+  transform: translateY(-2px);
+}
+
+.organizers-navigation {
+  display: flex;
+  justify-content: space-between;
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  padding: 0 20px;
+  pointer-events: none;
+}
+
+.organizers-navigation .nav-arrow {
+  pointer-events: all;
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+  .section-header,
+  .section-container,
+  .highlights-container,
+  .organizers-container {
+    padding: 0 40px;
+  }
+  
+  .tournament-carousel {
+    padding: 0 40px;
+  }
+  
+  .tournament-container,
+  .news-grid,
+  .organizers-grid {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  .tournament-card,
+  .news-card {
+    width: 320px;
+    height: 200px;
+  }
+  
+  .organizer-image {
+    width: 200px;
+    height: 200px;
+  }
+  
+  .highlights-content {
+    flex-direction: column;
+    gap: 30px;
+  }
+  
+  .highlights-list {
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto;
+  }
+  
+  .video-player {
+    height: 300px;
+  }
+}
+
+@media (max-width: 768px) {
+  .section-title {
+    font-size: 32px;
+  }
+  
+  .news-section .section-title,
+  .highlights-section .section-title,
+  .organizers-section .section-title {
+    font-size: 24px;
+  }
+  
+  .section-header,
+  .section-container,
+  .highlights-container,
+  .organizers-container {
+    padding: 0 20px;
+  }
+  
+  .tournament-carousel {
+    padding: 0 20px;
+  }
+  
+  .tournament-card,
+  .news-card {
+    width: 280px;
+    height: 180px;
+  }
+  
+  .organizer-image {
+    width: 180px;
+    height: 180px;
+  }
+  
+  .video-player {
+    height: 250px;
+  }
+  
+  .video-controls {
+    gap: 10px;
+  }
+  
+  .video-control-btn svg {
+    width: 36px;
+    height: 36px;
+  }
+  
+  .organizers-navigation {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .dashboard-main {
+    padding-top: 60px;
+  }
+  
+  .section-title {
+    font-size: 24px;
+  }
+  
+  .news-section .section-title,
+  .highlights-section .section-title,
+  .organizers-section .section-title {
+    font-size: 20px;
+  }
+  
+  .tournament-container,
+  .news-grid,
+  .organizers-grid {
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+  }
+  
+  .tournament-card,
+  .news-card {
+    width: 250px;
+    height: 160px;
+  }
+  
+  .organizer-image {
+    width: 160px;
+    height: 160px;
+  }
+  
+  .highlights-list {
+    max-width: 300px;
+  }
+  
+  .video-player {
+    height: 200px;
+  }
+  
+  .follow-btn {
+    padding: 10px 20px;
+    font-size: 14px;
+  }
+}

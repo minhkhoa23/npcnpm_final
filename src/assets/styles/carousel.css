@@ -1,0 +1,339 @@
+/* Carousel Styles */
+
+.carousel-container {
+  position: relative;
+  overflow: hidden;
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;               /* arrange items in a row */
+  gap: 30px;                   /* spacing between cards */
+  justify-content: center;     /* center the row */
+  align-items: stretch;        /* equal height cards */
+  flex-wrap: nowrap;           /* keep items on one line per page */
+}
+
+.carousel-slider {
+  display: flex;
+  gap: 30px;
+  transition: transform 0.3s ease;
+}
+
+.carousel-slide {
+  flex: 0 0 auto;
+  width: 370px;
+}
+
+.carousel-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255, 255, 255, 0.9);
+  border: none;
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  cursor: pointer;
+  z-index: 10;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.carousel-btn:hover {
+  background: rgba(255, 255, 255, 1);
+  transform: translateY(-50%) scale(1.1);
+}
+
+.carousel-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.carousel-btn:disabled:hover {
+  transform: translateY(-50%);
+}
+
+.prev-btn {
+  left: -24px;
+}
+
+.next-btn {
+  right: -24px;
+}
+
+/* Fade transition for content */
+.fade-transition {
+  transition: opacity 0.3s ease;
+}
+
+.fade-out {
+  opacity: 0;
+}
+
+.fade-in {
+  opacity: 1;
+}
+
+/* Loading states */
+.loading-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 200px;
+  color: #666;
+  font-size: 16px;
+  font-style: italic;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  margin: 20px 0;
+}
+
+/* News Card Styles */
+.news-card {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  height: 400px;
+  width: 370px;                /* fixed card width like dashboard */
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+}
+
+.news-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.news-image {
+  height: 200px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.news-content {
+  padding: 20px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.news-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #fff;
+  margin: 0 0 10px 0;
+  line-height: 1.4;
+}
+
+.news-excerpt {
+  font-size: 14px;
+  color: #ccc;
+  line-height: 1.5;
+  flex: 1;
+  margin: 0 0 15px 0;
+}
+
+.news-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: auto;
+}
+
+.news-date {
+  font-size: 12px;
+  color: #999;
+}
+
+/* Tournament Card Styles */
+.tournament-card {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  height: 400px;
+  width: 370px;                /* fixed card width like dashboard */
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+}
+
+.tournament-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.tournament-image {
+  height: 200px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.tournament-info {
+  padding: 20px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.tournament-name {
+  font-size: 18px;
+  font-weight: 600;
+  color: #fff;
+  margin: 0 0 10px 0;
+  line-height: 1.4;
+}
+
+.tournament-description {
+  font-size: 14px;
+  color: #ccc;
+  line-height: 1.5;
+  flex: 1;
+  margin: 0 0 15px 0;
+}
+
+.tournament-meta {
+  display: flex;
+  gap: 10px;
+  margin-top: auto;
+}
+
+.tournament-status {
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.status-ongoing {
+  background: #4CAF50;
+  color: white;
+}
+
+.status-upcoming {
+  background: #2196F3;
+  color: white;
+}
+
+.status-completed {
+  background: #9E9E9E;
+  color: white;
+}
+
+.tournament-format {
+  padding: 4px 12px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.2);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+/* Highlight Card Styles */
+.highlight-card {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  height: 300px;
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+}
+
+.highlight-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.highlight-thumbnail {
+  height: 150px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.highlight-info {
+  padding: 15px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.highlight-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #fff;
+  margin: 0 0 8px 0;
+  line-height: 1.4;
+}
+
+.highlight-description {
+  font-size: 13px;
+  color: #ccc;
+  line-height: 1.5;
+  flex: 1;
+  margin: 0 0 10px 0;
+}
+
+.watch-btn {
+  display: inline-block;
+  padding: 6px 12px;
+  background: #F19EDC;
+  color: white;
+  text-decoration: none;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  transition: background 0.3s ease;
+  align-self: flex-start;
+}
+
+.watch-btn:hover {
+  background: #e91e63;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .carousel-slide {
+    width: 280px;
+  }
+  
+  .carousel-btn {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .prev-btn {
+    left: -20px;
+  }
+  
+  .next-btn {
+    right: -20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .carousel-slide {
+    width: 250px;
+  }
+  
+  .carousel-btn {
+    width: 36px;
+    height: 36px;
+  }
+  
+  .prev-btn {
+    left: -18px;
+  }
+  
+  .next-btn {
+    right: -18px;
+  }
+}

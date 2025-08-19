@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý giải đấu của bạn</title>
+    <link rel="stylesheet" href="../assets/styles/base.css">
+    <link rel="stylesheet" href="../assets/styles/components.css">
+    <link rel="stylesheet" href="../assets/styles/layout.css">
+    <link rel="stylesheet" href="../assets/styles/tournament-management.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <div class="header-left">
+                <button class="menu-button">
+                    <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+                        <path d="M5 20H35M5 10H35M5 30H35" stroke="#F3F3F3" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+                <button class="home-button" onclick="window.location.href='dashboard.html'">
+                    <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+                        <path d="M15 36.6667V20H25V36.6667M5 15L20 3.33333L35 15V33.3333C35 34.2174 34.6488 35.0652 34.0237 35.6904C33.3986 36.3155 32.5507 36.6667 31.6667 36.6667H8.33333C7.44928 36.6667 6.60143 36.3155 5.97631 35.6904C5.35119 35.0652 5 34.2174 5 33.3333V15Z" stroke="#F5F5F5" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+                <span class="nav-text">Trang chủ</span>
+            </div>
+            
+            <div class="header-center">
+                <div class="search-container">
+                    <input type="text" placeholder="Tìm kiếm" class="search-input">
+                    <button class="search-clear">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                            <path d="M12 4L4 12M4 4L12 12" stroke="#1E1E1E" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="header-right">
+                <button class="support-button">
+                    <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+                        <path d="M15.1502 15C15.542 13.8863 16.3154 12.947 17.3334 12.3487C18.3514 11.7504 19.5483 11.5317 20.7121 11.7313C21.8759 11.931 22.9315 12.536 23.692 13.4394C24.4524 14.3427 24.8686 15.486 24.8668 16.6668C24.8668 20.0002 19.8668 21.6668 19.8668 21.6668M20.0002 28.3335H20.0168M36.6668 20.0002C36.6668 29.2049 29.2049 36.6668 20.0002 36.6668C10.7954 36.6668 3.3335 29.2049 3.3335 20.0002C3.3335 10.7954 10.7954 3.3335 20.0002 3.3335C29.2049 3.3335 36.6668 10.7954 36.6668 20.0002Z" stroke="#F3F3F3" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+                <span class="nav-text">Hỗ trợ</span>
+                
+                <button class="info-button">
+                    <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+                        <path d="M20.0002 26.6668V20.0002M20.0002 13.3335H20.0168M36.6668 20.0002C36.6668 29.2049 29.2049 36.6668 20.0002 36.6668C10.7954 36.6668 3.3335 29.2049 3.3335 20.0002C3.3335 10.7954 10.7954 3.3335 20.0002 3.3335C29.2049 3.3335 36.6668 10.7954 36.6668 20.0002Z" stroke="#F3F3F3" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+                <span class="nav-text">Thông tin</span>
+                
+                <button class="notification-button">
+                    <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+                        <path d="M27.46 42C27.1084 42.6062 26.6037 43.1093 25.9965 43.4591C25.3892 43.8088 24.7008 43.9929 24 43.9929C23.2992 43.9929 22.6108 43.8088 22.0035 43.4591C21.3963 43.1093 20.8916 42.6062 20.54 42M36 16C36 12.8174 34.7357 9.76516 32.4853 7.51472C30.2348 5.26428 27.1826 4 24 4C20.8174 4 17.7652 5.26428 15.5147 7.51472C13.2643 9.76516 12 12.8174 12 16C12 30 6 34 6 34H42C42 34 36 30 36 16Z" stroke="#F3F3F3" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+                
+                <div class="user-avatar">
+                    <img src="https://api.builder.io/api/v1/image/assets/TEMP/2791d338714d3870b4bb42ac5a5390446faac948?width=80" alt="User Avatar">
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="page-title">
+            <h1>Quản lý giải đấu của bạn</h1>
+        </div>
+
+        <div class="tournament-management-container">
+            <!-- Create Tournament Button -->
+            <div class="create-tournament-section">
+                <button class="create-tournament-btn" onclick="window.location.href='create-tournament-1.html'">
+                    Khởi tạo giải đấu mới
+                </button>
+            </div>
+
+            <!-- Tournament List -->
+            <div class="tournament-list">
+                <div class="tournament-item" data-tournament-id="1">
+                    <div class="tournament-avatar">
+                        <div class="avatar-3d">
+                            <img src="https://api.builder.io/api/v1/image/assets/TEMP/9fee9f9fde03e83fbbcbedb7a213bfd8ffdb3b57?width=120" alt="Tournament Avatar">
+                        </div>
+                    </div>
+                    <div class="tournament-name">
+                        <h3>Giải đấu A</h3>
+                    </div>
+                    <div class="tournament-actions">
+                        <button class="manage-participants-btn">Quản lý người tham gia</button>
+                        <button class="delete-btn">Xóa</button>
+                    </div>
+                </div>
+
+                <div class="tournament-item" data-tournament-id="2">
+                    <div class="tournament-avatar">
+                        <div class="avatar-3d">
+                            <img src="https://api.builder.io/api/v1/image/assets/TEMP/55f08ec67ddca863cfc6ac15202fb58d462a4f05?width=120" alt="Tournament Avatar">
+                        </div>
+                    </div>
+                    <div class="tournament-name">
+                        <h3>Giải đấu A</h3>
+                    </div>
+                    <div class="tournament-actions">
+                        <button class="manage-participants-btn">Quản lý người tham gia</button>
+                        <button class="delete-btn">Xóa</button>
+                    </div>
+                </div>
+
+                <div class="tournament-item" data-tournament-id="3">
+                    <div class="tournament-avatar">
+                        <div class="avatar-3d">
+                            <img src="https://api.builder.io/api/v1/image/assets/TEMP/1ef7f87a402a15b0cd0780955deb0f4d686a08ee?width=120" alt="Tournament Avatar">
+                        </div>
+                    </div>
+                    <div class="tournament-name">
+                        <h3>Giải đấu A</h3>
+                    </div>
+                    <div class="tournament-actions">
+                        <button class="manage-participants-btn">Quản lý người tham gia</button>
+                        <button class="delete-btn">Xóa</button>
+                    </div>
+                </div>
+
+                <div class="tournament-item" data-tournament-id="4">
+                    <div class="tournament-avatar">
+                        <div class="avatar-3d">
+                            <img src="https://api.builder.io/api/v1/image/assets/TEMP/4be8a0eee78af89b1e7ce270b040c22cde5bc21c?width=120" alt="Tournament Avatar">
+                        </div>
+                    </div>
+                    <div class="tournament-name">
+                        <h3>Giải đấu A</h3>
+                    </div>
+                    <div class="tournament-actions">
+                        <button class="manage-participants-btn">Quản lý người tham gia</button>
+                        <button class="delete-btn">Xóa</button>
+                    </div>
+                </div>
+
+                <div class="tournament-item" data-tournament-id="5">
+                    <div class="tournament-avatar">
+                        <div class="avatar-3d">
+                            <img src="https://api.builder.io/api/v1/image/assets/TEMP/9fee9f9fde03e83fbbcbedb7a213bfd8ffdb3b57?width=120" alt="Tournament Avatar">
+                        </div>
+                    </div>
+                    <div class="tournament-name">
+                        <h3>Giải đấu A</h3>
+                    </div>
+                    <div class="tournament-actions">
+                        <button class="manage-participants-btn">Quản lý người tham gia</button>
+                        <button class="delete-btn">Xóa</button>
+                    </div>
+                </div>
+
+                <div class="tournament-item" data-tournament-id="6">
+                    <div class="tournament-avatar">
+                        <div class="avatar-3d">
+                            <img src="https://api.builder.io/api/v1/image/assets/TEMP/d1676e9f112f18260a647c8d8be4395044b8263e?width=120" alt="Tournament Avatar">
+                        </div>
+                    </div>
+                    <div class="tournament-name">
+                        <h3>Giải đấu A</h3>
+                    </div>
+                    <div class="tournament-actions">
+                        <button class="manage-participants-btn">Quản lý người tham gia</button>
+                        <button class="delete-btn">Xóa</button>
+                    </div>
+                </div>
+
+                <div class="tournament-item" data-tournament-id="7">
+                    <div class="tournament-avatar">
+                        <div class="avatar-3d">
+                            <img src="https://api.builder.io/api/v1/image/assets/TEMP/6e07a2ff4990da9dcd77ed2d48c8f56e09d628b5?width=120" alt="Tournament Avatar">
+                        </div>
+                    </div>
+                    <div class="tournament-name">
+                        <h3>Giải đấu A</h3>
+                    </div>
+                    <div class="tournament-actions">
+                        <button class="manage-participants-btn">Quản lý người tham gia</button>
+                        <button class="delete-btn">Xóa</button>
+                    </div>
+                </div>
+
+                <div class="tournament-item" data-tournament-id="8">
+                    <div class="tournament-avatar">
+                        <div class="avatar-3d">
+                            <img src="https://api.builder.io/api/v1/image/assets/TEMP/3898faad8b7651a7488bbfc19b759f6574e5cde9?width=120" alt="Tournament Avatar">
+                        </div>
+                    </div>
+                    <div class="tournament-name">
+                        <h3>Giải đấu A</h3>
+                    </div>
+                    <div class="tournament-actions">
+                        <button class="manage-participants-btn">Quản lý người tham gia</button>
+                        <button class="delete-btn">Xóa</button>
+                    </div>
+                </div>
+
+                <div class="tournament-item" data-tournament-id="9">
+                    <div class="tournament-avatar">
+                        <div class="avatar-3d">
+                            <img src="https://api.builder.io/api/v1/image/assets/TEMP/9fee9f9fde03e83fbbcbedb7a213bfd8ffdb3b57?width=120" alt="Tournament Avatar">
+                        </div>
+                    </div>
+                    <div class="tournament-name">
+                        <h3>Giải đấu A</h3>
+                    </div>
+                    <div class="tournament-actions">
+                        <button class="manage-participants-btn">Quản lý người tham gia</button>
+                        <button class="delete-btn">Xóa</button>
+                    </div>
+                </div>
+
+                <div class="tournament-item" data-tournament-id="10">
+                    <div class="tournament-avatar">
+                        <div class="avatar-3d">
+                            <img src="https://api.builder.io/api/v1/image/assets/TEMP/d1676e9f112f18260a647c8d8be4395044b8263e?width=120" alt="Tournament Avatar">
+                        </div>
+                    </div>
+                    <div class="tournament-name">
+                        <h3>Giải đấu A</h3>
+                    </div>
+                    <div class="tournament-actions">
+                        <button class="manage-participants-btn">Quản lý người tham gia</button>
+                        <button class="delete-btn">Xóa</button>
+                    </div>
+                </div>
+
+                <div class="tournament-item" data-tournament-id="11">
+                    <div class="tournament-avatar">
+                        <div class="avatar-3d">
+                            <img src="https://api.builder.io/api/v1/image/assets/TEMP/6e07a2ff4990da9dcd77ed2d48c8f56e09d628b5?width=120" alt="Tournament Avatar">
+                        </div>
+                    </div>
+                    <div class="tournament-name">
+                        <h3>Giải đấu A</h3>
+                    </div>
+                    <div class="tournament-actions">
+                        <button class="manage-participants-btn">Quản lý người tham gia</button>
+                        <button class="delete-btn">Xóa</button>
+                    </div>
+                </div>
+
+                <div class="tournament-item" data-tournament-id="12">
+                    <div class="tournament-avatar">
+                        <div class="avatar-3d">
+                            <img src="https://api.builder.io/api/v1/image/assets/TEMP/3898faad8b7651a7488bbfc19b759f6574e5cde9?width=120" alt="Tournament Avatar">
+                        </div>
+                    </div>
+                    <div class="tournament-name">
+                        <h3>Giải đấu A</h3>
+                    </div>
+                    <div class="tournament-actions">
+                        <button class="manage-participants-btn">Quản lý người tham gia</button>
+                        <button class="delete-btn">Xóa</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Load More Button -->
+            <div class="load-more-section">
+                <button class="load-more-btn" id="loadMoreBtn">
+                    <svg width="75" height="75" viewBox="0 0 75 75" fill="none">
+                        <path d="M37.5 48.125L18.75 29.375L23.125 25L37.5 39.375L51.875 25L56.25 29.375L37.5 48.125Z" fill="#1D1B20"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-section">
+                <h4>Liên hệ với chúng tôi:</h4>
+                <div class="social-icons">
+                    <a href="#" class="social-icon">
+                        <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+                            <path d="M45.0802 12.84C44.8426 11.8908 44.3587 11.0211 43.6775 10.3188C42.9962 9.61648 42.1417 9.10637 41.2002 8.84C37.7602 8 24.0002 8 24.0002 8C24.0002 8 10.2402 8 6.80017 8.92C5.85866 9.18637 5.00412 9.69648 4.32286 10.3988C3.6416 11.1011 3.15774 11.9708 2.92017 12.92C2.2906 16.4111 1.98264 19.9526 2.00017 23.5C1.97773 27.0741 2.2857 30.6426 2.92017 34.16C3.18209 35.0797 3.67678 35.9163 4.35645 36.589C5.03613 37.2616 5.87781 37.7476 6.80017 38C10.2402 38.92 24.0002 38.92 24.0002 38.92C24.0002 38.92 37.7602 38.92 41.2002 38C42.1417 37.7336 42.9962 37.2235 43.6775 36.5212C44.3587 35.8189 44.8426 34.9492 45.0802 34C45.7049 30.5352 46.0128 27.0207 46.0002 23.5C46.0226 19.9259 45.7146 16.3574 45.0802 12.84Z" stroke="#F5F5F5" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M19.5002 30.04L31.0002 23.5L19.5002 16.96V30.04Z" stroke="#F5F5F5" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </a>
+                    <a href="#" class="social-icon">
+                        <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+                            <path d="M35 13H35.02M14 4H34C39.5228 4 44 8.47715 44 14V34C44 39.5228 39.5228 44 34 44H14C8.47715 44 4 39.5228 4 34V14C4 8.47715 8.47715 4 14 4ZM32 22.74C32.2468 24.4045 31.9625 26.1044 31.1875 27.598C30.4125 29.0916 29.1863 30.3028 27.6833 31.0593C26.1802 31.8159 24.4769 32.0792 22.8156 31.8119C21.1543 31.5445 19.6195 30.7602 18.4297 29.5703C17.2398 28.3805 16.4555 26.8457 16.1881 25.1844C15.9208 23.5231 16.1841 21.8198 16.9407 20.3167C17.6972 18.8137 18.9084 17.5875 20.402 16.8125C21.8956 16.0375 23.5955 15.7532 25.26 16C26.9578 16.2518 28.5297 17.0429 29.7434 18.2566C30.9571 19.4703 31.7482 21.0422 32 22.74Z" stroke="#F3F3F3" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </a>
+                    <a href="#" class="social-icon">
+                        <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+                            <path d="M36 4H30C27.3478 4 24.8043 5.05357 22.9289 6.92893C21.0536 8.8043 20 11.3478 20 14V20H14V28H20V44H28V28H34L36 20H28V14C28 13.4696 28.2107 12.9609 28.5858 12.5858C28.9609 12.2107 29.4696 12 30 12H36V4Z" stroke="#F5F5F5" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </a>
+                    <a href="#" class="social-icon">
+                        <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+                            <path d="M22 22V14M32 22V14M42 4H6V36H16V44L24 36H34L42 28V4Z" stroke="#F3F3F3" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </a>
+                </div>
+                <p>xxxxx@gmail.com</p>
+            </div>
+            
+            <div class="footer-section">
+                <div class="footer-links">
+                    <a href="#"><span class="icon">ℹ</span> Thông tin ứng dụng</a>
+                    <a href="#"><span class="icon">🔒</span> Chính sách bảo mật</a>
+                    <a href="#"><span class="icon">📋</span> Điều khoản sử dụng</a>
+                </div>
+            </div>
+            
+            <div class="footer-section">
+                <div class="footer-image">
+                    <img src="https://api.builder.io/api/v1/image/assets/TEMP/96f039df3e0ce9f4672f91e5a2c6829e29770051?width=560" alt="Footer Image">
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>2025 All rights reserved</p>
+        </div>
+    </footer>
+
+    <!-- Delete Confirmation Modal -->
+    <div id="deleteModal" class="modal">
+        <div class="modal-content">
+            <h3>Xác nhận xóa giải đấu</h3>
+            <p>Bạn có chắc chắn muốn xóa giải đấu này? Hành động này không thể hoàn tác.</p>
+            <div class="modal-actions">
+                <button class="cancel-btn" onclick="closeDeleteModal()">Hủy</button>
+                <button class="confirm-delete-btn" onclick="confirmDelete()">Xóa</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../frontend/js/api.js"></script>
+    <script>
+        let tournaments = [];
+        let currentDeleteId = null;
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            loadTournaments();
+            initializeEventListeners();
+        });
+
+        function loadTournaments() {
+            // This would typically load from API
+            // For now, using existing DOM data
+            console.log('Loading tournaments...');
+        }
+
+        function initializeEventListeners() {
+            // Delete button event listeners
+            document.addEventListener('click', function(e) {
+                if (e.target.classList.contains('delete-btn')) {
+                    const tournamentItem = e.target.closest('.tournament-item');
+                    const tournamentId = tournamentItem.dataset.tournamentId;
+                    showDeleteModal(tournamentId);
+                }
+                
+                if (e.target.classList.contains('manage-participants-btn')) {
+                    const tournamentItem = e.target.closest('.tournament-item');
+                    const tournamentId = tournamentItem.dataset.tournamentId;
+                    manageTournamentParticipants(tournamentId);
+                }
+            });
+
+            // Load more button
+            const loadMoreBtn = document.getElementById('loadMoreBtn');
+            if (loadMoreBtn) {
+                loadMoreBtn.addEventListener('click', loadMoreTournaments);
+            }
+
+            // Search functionality
+            const searchInput = document.querySelector('.search-input');
+            if (searchInput) {
+                searchInput.addEventListener('input', function(e) {
+                    filterTournaments(e.target.value);
+                });
+            }
+        }
+
+        function showDeleteModal(tournamentId) {
+            currentDeleteId = tournamentId;
+            const modal = document.getElementById('deleteModal');
+            modal.style.display = 'block';
+        }
+
+        function closeDeleteModal() {
+            const modal = document.getElementById('deleteModal');
+            modal.style.display = 'none';
+            currentDeleteId = null;
+        }
+
+        function confirmDelete() {
+            if (currentDeleteId) {
+                deleteTournament(currentDeleteId);
+                closeDeleteModal();
+            }
+        }
+
+        function deleteTournament(tournamentId) {
+            const tournamentItem = document.querySelector(`[data-tournament-id="${tournamentId}"]`);
+            if (tournamentItem) {
+                // Add fade out animation
+                tournamentItem.style.opacity = '0';
+                tournamentItem.style.transform = 'translateX(-100%)';
+                
+                setTimeout(() => {
+                    tournamentItem.remove();
+                    showNotification('Giải đấu đã được xóa thành công', 'success');
+                }, 300);
+            }
+        }
+
+        function manageTournamentParticipants(tournamentId) {
+            // Navigate to participant management page
+            window.location.href = `participant-management.html?tournamentId=${tournamentId}`;
+        }
+
+        function loadMoreTournaments() {
+            // Simulate loading more tournaments
+            const loadMoreBtn = document.getElementById('loadMoreBtn');
+            loadMoreBtn.disabled = true;
+            loadMoreBtn.innerHTML = 'Đang tải...';
+            
+            setTimeout(() => {
+                // Add more tournament items here
+                loadMoreBtn.innerHTML = '<svg width="75" height="75" viewBox="0 0 75 75" fill="none"><path d="M37.5 48.125L18.75 29.375L23.125 25L37.5 39.375L51.875 25L56.25 29.375L37.5 48.125Z" fill="#1D1B20"/></svg>';
+                loadMoreBtn.disabled = false;
+                showNotification('Đã tải thêm giải đấu', 'info');
+            }, 1000);
+        }
+
+        function filterTournaments(searchTerm) {
+            const tournamentItems = document.querySelectorAll('.tournament-item');
+            const searchLower = searchTerm.toLowerCase();
+            
+            tournamentItems.forEach(item => {
+                const tournamentName = item.querySelector('.tournament-name h3').textContent.toLowerCase();
+                const shouldShow = tournamentName.includes(searchLower);
+                
+                item.style.display = shouldShow ? 'flex' : 'none';
+            });
+        }
+
+        function showNotification(message, type = 'info') {
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.textContent = message;
+            
+            // Style the notification
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: ${type === 'success' ? '#28a745' : type === 'error' ? '#dc3545' : '#17a2b8'};
+                color: white;
+                padding: 1rem 1.5rem;
+                border-radius: 8px;
+                z-index: 1000;
+                animation: slideIn 0.3s ease;
+            `;
+            
+            // Add to document
+            document.body.appendChild(notification);
+            
+            // Remove after 3 seconds
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.3s ease';
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 3000);
+        }
+
+        // Close modal when clicking outside
+        window.addEventListener('click', function(e) {
+            const modal = document.getElementById('deleteModal');
+            if (e.target === modal) {
+                closeDeleteModal();
+            }
+        });
+
+        // Add CSS for animations
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideIn {
+                from { transform: translateX(100%); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+            
+            @keyframes slideOut {
+                from { transform: translateX(0); opacity: 1; }
+                to { transform: translateX(100%); opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>

@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tournament Manager - Hệ thống quản lý giải đấu</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@400;500;600;700&family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- CSS Styles -->
+   
+  <link rel="stylesheet" href="./src/assets/styles/base.css" />
+  <link rel="stylesheet" href="./src/assets/styles/theme.css" />
+  <link rel="stylesheet" href="./src/assets/styles/components.css" />
+  <link rel="stylesheet" href="./src/assets/styles/layout.css" />
+  <link rel="stylesheet" href="./src/assets/styles/guest-new.css" />
+  <link rel="stylesheet" href="./src/assets/styles/carousel.css" />
+  <!-- Use dashboard styles so sections match dashboard.html exactly -->
+  <link rel="stylesheet" href="./src/assets/styles/dashboard.css" />
+  
+  <style>
+    /* Loading screen styles */
+    .loading-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 10000;
+      color: white;
+      font-family: 'Orbitron', monospace;
+    }
+    
+    .loading-logo {
+      font-size: 3rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    }
+    
+    .loading-text {
+      font-size: 1.2rem;
+      margin-bottom: 2rem;
+    }
+    
+    .loading-spinner {
+      width: 50px;
+      height: 50px;
+      border: 3px solid rgba(255,255,255,0.3);
+      border-radius: 50%;
+      border-top-color: white;
+      animation: spin 1s ease-in-out infinite;
+    }
+    
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    
+    .status-message {
+      margin-top: 1rem;
+      font-size: 0.9rem;
+      opacity: 0.8;
+    }
+    
+    .error-message {
+      background: rgba(230, 226, 225, 0.9);
+      padding: 1rem;
+      border-radius: 8px;
+      margin-top: 1rem;
+      max-width: 500px;
+      text-align: center;
+    }
+    
+    .error-actions {
+      margin-top: 1rem;
+    }
+    
+    .error-actions button {
+      background: white;
+      color: #e74c3c;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 4px;
+      cursor: pointer;
+      margin: 0 5px;
+      font-weight: 600;
+    }
+    
+    .error-actions button:hover {
+      background: #f8f9fa;
+    }
+  </style>
+</head>
+<body>
+  <!-- Loading Screen -->
+  <div id="loadingScreen" class="loading-screen">
+    <div class="loading-logo">Tournament Manager</div>
+    <div class="loading-text">Đang khởi động hệ thống...</div>
+    <div class="loading-spinner"></div>
+    <div id="statusMessage" class="status-message">Kiểm tra kết nối backend...</div>
+  </div>
+
+  <!-- Main Content -->
+  <main id="content" style="display: none;"></main>
+
+  <!-- Initialize Application -->
+  <script type="module">
+    import App from './src/frontend/js/app.js';
+    import { renderGuestView } from './src/frontend/js/views/guestView.js';
+    import GuestController from './src/frontend/js/controllers/GuestController.js';
+    import { backendStarter } from './src/frontend/js/backend-starter.js';
+
+    // Show loading status
+    function updateStatus(message) {
+      const statusElement = document.getElementById('statusMessage');
+      if (statusElement) {
+        statusElement.textContent = message;
+      }
+    }
+
+    // Show error screen
+    function showError(message, showRetry = true) {
+      const loadingScreen = document.getElementById('loadingScreen');
+      const statusMessage = document.getElementById('statusMessage');
+      
+      statusMessage.innerHTML = `
+        <div class="error-message">
+          <strong>❌ Lỗi kết nối!</strong><br>
+          ${message}
+          ${showRetry ? `
+            <div class="error-actions">
+              <button onclick="window.location.reload()">Thử lại</button>
+              <button onclick="showManualInstructions()">Hướng dẫn</button>
+            </div>
+          ` : ''}
+        </div>
+      `;
+    }
+
+    // Show manual start instructions
+    window.showManualInstructions = function() {
+      const instructions = `
+        <div class="error-message">
+          <strong>📋 Hướng dẫn khởi động thủ công:</strong><br>
+          1. Mở Terminal/Command Prompt<br>
+          2. Chạy lệnh: <code>cd src/backend</code><br>
+          3. Chạy lệnh: <code>node server.js</code><br>
+          4. Sau khi server chạy, reload trang này<br>
+          <div class="error-actions">
+            <button onclick="window.location.reload()">Reload trang</button>
+          </div>
+        </div>
+      `;
+      document.getElementById('statusMessage').innerHTML = instructions;
+    };
+
+    // Hide loading screen and show content
+    function hideLoadingScreen() {
+      document.getElementById('loadingScreen').style.display = 'none';
+      document.getElementById('content').style.display = 'block';
+    }
+
+    // Main initialization
+    async function initializeApp() {
+      try {
+        updateStatus('Khởi động backend server...');
+        
+        // Listen for backend events
+        window.addEventListener('backendReady', () => {
+          updateStatus('✅ Backend server đã sẵn sàng!');
+          setTimeout(startApp, 1000);
+        });
+
+        window.addEventListener('backendUnavailable', () => {
+          showError('Không thể kết nối đến backend server. Vui lòng khởi động thủ công:<br><br>1. Mở Terminal<br>2. Chạy: <code>cd src/backend</code><br>3. Chạy: <code>node server.js</code><br>4. Reload trang này');
+        });
+
+        // Wait for backend initialization to complete
+        await new Promise(resolve => setTimeout(resolve, 3000));
+
+        // Check if backend is running
+        if (backendStarter.getStatus().isRunning) {
+          updateStatus('✅ Backend server đã sẵn sàng!');
+          setTimeout(startApp, 1000);
+        } else {
+          // If no backend event fired, show error after timeout
+          setTimeout(() => {
+            if (!backendStarter.getStatus().isRunning) {
+              showError('Backend server chưa chạy. Vui lòng khởi động thủ công:<br><br>1. Mở Terminal<br>2. Chạy: <code>cd src/backend</code><br>3. Chạy: <code>node server.js</code><br>4. Reload trang này');
+            }
+          }, 5000);
+        }
+
+      } catch (error) {
+        console.error('Initialization error:', error);
+        showError('Có lỗi xảy ra khi khởi động ứng dụng: ' + error.message);
+      }
+    }
+
+    // Start the main application
+    async function startApp() {
+      try {
+        updateStatus('Đang tải giao diện...');
+        
+        // Initialize both systems
+        const guestController = new GuestController();
+        window.guestController = guestController;
+        
+        // Load guest view as fallback (có nút Đăng nhập/Đăng ký và carousel nhiều mục)
+        await guestController.renderGuestView();
+        
+        updateStatus('✅ Hệ thống đã sẵn sàng!');
+        
+        // Hide loading screen after a short delay
+        setTimeout(hideLoadingScreen, 1000);
+        
+        console.log('🎉 Tournament Management System started successfully!');
+        
+      } catch (error) {
+        console.error('App startup error:', error);
+        showError('Có lỗi khi tải giao diện: ' + error.message);
+      }
+    }
+
+    // Start initialization when DOM is ready
+    document.addEventListener('DOMContentLoaded', initializeApp);
+
+    // Global error handling
+    window.addEventListener('error', (event) => {
+      console.error('Global error:', event.error);
+    });
+
+    window.addEventListener('unhandledrejection', (event) => {
+      console.error('Unhandled promise rejection:', event.reason);
+    });
+  </script>
+</body>
+</html>

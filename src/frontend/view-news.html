@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Xem Tin Tức</title>
+    <link rel="stylesheet" href="../assets/styles/base.css">
+    <link rel="stylesheet" href="../assets/styles/layout.css">
+    <link rel="stylesheet" href="../assets/styles/components.css">
+    <link rel="stylesheet" href="../assets/styles/news-management.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <button class="menu-toggle" aria-label="Menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            
+            <div class="logo">
+                <img src="../assets/images/logo.png" alt="Tournament Manager" class="logo-img">
+                <span class="logo-text">Tournament Manager</span>
+            </div>
+            
+            <div class="header-search">
+                <input type="search" placeholder="Tìm kiếm..." class="search-input">
+                <button class="search-btn" aria-label="Tìm kiếm">🔍</button>
+            </div>
+            
+            <div class="header-actions">
+                <button class="notification-btn" aria-label="Thông báo">🔔</button>
+                <div class="user-avatar">
+                    <img src="../assets/images/avatar-placeholder.png" alt="User Avatar" class="avatar-img">
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-container">
+            <a href="dashboard.html" class="nav-link">Trang chủ</a>
+            <a href="tournament-management.html" class="nav-link">Giải đấu</a>
+            <a href="highlight-management.html" class="nav-link">Highlights</a>
+            <a href="news-management.html" class="nav-link active">Tin tức</a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="content-container">
+            <!-- Breadcrumb -->
+            <nav class="breadcrumb">
+                <a href="dashboard.html" class="breadcrumb-link">Trang chủ</a>
+                <span class="breadcrumb-separator">></span>
+                <a href="news-management.html" class="breadcrumb-link">Tin tức</a>
+                <span class="breadcrumb-separator">></span>
+                <span class="breadcrumb-current">Xem tin tức</span>
+            </nav>
+
+            <!-- News Article -->
+            <article class="news-article">
+                <div class="news-header">
+                    <div class="news-meta">
+                        <span class="news-category">Giải đấu esports</span>
+                        <span class="news-date">15/01/2024</span>
+                    </div>
+                    <button class="back-btn" onclick="history.back()">← Quay lại</button>
+                </div>
+
+                <h1 class="news-title">Chung kết giải đấu PUBG Mobile 2024 - Những khoảnh khắc đỉnh cao</h1>
+
+                <div class="news-author">
+                    <div class="author-avatar">
+                        <img src="../assets/images/avatar-placeholder.png" alt="Tác giả" class="author-img">
+                    </div>
+                    <div class="author-info">
+                        <span class="author-name">Nguyễn Văn A</span>
+                        <span class="author-role">Quản trị viên</span>
+                    </div>
+                </div>
+
+                <div class="news-featured-image">
+                    <img src="../assets/images/news-placeholder.jpg" alt="Hình ảnh tin tức" class="featured-img">
+                </div>
+
+                <div class="news-content">
+                    <p class="news-summary">
+                        Chung kết giải đấu PUBG Mobile 2024 đã diễn ra với những màn trình diễn đỉnh cao từ các đội tuyển hàng đầu. 
+                        Sự kiện thu hút hơn 100.000 người xem trực tuyến và tạo ra những khoảnh khắc đáng nhớ trong lịch sử esports Việt Nam.
+                    </p>
+
+                    <p>
+                        Giải đấu PUBG Mobile 2024 đã khép lại với chiến thắng thuộc về đội tuyển Team Alpha sau 5 trận đấu căng thẳng. 
+                        Đây là lần thứ hai liên tiếp Team Alpha giành được chức vô địch, khẳng định vị thế của họ trong làng esports Việt Nam.
+                    </p>
+
+                    <p>
+                        Trận chung kết diễn ra tại sân vận động Mỹ Đình với sự tham dự của hơn 10.000 khán giả. Không khí sôi động và 
+                        những tiếng cổ vũ không ngớt đã tạo nên một bầu không khí tuyệt vời cho các tuyển thủ thi đấu.
+                    </p>
+
+                    <h2 class="content-heading">Những điểm nổi bật của giải đấu</h2>
+
+                    <ul class="content-list">
+                        <li>Tổng giải thưởng lên đến 1 tỷ VNĐ</li>
+                        <li>16 đội tuyển mạnh nhất Việt Nam tham gia</li>
+                        <li>Hơn 100.000 người xem trực tuyến</li>
+                        <li>Công nghệ livestream 4K chất lượng cao</li>
+                        <li>Sự kiện được tổ chức theo tiêu chuẩn quốc tế</li>
+                    </ul>
+
+                    <p>
+                        Giải đấu năm nay cũng đánh dấu sự ra mắt của hệ thống quản lý giải đấu mới, giúp việc tổ chức và theo dõi 
+                        các trận đấu trở nên chuyên nghiệp và minh bạch hơn.
+                    </p>
+
+                    <h2 class="content-heading">Kết quả chi tiết</h2>
+
+                    <div class="results-table">
+                        <div class="result-row">
+                            <span class="position">1</span>
+                            <span class="team-name">Team Alpha</span>
+                            <span class="prize">500.000.000 VNĐ</span>
+                        </div>
+                        <div class="result-row">
+                            <span class="position">2</span>
+                            <span class="team-name">Gaming Legends</span>
+                            <span class="prize">300.000.000 VNĐ</span>
+                        </div>
+                        <div class="result-row">
+                            <span class="position">3</span>
+                            <span class="team-name">Phoenix Rising</span>
+                            <span class="prize">200.000.000 VNĐ</span>
+                        </div>
+                    </div>
+
+                    <p>
+                        Với thành công của giải đấu năm nay, ban tổ chức đã công bố kế hoạch tổ chức giải đấu PUBG Mobile 2025 
+                        với quy mô lớn hơn và nhiều đổi mới thú vị.
+                    </p>
+                </div>
+
+                <div class="news-actions">
+                    <button class="share-btn">📤 Chia sẻ</button>
+                    <button class="bookmark-btn">🔖 Lưu</button>
+                    <button class="print-btn">🖨️ In</button>
+                </div>
+
+                <div class="news-tags">
+                    <span class="tag">PUBG Mobile</span>
+                    <span class="tag">Esports</span>
+                    <span class="tag">Chung kết</span>
+                    <span class="tag">2024</span>
+                </div>
+            </article>
+
+            <!-- Related News -->
+            <section class="related-news">
+                <h2 class="section-title">Tin tức liên quan</h2>
+                <div class="related-grid">
+                    <article class="related-item">
+                        <img src="../assets/images/news-placeholder.jpg" alt="Tin tức liên quan" class="related-img">
+                        <div class="related-content">
+                            <h3 class="related-title">Giải đấu Liên Minh Huyền Thoại sắp khởi tranh</h3>
+                            <p class="related-date">12/01/2024</p>
+                        </div>
+                    </article>
+                    <article class="related-item">
+                        <img src="../assets/images/news-placeholder.jpg" alt="Tin tức liên quan" class="related-img">
+                        <div class="related-content">
+                            <h3 class="related-title">Cập nhật luật thi đấu mới cho giải FIFA Online 4</h3>
+                            <p class="related-date">10/01/2024</p>
+                        </div>
+                    </article>
+                    <article class="related-item">
+                        <img src="../assets/images/news-placeholder.jpg" alt="Tin tức liên quan" class="related-img">
+                        <div class="related-content">
+                            <h3 class="related-title">Hướng dẫn đăng ký tham gia giải đấu</h3>
+                            <p class="related-date">08/01/2024</p>
+                        </div>
+                    </article>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-section">
+                <h4 class="footer-title">Tournament Manager</h4>
+                <p class="footer-text">Hệ thống quản lý giải đấu esports chuyên nghiệp</p>
+            </div>
+            <div class="footer-section">
+                <h4 class="footer-title">Liên kết</h4>
+                <ul class="footer-links">
+                    <li><a href="#" class="footer-link">Về chúng tôi</a></li>
+                    <li><a href="#" class="footer-link">Hỗ trợ</a></li>
+                    <li><a href="#" class="footer-link">Điều khoản</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4 class="footer-title">Liên hệ</h4>
+                <p class="footer-text">Email: contact@tournamentmanager.com</p>
+                <p class="footer-text">Hotline: 1900-xxxx</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 Tournament Manager. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script type="module">
+        import { apiCall, API_ENDPOINTS } from './js/api.js';
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize page
+            initializeNewsView();
+        });
+
+        function initializeNewsView() {
+            // Handle share button
+            const shareBtn = document.querySelector('.share-btn');
+            if (shareBtn) {
+                shareBtn.addEventListener('click', function() {
+                    if (navigator.share) {
+                        navigator.share({
+                            title: document.querySelector('.news-title').textContent,
+                            text: document.querySelector('.news-summary').textContent,
+                            url: window.location.href
+                        });
+                    } else {
+                        // Fallback: copy to clipboard
+                        navigator.clipboard.writeText(window.location.href)
+                            .then(() => alert('Đã sao chép link vào clipboard!'));
+                    }
+                });
+            }
+
+            // Handle bookmark button
+            const bookmarkBtn = document.querySelector('.bookmark-btn');
+            if (bookmarkBtn) {
+                bookmarkBtn.addEventListener('click', function() {
+                    // Toggle bookmark state
+                    this.classList.toggle('bookmarked');
+                    const isBookmarked = this.classList.contains('bookmarked');
+                    this.textContent = isBookmarked ? '🔖 Đã lưu' : '🔖 Lưu';
+                    
+                    // Save to localStorage or send to server
+                    const newsId = new URLSearchParams(window.location.search).get('id') || 'sample';
+                    saveBookmark(newsId, isBookmarked);
+                });
+            }
+
+            // Handle print button
+            const printBtn = document.querySelector('.print-btn');
+            if (printBtn) {
+                printBtn.addEventListener('click', function() {
+                    window.print();
+                });
+            }
+
+            // Handle related news clicks
+            const relatedItems = document.querySelectorAll('.related-item');
+            relatedItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    // Navigate to related news article
+                    const title = this.querySelector('.related-title').textContent;
+                    console.log('Navigate to:', title);
+                    // In a real app, this would navigate to the specific news article
+                });
+            });
+
+            // Load news content based on URL parameters
+            loadNewsContent();
+        }
+
+        function loadNewsContent() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const newsId = urlParams.get('id');
+            
+            if (newsId && newsId !== 'sample') {
+                // Load specific news article from API
+                fetchNewsById(newsId)
+                    .then(news => {
+                        if (news) {
+                            updateNewsContent(news);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error loading news:', error);
+                    });
+            }
+        }
+
+        function updateNewsContent(news) {
+            // Update page content with fetched news data
+            const titleElement = document.querySelector('.news-title');
+            const contentElement = document.querySelector('.news-content');
+            const categoryElement = document.querySelector('.news-category');
+            const dateElement = document.querySelector('.news-date');
+            const authorElement = document.querySelector('.author-name');
+            
+            if (titleElement) titleElement.textContent = news.title;
+            if (categoryElement) categoryElement.textContent = news.category || 'Tin tức';
+            if (dateElement) dateElement.textContent = formatDate(news.createdAt);
+            if (authorElement) authorElement.textContent = news.author || 'Quản trị viên';
+            
+            if (contentElement && news.content) {
+                contentElement.innerHTML = `
+                    <p class="news-summary">${news.summary || news.content.substring(0, 200) + '...'}</p>
+                    <div>${news.content}</div>
+                `;
+            }
+        }
+
+        function saveBookmark(newsId, isBookmarked) {
+            // Save bookmark state to localStorage
+            const bookmarks = JSON.parse(localStorage.getItem('newsBookmarks') || '[]');
+            
+            if (isBookmarked) {
+                if (!bookmarks.includes(newsId)) {
+                    bookmarks.push(newsId);
+                }
+            } else {
+                const index = bookmarks.indexOf(newsId);
+                if (index > -1) {
+                    bookmarks.splice(index, 1);
+                }
+            }
+            
+            localStorage.setItem('newsBookmarks', JSON.stringify(bookmarks));
+        }
+
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('vi-VN');
+        }
+
+        async function fetchNewsById(id) {
+            try {
+                const response = await apiCall(API_ENDPOINTS.NEWS.BY_ID(id), {}, 'GET');
+                return response.success ? response.data.news : null;
+            } catch (error) {
+                console.error('Error fetching news:', error);
+                return null;
+            }
+        }
+    </script>
+</body>
+</html>

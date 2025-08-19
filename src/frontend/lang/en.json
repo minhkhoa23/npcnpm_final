@@ -1,0 +1,10 @@
+{
+    "title": "Tournament Manager",
+    "loginTitle": "Login",
+    "registerLink": "Don't have an account? <a href='index.html'>Register</a>",
+    "searchPlaceholder": "Search tournaments...",
+    "loginButton": "Login",
+    "registerButton": "Register",
+    "createTournamentButton": "Create Tournament",
+    "toggleDarkMode": "Toggle Dark Mode"
+}

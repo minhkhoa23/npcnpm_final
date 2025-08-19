@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thông báo</title>
+    <link rel="stylesheet" href="../assets/styles/base.css">
+    <link rel="stylesheet" href="../assets/styles/layout.css">
+    <link rel="stylesheet" href="../assets/styles/components.css">
+    <link rel="stylesheet" href="../assets/styles/notifications.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <button class="menu-toggle" aria-label="Menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            
+            <div class="logo">
+                <a href="dashboard.html" class="logo-link">
+                    <svg class="logo-icon" width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M15 36.6666V19.9999H25V36.6666M5 14.9999L20 3.33325L35 14.9999V33.3333C35 34.2173 34.6488 35.0652 34.0237 35.6903C33.3986 36.3154 32.5507 36.6666 31.6667 36.6666H8.33333C7.44928 36.6666 6.60143 36.3154 5.97631 35.6903C5.35119 35.0652 5 34.2173 5 33.3333V14.9999Z" stroke="#F5F5F5" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <span class="logo-text">Trang chủ</span>
+                </a>
+            </div>
+            
+            <div class="header-search">
+                <input type="search" placeholder="Tìm kiếm" class="search-input">
+                <button class="search-clear" aria-label="Clear search">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 4L4 12M4 4L12 12" stroke="#1E1E1E" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+            </div>
+            
+            <div class="header-actions">
+                <a href="#" class="nav-link">
+                    <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M15.1502 14.9999C15.542 13.886 16.3154 12.9468 17.3334 12.3485C18.3514 11.7502 19.5483 11.5315 20.7121 11.7311C21.8759 11.9307 22.9315 12.5358 23.692 13.4391C24.4524 14.3425 24.8686 15.4858 24.8668 16.6666C24.8668 19.9999 19.8668 21.6666 19.8668 21.6666M20.0002 28.3333H20.0168M36.6668 19.9999C36.6668 29.2047 29.2049 36.6666 20.0002 36.6666C10.7954 36.6666 3.3335 29.2047 3.3335 19.9999C3.3335 10.7952 10.7954 3.33325 20.0002 3.33325C29.2049 3.33325 36.6668 10.7952 36.6668 19.9999Z" stroke="#F3F3F3" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <span>Hỗ trợ</span>
+                </a>
+                
+                <a href="#" class="nav-link">
+                    <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M20.0002 26.6666V19.9999M20.0002 13.3333H20.0168M36.6668 19.9999C36.6668 29.2047 29.2049 36.6666 20.0002 36.6666C10.7954 36.6666 3.3335 29.2047 3.3335 19.9999C3.3335 10.7952 10.7954 3.33325 20.0002 3.33325C29.2049 3.33325 36.6668 10.7952 36.6668 19.9999Z" stroke="#F3F3F3" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <span>Thông tin</span>
+                </a>
+                
+                <div class="notification-btn active" aria-label="Thông báo">
+                    <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M27.46 42C27.1084 42.6062 26.6037 43.1093 25.9965 43.4591C25.3892 43.8088 24.7008 43.9929 24 43.9929C23.2992 43.9929 22.6108 43.8088 22.0035 43.4591C21.3963 43.1093 20.8916 42.6062 20.54 42M36 16C36 12.8174 34.7357 9.76516 32.4853 7.51472C30.2348 5.26428 27.1826 4 24 4C20.8174 4 17.7652 5.26428 15.5147 7.51472C13.2643 9.76516 12 12.8174 12 16C12 30 6 34 6 34H42C42 34 36 30 36 16Z" stroke="#F3F3F3" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+                
+                <a href="user-profile.html" class="user-avatar">
+                    <img src="../assets/images/avatar-placeholder.png" alt="User Avatar" class="avatar-img">
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="notifications-container">
+            <!-- Notifications Section -->
+            <section class="notifications-section">
+                <div class="section-header">
+                    <h1 class="section-title">Thông báo của bạn:</h1>
+                </div>
+                
+                <div class="notifications-list">
+                    <div class="notification-item unread">
+                        <div class="notification-content">
+                            <div class="notification-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M2 17L12 22L22 17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M2 12L12 17L22 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </div>
+                            <div class="notification-text">
+                                <h3 class="notification-title">Giải đấu PUBG Mobile mùa xuân 2024 đã được tạo</h3>
+                                <p class="notification-description">Team Alpha vừa tạo một giải đấu mới. Đăng ký ngay để tham gia!</p>
+                                <span class="notification-time">5 phút trước</span>
+                            </div>
+                        </div>
+                        <button class="notification-close" aria-label="Xóa thông báo">×</button>
+                    </div>
+
+                    <div class="notification-item">
+                        <div class="notification-content">
+                            <div class="notification-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M14.828 14.828L21 21M16.5 10.5C16.5 13.8137 13.8137 16.5 10.5 16.5C7.18629 16.5 4.5 13.8137 4.5 10.5C4.5 7.18629 7.18629 4.5 10.5 4.5C13.8137 4.5 16.5 7.18629 16.5 10.5Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </div>
+                            <div class="notification-text">
+                                <h3 class="notification-title">Bài viết mới từ Gaming Pro Team</h3>
+                                <p class="notification-description">"Chiến thuật mới cho PUBG Mobile - Cách sinh tồn trong top 10"</p>
+                                <span class="notification-time">2 giờ trước</span>
+                            </div>
+                        </div>
+                        <button class="notification-close" aria-label="Xóa thông báo">×</button>
+                    </div>
+
+                    <div class="notification-item">
+                        <div class="notification-content">
+                            <div class="notification-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M15 10L11 14L9 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/>
+                                </svg>
+                            </div>
+                            <div class="notification-text">
+                                <h3 class="notification-title">Highlight mới được ��ăng</h3>
+                                <p class="notification-description">Esports Legends đã đăng highlight trận chung kết spectacular</p>
+                                <span class="notification-time">1 ngày trước</span>
+                            </div>
+                        </div>
+                        <button class="notification-close" aria-label="Xóa thông báo">×</button>
+                    </div>
+
+                    <div class="notification-item">
+                        <div class="notification-content">
+                            <div class="notification-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M2 17L12 22L22 17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M2 12L12 17L22 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </div>
+                            <div class="notification-text">
+                                <h3 class="notification-title">Giải đấu FIFA Online 4 Championship</h3>
+                                <p class="notification-description">Cyber Warriors vừa tạo giải đấu với giải thưởng 500 triệu VNĐ</p>
+                                <span class="notification-time">2 ngày trước</span>
+                            </div>
+                        </div>
+                        <button class="notification-close" aria-label="Xóa thông báo">×</button>
+                    </div>
+
+                    <div class="notification-item">
+                        <div class="notification-content">
+                            <div class="notification-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M14.828 14.828L21 21M16.5 10.5C16.5 13.8137 13.8137 16.5 10.5 16.5C7.18629 16.5 4.5 13.8137 4.5 10.5C4.5 7.18629 7.18629 4.5 10.5 4.5C13.8137 4.5 16.5 7.18629 16.5 10.5Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </div>
+                            <div class="notification-text">
+                                <h3 class="notification-title">Bài viết về chiến thuật mới</h3>
+                                <p class="notification-description">Pro Gaming Academy đã đăng hướng dẫn "Cách lên rank nhanh trong Liên Minh Huyền Thoại"</p>
+                                <span class="notification-time">3 ngày trước</span>
+                            </div>
+                        </div>
+                        <button class="notification-close" aria-label="Xóa thông báo">×</button>
+                    </div>
+                </div>
+
+                <div class="notifications-navigation">
+                    <button class="nav-btn nav-prev" aria-label="Trang trước">
+                        <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M38 24H10M10 24L24 38M10 24L24 10" stroke="#1E1E1E" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                    <button class="nav-btn nav-next" aria-label="Trang sau">
+                        <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M10 24H38M38 24L24 10M38 24L24 38" stroke="#1E1E1E" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                </div>
+            </section>
+
+            <!-- Following Section -->
+            <section class="following-section">
+                <div class="section-header">
+                    <h2 class="section-title">Các nhà tổ chức bạn đang theo dõi:</h2>
+                </div>
+
+                <div class="organizers-grid">
+                    <div class="organizer-card">
+                        <div class="organizer-image">
+                            <img src="../assets/images/organizer-placeholder.jpg" alt="Team Alpha" class="organizer-img">
+                        </div>
+                        <div class="organizer-info">
+                            <h3 class="organizer-name">Team Alpha</h3>
+                            <p class="organizer-description">Chuyên tổ chức giải đấu PUBG Mobile và Liên Minh Huyền Thoại</p>
+                            <div class="organizer-stats">
+                                <span class="stat">15 giải đấu</span>
+                                <span class="stat">1.2K followers</span>
+                            </div>
+                        </div>
+                        <button class="follow-btn following" data-organizer="team-alpha">
+                            <span class="follow-text">Đang theo dõi</span>
+                            <span class="unfollow-text">Bỏ theo dõi</span>
+                        </button>
+                    </div>
+
+                    <div class="organizer-card">
+                        <div class="organizer-image">
+                            <img src="../assets/images/organizer-placeholder.jpg" alt="Gaming Legends" class="organizer-img">
+                        </div>
+                        <div class="organizer-info">
+                            <h3 class="organizer-name">Gaming Legends</h3>
+                            <p class="organizer-description">Tổ chức giải đấu esports chuyên nghiệp với giải thưởng lớn</p>
+                            <div class="organizer-stats">
+                                <span class="stat">8 giải đấu</span>
+                                <span class="stat">890 followers</span>
+                            </div>
+                        </div>
+                        <button class="follow-btn following" data-organizer="gaming-legends">
+                            <span class="follow-text">Đang theo dõi</span>
+                            <span class="unfollow-text">Bỏ theo dõi</span>
+                        </button>
+                    </div>
+
+                    <div class="organizer-card">
+                        <div class="organizer-image">
+                            <img src="../assets/images/organizer-placeholder.jpg" alt="Esports Legends" class="organizer-img">
+                        </div>
+                        <div class="organizer-info">
+                            <h3 class="organizer-name">Esports Legends</h3>
+                            <p class="organizer-description">Cộng đồng game thủ chuyên nghiệp với nhiều hoạt động thú vị</p>
+                            <div class="organizer-stats">
+                                <span class="stat">22 giải đấu</span>
+                                <span class="stat">2.1K followers</span>
+                            </div>
+                        </div>
+                        <button class="follow-btn following" data-organizer="esports-legends">
+                            <span class="follow-text">Đang theo dõi</span>
+                            <span class="unfollow-text">Bỏ theo dõi</span>
+                        </button>
+                    </div>
+
+                    <div class="organizer-card">
+                        <div class="organizer-image">
+                            <img src="../assets/images/organizer-placeholder.jpg" alt="Cyber Warriors" class="organizer-img">
+                        </div>
+                        <div class="organizer-info">
+                            <h3 class="organizer-name">Cyber Warriors</h3>
+                            <p class="organizer-description">Đội tuyển esports hàng đầu Việt Nam với nhiều thành tích ấn tượng</p>
+                            <div class="organizer-stats">
+                                <span class="stat">5 giải đấu</span>
+                                <span class="stat">650 followers</span>
+                            </div>
+                        </div>
+                        <button class="follow-btn following" data-organizer="cyber-warriors">
+                            <span class="follow-text">Đang theo dõi</span>
+                            <span class="unfollow-text">Bỏ theo dõi</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="organizers-navigation">
+                    <button class="nav-btn nav-prev" aria-label="Trang trước">
+                        <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M38 24H10M10 24L24 38M10 24L24 10" stroke="#1E1E1E" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                    <button class="nav-btn nav-next" aria-label="Trang sau">
+                        <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M10 24H38M38 24L24 10M38 24L24 38" stroke="#1E1E1E" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-section">
+                <h4 class="footer-title">Liên hệ với chúng tôi:</h4>
+                <div class="footer-social">
+                    <a href="#" class="footer-social-link youtube">
+                        <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M45.0802 12.84C44.8426 11.8908 44.3587 11.0211 43.6775 10.3188C42.9962 9.61648 42.1417 9.10637 41.2002 8.84C37.7602 8 24.0002 8 24.0002 8C24.0002 8 10.2402 8 6.80017 8.92C5.85866 9.18637 5.00412 9.69648 4.32286 10.3988C3.6416 11.1011 3.15774 11.9708 2.92017 12.92C2.2906 16.4111 1.98264 19.9526 2.00017 23.5C1.97773 27.0741 2.2857 30.6426 2.92017 34.16C3.18209 35.0797 3.67678 35.9163 4.35645 36.589C5.03613 37.2616 5.87781 37.7476 6.80017 38C10.2402 38.92 24.0002 38.92 24.0002 38.92C24.0002 38.92 37.7602 38.92 41.2002 38C42.1417 37.7336 42.9962 37.2235 43.6775 36.5212C44.3587 35.8189 44.8426 34.9492 45.0802 34C45.7049 30.5352 46.0128 27.0207 46.0002 23.5C46.0226 19.9259 45.7146 16.3574 45.0802 12.84Z" stroke="#F5F5F5" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M19.5002 30.04L31.0002 23.5L19.5002 16.96V30.04Z" stroke="#F5F5F5" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </a>
+                    <a href="#" class="footer-social-link instagram">
+                        <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M35 13H35.02M14 4H34C39.5228 4 44 8.47715 44 14V34C44 39.5228 39.5228 44 34 44H14C8.47715 44 4 39.5228 4 34V14C4 8.47715 8.47715 4 14 4ZM32 22.74C32.2468 24.4045 31.9625 26.1044 31.1875 27.598C30.4125 29.0916 29.1863 30.3028 27.6833 31.0593C26.1802 31.8159 24.4769 32.0792 22.8156 31.8119C21.1543 31.5445 19.6195 30.7602 18.4297 29.5703C17.2398 28.3805 16.4555 26.8457 16.1881 25.1844C15.9208 23.5231 16.1841 21.8198 16.9407 20.3167C17.6972 18.8137 18.9084 17.5875 20.402 16.8125C21.8956 16.0375 23.5955 15.7532 25.26 16C26.9578 16.2518 28.5297 17.0429 29.7434 18.2566C30.9571 19.4703 31.7482 21.0422 32 22.74Z" stroke="#F3F3F3" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </a>
+                    <a href="#" class="footer-social-link facebook">
+                        <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M36 4H30C27.3478 4 24.8043 5.05357 22.9289 6.92893C21.0536 8.8043 20 11.3478 20 14V20H14V28H20V44H28V28H34L36 20H28V14C28 13.4696 28.2107 12.9609 28.5858 12.5858C28.9609 12.2107 29.4696 12 30 12H36V4Z" stroke="#F5F5F5" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </a>
+                    <a href="#" class="footer-social-link twitch">
+                        <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M22 22V14M32 22V14M42 4H6V36H16V44L24 36H34L42 28V4Z" stroke="#F3F3F3" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </a>
+                </div>
+                <p class="footer-contact">xxxxx@gmail.com</p>
+            </div>
+            
+            <div class="footer-section">
+                <div class="footer-links">
+                    <a href="#" class="footer-link">
+                        <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M20.0002 26.6666V19.9999M20.0002 13.3333H20.0168M36.6668 19.9999C36.6668 29.2047 29.2049 36.6666 20.0002 36.6666C10.7954 36.6666 3.3335 29.2047 3.3335 19.9999C3.3335 10.7952 10.7954 3.33325 20.0002 3.33325C29.2049 3.33325 36.6668 10.7952 36.6668 19.9999Z" stroke="#F3F3F3" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        <span>Thông tin sử dụng</span>
+                    </a>
+                    <a href="#" class="footer-link">
+                        <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M20.0002 26.6666V19.9999M20.0002 13.3333H20.0168M36.6668 19.9999C36.6668 29.2047 29.2049 36.6666 20.0002 36.6666C10.7954 36.6666 3.3335 29.2047 3.3335 19.9999C3.3335 10.7952 10.7954 3.33325 20.0002 3.33325C29.2049 3.33325 36.6668 10.7952 36.6668 19.9999Z" stroke="#F3F3F3" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        <span>Chính sách bảo mật</span>
+                    </a>
+                    <a href="#" class="footer-link">
+                        <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M20.0002 26.6667V20M20.0002 13.3334H20.0168M36.6668 20C36.6668 29.2048 29.2049 36.6667 20.0002 36.6667C10.7954 36.6667 3.3335 29.2048 3.3335 20C3.3335 10.7953 10.7954 3.33337 20.0002 3.33337C29.2049 3.33337 36.6668 10.7953 36.6668 20Z" stroke="#F3F3F3" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        <span>Điều khoản sử dụng</span>
+                    </a>
+                </div>
+            </div>
+
+            <div class="footer-section">
+                <div class="footer-zoom">
+                    <button class="zoom-btn zoom-in" aria-label="Zoom in">
+                        <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M42 42L33.3 33.3M22 16V28M16 22H28M38 22C38 30.8366 30.8366 38 22 38C13.1634 38 6 30.8366 6 22C6 13.1634 13.1634 6 22 6C30.8366 6 38 13.1634 38 22Z" stroke="#F3F3F3" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                    <button class="zoom-btn zoom-out" aria-label="Zoom out">
+                        <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M42 42L33.3 33.3M16 22H28M38 22C38 30.8366 30.8366 38 22 38C13.1634 38 6 30.8366 6 22C6 13.1634 13.1634 6 22 6C30.8366 6 38 13.1634 38 22Z" stroke="#F3F3F3" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                </div>
+                <img src="../assets/images/footer-logo.png" alt="Company Logo" class="footer-logo">
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 All rights reserved</p>
+        </div>
+    </footer>
+
+    <script src="js/api.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeNotifications();
+        });
+
+        function initializeNotifications() {
+            // Load notifications
+            loadNotifications();
+            
+            // Setup notification interactions
+            setupNotificationInteractions();
+            
+            // Setup follow/unfollow functionality
+            setupFollowButtons();
+            
+            // Setup navigation
+            setupNavigation();
+            
+            // Mark notifications as read
+            markNotificationsAsRead();
+        }
+
+        function loadNotifications() {
+            // Load notifications from API or localStorage
+            const notifications = getNotifications();
+            renderNotifications(notifications);
+            
+            // Load followed organizers
+            const followedOrganizers = getFollowedOrganizers();
+            renderOrganizers(followedOrganizers);
+        }
+
+        function setupNotificationInteractions() {
+            // Handle notification close buttons
+            document.addEventListener('click', function(e) {
+                if (e.target.classList.contains('notification-close')) {
+                    const notificationItem = e.target.closest('.notification-item');
+                    removeNotification(notificationItem);
+                }
+            });
+
+            // Handle notification click to mark as read
+            document.addEventListener('click', function(e) {
+                const notificationItem = e.target.closest('.notification-item');
+                if (notificationItem && !e.target.classList.contains('notification-close')) {
+                    markAsRead(notificationItem);
+                }
+            });
+        }
+
+        function setupFollowButtons() {
+            const followButtons = document.querySelectorAll('.follow-btn');
+            
+            followButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const organizerId = this.dataset.organizer;
+                    const isFollowing = this.classList.contains('following');
+                    
+                    if (isFollowing) {
+                        unfollowOrganizer(organizerId, this);
+                    } else {
+                        followOrganizer(organizerId, this);
+                    }
+                });
+            });
+        }
+
+        function setupNavigation() {
+            // Notifications navigation
+            const notificationsPrev = document.querySelector('.notifications-navigation .nav-prev');
+            const notificationsNext = document.querySelector('.notifications-navigation .nav-next');
+            
+            if (notificationsPrev) {
+                notificationsPrev.addEventListener('click', () => {
+                    loadPreviousNotifications();
+                });
+            }
+            
+            if (notificationsNext) {
+                notificationsNext.addEventListener('click', () => {
+                    loadNextNotifications();
+                });
+            }
+
+            // Organizers navigation
+            const organizersPrev = document.querySelector('.organizers-navigation .nav-prev');
+            const organizersNext = document.querySelector('.organizers-navigation .nav-next');
+            
+            if (organizersPrev) {
+                organizersPrev.addEventListener('click', () => {
+                    loadPreviousOrganizers();
+                });
+            }
+            
+            if (organizersNext) {
+                organizersNext.addEventListener('click', () => {
+                    loadNextOrganizers();
+                });
+            }
+        }
+
+        function removeNotification(notificationElement) {
+            notificationElement.style.transition = 'all 0.3s ease';
+            notificationElement.style.transform = 'translateX(100%)';
+            notificationElement.style.opacity = '0';
+            
+            setTimeout(() => {
+                notificationElement.remove();
+                updateNotificationCount();
+            }, 300);
+        }
+
+        function markAsRead(notificationElement) {
+            notificationElement.classList.remove('unread');
+            updateNotificationCount();
+        }
+
+        function markNotificationsAsRead() {
+            // Mark all notifications as read after a delay
+            setTimeout(() => {
+                const unreadNotifications = document.querySelectorAll('.notification-item.unread');
+                unreadNotifications.forEach(notification => {
+                    notification.classList.remove('unread');
+                });
+                updateNotificationCount();
+            }, 2000);
+        }
+
+        function followOrganizer(organizerId, button) {
+            button.classList.add('following');
+            saveFollowStatus(organizerId, true);
+            console.log('Followed organizer:', organizerId);
+        }
+
+        function unfollowOrganizer(organizerId, button) {
+            button.classList.remove('following');
+            saveFollowStatus(organizerId, false);
+            console.log('Unfollowed organizer:', organizerId);
+            
+            // Optionally remove from the list with animation
+            const organizerCard = button.closest('.organizer-card');
+            organizerCard.style.transition = 'all 0.3s ease';
+            organizerCard.style.transform = 'scale(0.8)';
+            organizerCard.style.opacity = '0.5';
+            
+            setTimeout(() => {
+                organizerCard.style.transform = 'scale(1)';
+                organizerCard.style.opacity = '1';
+            }, 300);
+        }
+
+        function loadPreviousNotifications() {
+            console.log('Loading previous notifications...');
+            // Implement pagination logic
+        }
+
+        function loadNextNotifications() {
+            console.log('Loading next notifications...');
+            // Implement pagination logic
+        }
+
+        function loadPreviousOrganizers() {
+            console.log('Loading previous organizers...');
+            // Implement pagination logic
+        }
+
+        function loadNextOrganizers() {
+            console.log('Loading next organizers...');
+            // Implement pagination logic
+        }
+
+        function getNotifications() {
+            // In a real app, this would fetch from API
+            return JSON.parse(localStorage.getItem('notifications') || '[]');
+        }
+
+        function getFollowedOrganizers() {
+            // In a real app, this would fetch from API
+            return JSON.parse(localStorage.getItem('followedOrganizers') || '[]');
+        }
+
+        function renderNotifications(notifications) {
+            // Implementation would update the notifications list
+            console.log('Rendering notifications:', notifications);
+        }
+
+        function renderOrganizers(organizers) {
+            // Implementation would update the organizers grid
+            console.log('Rendering organizers:', organizers);
+        }
+
+        function saveFollowStatus(organizerId, isFollowing) {
+            // Save follow status to localStorage or API
+            const followedOrganizers = getFollowedOrganizers();
+            if (isFollowing) {
+                if (!followedOrganizers.includes(organizerId)) {
+                    followedOrganizers.push(organizerId);
+                }
+            } else {
+                const index = followedOrganizers.indexOf(organizerId);
+                if (index > -1) {
+                    followedOrganizers.splice(index, 1);
+                }
+            }
+            localStorage.setItem('followedOrganizers', JSON.stringify(followedOrganizers));
+        }
+
+        function updateNotificationCount() {
+            const unreadCount = document.querySelectorAll('.notification-item.unread').length;
+            
+            // Update notification badge if exists
+            const notificationBadge = document.querySelector('.notification-badge');
+            if (notificationBadge) {
+                if (unreadCount > 0) {
+                    notificationBadge.textContent = unreadCount;
+                    notificationBadge.style.display = 'block';
+                } else {
+                    notificationBadge.style.display = 'none';
+                }
+            }
+        }
+
+        // Real-time notification simulation
+        function simulateNewNotification() {
+            const newNotification = {
+                id: Date.now(),
+                title: 'Thông báo mới',
+                description: 'Bạn có một thông báo mới từ hệ thống',
+                time: 'Vừa xong',
+                unread: true
+            };
+            
+            // Add to beginning of notifications list
+            const notificationsList = document.querySelector('.notifications-list');
+            const notificationElement = createNotificationElement(newNotification);
+            notificationsList.insertBefore(notificationElement, notificationsList.firstChild);
+            
+            updateNotificationCount();
+        }
+
+        function createNotificationElement(notification) {
+            const div = document.createElement('div');
+            div.className = `notification-item ${notification.unread ? 'unread' : ''}`;
+            div.innerHTML = `
+                <div class="notification-content">
+                    <div class="notification-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <div class="notification-text">
+                        <h3 class="notification-title">${notification.title}</h3>
+                        <p class="notification-description">${notification.description}</p>
+                        <span class="notification-time">${notification.time}</span>
+                    </div>
+                </div>
+                <button class="notification-close" aria-label="Xóa thông báo">×</button>
+            `;
+            return div;
+        }
+
+        // Simulate new notifications every 30 seconds (for demo)
+        setInterval(simulateNewNotification, 30000);
+    </script>
+</body>
+</html>

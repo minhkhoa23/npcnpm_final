@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Khởi tạo giải đấu mới của bạn</title>
+    <link rel="stylesheet" href="../assets/styles/base.css">
+    <link rel="stylesheet" href="../assets/styles/components.css">
+    <link rel="stylesheet" href="../assets/styles/layout.css">
+    <link rel="stylesheet" href="../assets/styles/create-tournament.css">
+</head>
+<body>
+  <!-- Header Navigation -->
+  <header class="main-header">
+    <div class="header-container">
+      <div class="header-left">
+        <div class="nav-item" onclick="window.location.href='../../index.html'">
+          <svg class="nav-icon" width="40" height="40" viewBox="0 0 40 40" fill="none">
+            <path d="M15 36.6667V20H25V36.6667M5 15L20 3.33334L35 15V33.3333C35 34.2174 34.6488 35.0652 34.0237 35.6904C33.3986 36.3155 32.5507 36.6667 31.6667 36.6667H8.33333C7.44928 36.6667 6.60143 36.3155 5.97631 35.6904C5.35119 35.0652 5 34.2174 5 33.3333V15Z" stroke="#F5F5F5" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span class="nav-text">Trang chủ</span>
+        </div>
+        <div class="search-container">
+          <input type="text" id="searchBar" placeholder="Tìm kiếm" class="search-input">
+          <svg class="search-close" width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M12 4L4 12M4 4L12 12" stroke="#1E1E1E" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+      </div>
+      <div class="header-center">
+        <div class="nav-item">
+          <svg class="nav-icon" width="40" height="40" viewBox="0 0 40 40" fill="none">
+            <path d="M15.15 15C15.5419 13.8861 16.3153 12.9469 17.3333 12.3486C18.3513 11.7503 19.5482 11.5316 20.712 11.7312C21.8758 11.9308 22.9314 12.5359 23.6918 13.4392C24.4522 14.3426 24.8684 15.4859 24.8667 16.6667C24.8667 20 19.8667 21.6667 19.8667 21.6667M20 28.3333H20.0167M36.6667 20C36.6667 29.2048 29.2048 36.6667 20 36.6667C10.7953 36.6667 3.33334 29.2048 3.33334 20C3.33334 10.7953 10.7953 3.33334 20 3.33334C29.2048 3.33334 36.6667 10.7953 36.6667 20Z" stroke="#F3F3F3" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span class="nav-text">Hỗ trợ</span>
+        </div>
+        <div class="nav-item">
+          <svg class="nav-icon" width="40" height="40" viewBox="0 0 40 40" fill="none">
+            <path d="M20 26.6667V20M20 13.3333H20.0167M36.6667 20C36.6667 29.2048 29.2047 36.6667 20 36.6667C10.7952 36.6667 3.33333 29.2048 3.33333 20C3.33333 10.7953 10.7952 3.33334 20 3.33334C29.2047 3.33334 36.6667 10.7953 36.6667 20Z" stroke="#F3F3F3" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span class="nav-text">Thông tin</span>
+        </div>
+      </div>
+      <div class="header-right">
+        <button class="notification-btn">
+          <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+            <path d="M27.46 42C27.1084 42.6062 26.6037 43.1093 25.9965 43.4591C25.3892 43.8088 24.7008 43.9929 24 43.9929C23.2992 43.9929 22.6108 43.8088 22.0035 43.4591C21.3963 43.1093 20.8916 42.6062 20.54 42M36 16C36 12.8174 34.7357 9.76516 32.4853 7.51472C30.2348 5.26428 27.1826 4 24 4C20.8174 4 17.7652 5.26428 15.5147 7.51472C13.2643 9.76516 12 12.8174 12 16C12 30 6 34 6 34H42C42 34 36 30 36 16Z" stroke="#F3F3F3" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        <div class="user-avatar">
+          <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/2791d338714d3870b4bb42ac5a5390446faac948?width=80" alt="User Avatar" class="avatar-image" />
+        </div>
+      </div>
+    </div>
+  </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="page-title">
+            <h1>Khởi tạo giải đấu mới của bạn</h1>
+            <h2 class="step-title">Thêm người tham gia:</h2>
+        </div>
+
+        <div class="create-tournament-container">
+            <form id="createTournamentForm3" class="tournament-form">
+                <!-- Participant Entry Form -->
+                <div class="participant-entry-section">
+                    <div class="participant-form">
+                        <!-- Participant Name -->
+                        <div class="form-group">
+                            <label for="participantName">Nhập tên người chơi tham gia:</label>
+                            <input type="text" id="participantName" class="form-input" placeholder="Tên người chơi" required>
+                        </div>
+
+                        <!-- Participant Email -->
+                        <div class="form-group">
+                            <label for="participantEmail">Nhập email người chơi tham gia:</label>
+                            <input type="email" id="participantEmail" class="form-input" placeholder="Email người chơi" required>
+                        </div>
+
+                        <!-- Participant Info -->
+                        <div class="form-group">
+                            <label for="participantInfo">Nhập thông tin người chơi tham gia:</label>
+                            <textarea id="participantInfo" class="form-textarea" placeholder="Thông tin bổ sung về người chơi..." rows="3"></textarea>
+                        </div>
+
+                        <!-- Avatar Upload -->
+                        <div class="upload-section">
+                            <h3>Thêm ảnh đại diện:</h3>
+                            <div class="upload-area" id="avatarUploadArea">
+                                <div class="upload-placeholder">
+                                    <svg width="30" height="30" viewBox="0 0 30 30" fill="none">
+                                        <path d="M26.25 18.75V23.75C26.25 24.413 25.9866 25.0489 25.5178 25.5178C25.0489 25.9866 24.413 26.25 23.75 26.25H6.25C5.58696 26.25 4.95107 25.9866 4.48223 25.5178C4.01339 25.0489 3.75 24.413 3.75 23.75V18.75M21.25 10L15 3.75M15 3.75L8.75 10M15 3.75V18.75" stroke="#1E1E1E" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                    <span>Nhấp để tải lên ảnh</span>
+                                </div>
+                                <input type="file" id="avatarInput" accept="image/*" style="display: none;">
+                                <div class="uploaded-image" id="uploadedAvatar" style="display: none;">
+                                    <img src="" alt="Participant Avatar">
+                                    <button type="button" class="remove-image" onclick="removeAvatar()">×</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Add Participant Button -->
+                        <div class="form-actions">
+                            <button type="button" class="add-participant-btn" onclick="addParticipant()">Thêm</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Participants List -->
+                <div class="participants-list-section">
+                    <h3>Danh sách người tham gia:</h3>
+                    <div class="participants-list" id="participantsList">
+                        <!-- Participants will be added here dynamically -->
+                    </div>
+                    <div class="participants-summary">
+                        <span>Đã thêm: <span id="participantCount">0</span> / <span id="maxParticipants">0</span> người chơi</span>
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="form-actions final-actions">
+                    <button type="submit" class="create-btn">Tạo giải đấu</button>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-section">
+                <h4>Liên hệ với chúng tôi:</h4>
+                <div class="social-icons">
+                    <a href="#" class="social-icon">
+                        <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+                            <path d="M45.0802 12.84C44.8426 11.8908 44.3587 11.0211 43.6775 10.3188C42.9962 9.61648 42.1417 9.10637 41.2002 8.84C37.7602 8 24.0002 8 24.0002 8C24.0002 8 10.2402 8 6.80017 8.92C5.85866 9.18637 5.00412 9.69648 4.32286 10.3988C3.6416 11.1011 3.15774 11.9708 2.92017 12.92C2.2906 16.4111 1.98264 19.9526 2.00017 23.5C1.97773 27.0741 2.2857 30.6426 2.92017 34.16C3.18209 35.0797 3.67678 35.9163 4.35645 36.589C5.03613 37.2616 5.87781 37.7476 6.80017 38C10.2402 38.92 24.0002 38.92 24.0002 38.92C24.0002 38.92 37.7602 38.92 41.2002 38C42.1417 37.7336 42.9962 37.2235 43.6775 36.5212C44.3587 35.8189 44.8426 34.9492 45.0802 34C45.7049 30.5352 46.0128 27.0207 46.0002 23.5C46.0226 19.9259 45.7146 16.3574 45.0802 12.84Z" stroke="#F5F5F5" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M19.5002 30.04L31.0002 23.5L19.5002 16.96V30.04Z" stroke="#F5F5F5" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </a>
+                    <a href="#" class="social-icon">
+                        <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+                            <path d="M35 13H35.02M14 4H34C39.5228 4 44 8.47715 44 14V34C44 39.5228 39.5228 44 34 44H14C8.47715 44 4 39.5228 4 34V14C4 8.47715 8.47715 4 14 4ZM32 22.74C32.2468 24.4045 31.9625 26.1044 31.1875 27.598C30.4125 29.0916 29.1863 30.3028 27.6833 31.0593C26.1802 31.8159 24.4769 32.0792 22.8156 31.8119C21.1543 31.5445 19.6195 30.7602 18.4297 29.5703C17.2398 28.3805 16.4555 26.8457 16.1881 25.1844C15.9208 23.5231 16.1841 21.8198 16.9407 20.3167C17.6972 18.8137 18.9084 17.5875 20.402 16.8125C21.8956 16.0375 23.5955 15.7532 25.26 16C26.9578 16.2518 28.5297 17.0429 29.7434 18.2566C30.9571 19.4703 31.7482 21.0422 32 22.74Z" stroke="#F3F3F3" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </a>
+                    <a href="#" class="social-icon">
+                        <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+                            <path d="M36 4H30C27.3478 4 24.8043 5.05357 22.9289 6.92893C21.0536 8.8043 20 11.3478 20 14V20H14V28H20V44H28V28H34L36 20H28V14C28 13.4696 28.2107 12.9609 28.5858 12.5858C28.9609 12.2107 29.4696 12 30 12H36V4Z" stroke="#F5F5F5" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </a>
+                    <a href="#" class="social-icon">
+                        <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+                            <path d="M22 22V14M32 22V14M42 4H6V36H16V44L24 36H34L42 28V4Z" stroke="#F3F3F3" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </a>
+                </div>
+                <p>xxxxx@gmail.com</p>
+            </div>
+            
+            <div class="footer-section">
+                <div class="footer-links">
+                    <a href="#"><span class="icon">ℹ</span> Thông tin ứng d���ng</a>
+                    <a href="#"><span class="icon">🔒</span> Chính sách bảo mật</a>
+                    <a href="#"><span class="icon">📋</span> Điều khoản sử dụng</a>
+                </div>
+            </div>
+            
+            <div class="footer-section">
+                <div class="footer-image">
+                    <img src="https://api.builder.io/api/v1/image/assets/TEMP/96f039df3e0ce9f4672f91e5a2c6829e29770051?width=560" alt="Footer Image">
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>2025 All rights reserved</p>
+        </div>
+    </footer>
+
+    <script src="../frontend/js/api.js"></script>
+    <script>
+        let participants = [];
+        let maxParticipants = 0;
+        let uploadedAvatar = null;
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeForm();
+            initializeUpload();
+            loadSavedData();
+            updateParticipantCount();
+        });
+
+        function initializeForm() {
+            const form = document.getElementById('createTournamentForm3');
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                if (validateFinalForm()) {
+                    createTournament();
+                }
+            });
+        }
+
+        function initializeUpload() {
+            const uploadArea = document.getElementById('avatarUploadArea');
+            const avatarInput = document.getElementById('avatarInput');
+
+            uploadArea.addEventListener('click', function() {
+                avatarInput.click();
+            });
+
+            avatarInput.addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    handleAvatarUpload(file);
+                }
+            });
+
+            // Drag and drop functionality
+            uploadArea.addEventListener('dragover', function(e) {
+                e.preventDefault();
+                uploadArea.classList.add('dragover');
+            });
+
+            uploadArea.addEventListener('dragleave', function(e) {
+                e.preventDefault();
+                uploadArea.classList.remove('dragover');
+            });
+
+            uploadArea.addEventListener('drop', function(e) {
+                e.preventDefault();
+                uploadArea.classList.remove('dragover');
+                
+                const files = e.dataTransfer.files;
+                if (files.length > 0) {
+                    handleAvatarUpload(files[0]);
+                }
+            });
+        }
+
+        function handleAvatarUpload(file) {
+            if (!file.type.startsWith('image/')) {
+                showError('Vui lòng chọn file hình ảnh');
+                return;
+            }
+
+            if (file.size > 5 * 1024 * 1024) { // 5MB limit
+                showError('File quá lớn. Vui lòng chọn file nhỏ hơn 5MB');
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                uploadedAvatar = e.target.result;
+                showUploadedAvatar(e.target.result);
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function showUploadedAvatar(imageSrc) {
+            const placeholder = document.querySelector('#avatarUploadArea .upload-placeholder');
+            const uploadedDiv = document.getElementById('uploadedAvatar');
+            const img = uploadedDiv.querySelector('img');
+
+            placeholder.style.display = 'none';
+            img.src = imageSrc;
+            uploadedDiv.style.display = 'block';
+        }
+
+        function removeAvatar() {
+            const placeholder = document.querySelector('#avatarUploadArea .upload-placeholder');
+            const uploadedDiv = document.getElementById('uploadedAvatar');
+            const avatarInput = document.getElementById('avatarInput');
+
+            uploadedAvatar = null;
+            avatarInput.value = '';
+            placeholder.style.display = 'block';
+            uploadedDiv.style.display = 'none';
+        }
+
+        function addParticipant() {
+            const name = document.getElementById('participantName').value.trim();
+            const email = document.getElementById('participantEmail').value.trim();
+            const info = document.getElementById('participantInfo').value.trim();
+
+            if (!name) {
+                showError('Vui lòng nhập tên người chơi');
+                return;
+            }
+
+            if (!email) {
+                showError('Vui lòng nhập email người chơi');
+                return;
+            }
+
+            if (!isValidEmail(email)) {
+                showError('Email không hợp lệ');
+                return;
+            }
+
+            if (participants.find(p => p.email === email)) {
+                showError('Email này đã được sử dụng');
+                return;
+            }
+
+            if (participants.length >= maxParticipants) {
+                showError(`Đã đạt tối đa ${maxParticipants} người chơi`);
+                return;
+            }
+
+            const participant = {
+                id: Date.now(),
+                name: name,
+                email: email,
+                info: info,
+                avatar: uploadedAvatar || generateDefaultAvatar(name)
+            };
+
+            participants.push(participant);
+            addParticipantToList(participant);
+            clearParticipantForm();
+            updateParticipantCount();
+            
+            showSuccess('Đã thêm người chơi thành công');
+        }
+
+        function isValidEmail(email) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email);
+        }
+
+        function generateDefaultAvatar(name) {
+            // Generate a simple colored avatar with initials
+            const canvas = document.createElement('canvas');
+            canvas.width = 80;
+            canvas.height = 80;
+            const ctx = canvas.getContext('2d');
+            
+            // Random background color
+            const colors = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FFEAA7', '#DDA0DD', '#98D8C8'];
+            const bgColor = colors[Math.floor(Math.random() * colors.length)];
+            
+            ctx.fillStyle = bgColor;
+            ctx.fillRect(0, 0, 80, 80);
+            
+            // Add initials
+            ctx.fillStyle = '#FFFFFF';
+            ctx.font = 'bold 32px Arial';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            
+            const initials = name.split(' ').map(word => word.charAt(0)).join('').slice(0, 2).toUpperCase();
+            ctx.fillText(initials, 40, 40);
+            
+            return canvas.toDataURL();
+        }
+
+        function addParticipantToList(participant) {
+            const participantsList = document.getElementById('participantsList');
+            
+            const participantCard = document.createElement('div');
+            participantCard.className = 'participant-card';
+            participantCard.dataset.participantId = participant.id;
+            
+            participantCard.innerHTML = `
+                <div class="participant-avatar">
+                    <img src="${participant.avatar}" alt="${participant.name}">
+                </div>
+                <div class="participant-info">
+                    <h4>${participant.name}</h4>
+                    <p class="participant-email">${participant.email}</p>
+                    ${participant.info ? `<p class="participant-details">${participant.info}</p>` : ''}
+                </div>
+                <button type="button" class="remove-participant-btn" onclick="removeParticipant(${participant.id})">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                        <path d="M15 5L5 15M5 5l10 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+            `;
+            
+            participantsList.appendChild(participantCard);
+        }
+
+        function removeParticipant(participantId) {
+            participants = participants.filter(p => p.id !== participantId);
+            
+            const participantCard = document.querySelector(`[data-participant-id="${participantId}"]`);
+            if (participantCard) {
+                participantCard.remove();
+            }
+            
+            updateParticipantCount();
+            showSuccess('Đã xóa người chơi');
+        }
+
+        function clearParticipantForm() {
+            document.getElementById('participantName').value = '';
+            document.getElementById('participantEmail').value = '';
+            document.getElementById('participantInfo').value = '';
+            removeAvatar();
+        }
+
+        function updateParticipantCount() {
+            document.getElementById('participantCount').textContent = participants.length;
+            document.getElementById('maxParticipants').textContent = maxParticipants;
+        }
+
+        function validateFinalForm() {
+            if (participants.length < 2) {
+                showError('Cần ít nhất 2 người chơi để tạo giải đấu');
+                return false;
+            }
+
+            return true;
+        }
+
+        function createTournament() {
+            const savedData = JSON.parse(localStorage.getItem('tournamentCreationData') || '{}');
+            
+            const tournamentData = {
+                ...savedData,
+                participants: participants,
+                step: 3,
+                createdAt: new Date().toISOString()
+            };
+
+            // Save final tournament data
+            localStorage.setItem('tournamentCreationData', JSON.stringify(tournamentData));
+            
+            // Simulate API call
+            showSuccess('Đang tạo giải đấu...');
+            
+            setTimeout(() => {
+                // Clear saved data
+                localStorage.removeItem('tournamentCreationData');
+                
+                // Show success and redirect
+                showSuccess('Tạo giải đấu thành công!');
+                
+                setTimeout(() => {
+                    window.location.href = 'tournament-management.html';
+                }, 2000);
+            }, 2000);
+        }
+
+        function loadSavedData() {
+            const savedData = localStorage.getItem('tournamentCreationData');
+            if (savedData) {
+                const data = JSON.parse(savedData);
+                maxParticipants = data.playerCount || 8;
+                
+                if (data.participants) {
+                    participants = data.participants;
+                    participants.forEach(participant => {
+                        addParticipantToList(participant);
+                    });
+                }
+                
+                updateParticipantCount();
+            }
+        }
+
+        function showError(message) {
+            showNotification(message, 'error');
+        }
+
+        function showSuccess(message) {
+            showNotification(message, 'success');
+        }
+
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.textContent = message;
+            
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: ${type === 'success' ? '#28a745' : type === 'error' ? '#dc3545' : '#17a2b8'};
+                color: white;
+                padding: 1rem 1.5rem;
+                border-radius: 8px;
+                z-index: 1000;
+                animation: slideIn 0.3s ease;
+                max-width: 300px;
+            `;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.3s ease';
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        document.body.removeChild(notification);
+                    }
+                }, 300);
+            }, 3000);
+        }
+
+        // Add CSS for animations
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideIn {
+                from { transform: translateX(100%); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+            
+            @keyframes slideOut {
+                from { transform: translateX(0); opacity: 1; }
+                to { transform: translateX(100%); opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
