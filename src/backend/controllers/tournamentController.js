@@ -23,7 +23,7 @@ class TournamentController {
             // Check if we're in mock mode
             if (global.mockMode) {
                 console.log('Getting tournament by ID from mock data...');
-                const tournaments = this.getMockTournaments();
+                const tournaments = TournamentController.getMockTournaments();
                 const tournament = tournaments.find(t => t._id === id);
 
                 if (!tournament) {
