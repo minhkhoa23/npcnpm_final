@@ -19,8 +19,30 @@ class TournamentController {
     static async getTournamentById(req, res) {
         try {
             const { id } = req.params;
-            const tournaments = this.getMockTournaments();
-            const tournament = tournaments.find(t => t._id === id);
+
+            // Check if we're in mock mode
+            if (global.mockMode) {
+                console.log('Getting tournament by ID from mock data...');
+                const tournaments = this.getMockTournaments();
+                const tournament = tournaments.find(t => t._id === id);
+
+                if (!tournament) {
+                    return res.status(404).json({
+                        success: false,
+                        message: 'Tournament not found'
+                    });
+                }
+
+                return res.json({
+                    success: true,
+                    message: 'Tournament retrieved successfully',
+                    data: { tournament }
+                });
+            }
+
+            // MongoDB mode
+            const tournament = await Tournament.findById(id)
+                .populate('organizerId', 'fullName email');
 
             if (!tournament) {
                 return res.status(404).json({
