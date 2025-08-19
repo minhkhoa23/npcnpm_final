@@ -126,6 +126,24 @@ class TournamentController {
     // Get all tournaments with filtering and pagination
     static async getAllTournaments(req, res) {
         try {
+            // Check if we're in mock mode
+            if (global.mockMode) {
+                console.log('Getting tournaments from mock data...');
+                const tournaments = this.getMockTournaments();
+
+                return res.json({
+                    success: true,
+                    data: {
+                        tournaments,
+                        pagination: {
+                            current: 1,
+                            pages: 1,
+                            total: tournaments.length
+                        }
+                    }
+                });
+            }
+
             const {
                 page = 1,
                 limit = 10,
