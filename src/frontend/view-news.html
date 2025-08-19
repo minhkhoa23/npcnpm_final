@@ -107,7 +107,7 @@
                         <li>16 đội tuyển mạnh nhất Việt Nam tham gia</li>
                         <li>Hơn 100.000 người xem trực tuyến</li>
                         <li>Công nghệ livestream 4K chất lượng cao</li>
-                        <li>Sự kiện được tổ chức theo tiêu chuẩn quốc tế</li>
+                        <li>Sự kiện được t��� chức theo tiêu chuẩn quốc tế</li>
                     </ul>
 
                     <p>
@@ -279,17 +279,20 @@
         function loadNewsContent() {
             const urlParams = new URLSearchParams(window.location.search);
             const newsId = urlParams.get('id');
-            
+
             if (newsId && newsId !== 'sample') {
                 // Load specific news article from API
                 fetchNewsById(newsId)
                     .then(news => {
                         if (news) {
                             updateNewsContent(news);
+                        } else {
+                            console.log('News not found, using default content');
                         }
                     })
                     .catch(error => {
                         console.error('Error loading news:', error);
+                        // Continue with default content
                     });
             }
         }
