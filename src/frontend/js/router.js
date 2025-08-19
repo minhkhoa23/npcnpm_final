@@ -102,15 +102,14 @@ class Router {
                 if (userProfile) {
                     switch (userProfile.role) {
                         case 'organizer':
-                            await this.loadHTMLPage('organizer-dashboard.html');
-                            this.setupOrganizerDashboardEvents();
+                            await renderOrganizerView();
                             break;
                         case 'user':
                         default:
-                            await this.loadHTMLPage('dashboard.html');
-                            this.setupUserDashboardEvents();
+                            await renderUserView();
                             break;
                     }
+                    this.hideLoading();
                     return;
                 }
             }
@@ -118,6 +117,7 @@ class Router {
             // If not authenticated, show guest view
             await renderGuestView();
             this.setupHomePageEvents();
+            this.hideLoading();
         } catch (error) {
             console.error('Error rendering home page:', error);
             this.showError('Lỗi tải trang chủ');
@@ -501,7 +501,7 @@ class Router {
                     await authController.register(userData);
                     this.navigate('/dashboard');
                 } catch (error) {
-                    this.showError('Đăng k�� thất bại: ' + error.message);
+                    this.showError('Đăng ký thất bại: ' + error.message);
                 }
             });
         }
