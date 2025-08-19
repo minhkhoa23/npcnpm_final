@@ -52,7 +52,7 @@ src/assets/styles/
 └── organizer-dashboard.css  # CSS cho organizer homepage
 ```
 
-## Routes được thêm mới
+## Routes ��ược thêm mới
 
 | Route | Mô tả | Yêu cầu authentication |
 |-------|-------|----------------------|
@@ -63,7 +63,7 @@ src/assets/styles/
 ## Cách sử dụng
 
 ### 1. Nút "Trang chủ" trong HTML
-Th��m attribute `data-home-nav` vào các nút trang chủ:
+Thêm attribute `data-home-nav` vào các nút trang chủ:
 
 ```html
 <!-- Cho dashboard.html -->
@@ -137,10 +137,15 @@ window.testRoleNavigation.testHomeClick();
 ```
 
 ### Test thủ công:
-1. Đăng nhập với user role → Kiểm tra trang chủ có đúng là user dashboard
-2. Đăng nhập với organizer role → Kiểm tra trang chủ có đúng là organizer dashboard
-3. Đăng xuất → Kiểm tra về trang guest
-4. Bấm nút "Trang chủ" ở các trang khác nhau → Kiểm tra chuyển đúng
+1. **Test khi chưa đăng nhập**:
+   - Từ trang login bấm "Trang chủ" → Phải về index.html
+   - Từ trang register bấm "Trang chủ" → Phải về index.html
+   - Từ bất kỳ trang nào khi chưa đăng nhập → Phải về index.html
+2. **Test khi đã đăng nhập**:
+   - Đăng nhập với user role → Kiểm tra trang chủ có đúng là user dashboard
+   - Đăng nhập với organizer role → Kiểm tra trang chủ có đúng là organizer dashboard
+3. **Test đăng xuất**: Đăng xuất → Kiểm tra về trang guest (index.html)
+4. **Test navigation**: Bấm nút "Trang chủ" ở các trang khác nhau → Kiểm tra chuyển đúng
 
 ## Files được thay đổi
 
