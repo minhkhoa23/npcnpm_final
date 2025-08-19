@@ -163,11 +163,13 @@ window.testUnauthenticatedNav.testFlow();
 - `ROLE_BASED_HOMEPAGE_GUIDE.md` - Hướng dẫn chi tiết
 
 ### Files được cập nhật:
-- `src/frontend/js/router.js` - Thêm logic role-based navigation
+- `src/frontend/js/router.js` - Thêm logic role-based navigation và unauthenticated handling
 - `src/frontend/js/controllers/auth.js` - Cập nhật redirect sau login
 - `index.html` - Sử dụng router cho navigation
 - `src/frontend/dashboard.html` - Thêm home navigation
 - `src/frontend/organizer-dashboard.html` - Cập nhật home button
+- `src/frontend/login.html` - Thêm router navigation và CSS
+- `src/frontend/register.html` - Thêm router navigation và CSS
 
 ## Lưu ý quan trọng
 
