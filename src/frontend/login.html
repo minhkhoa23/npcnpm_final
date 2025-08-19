@@ -266,16 +266,31 @@
           // Lưu token
           localStorage.setItem('authToken', data.token);
           localStorage.setItem('userRole', data.role);
-          
+
+          // Set user in authController
+          if (window.authController) {
+            window.authController.currentUser = data.user || {
+              id: data.userId || 'unknown',
+              email: loginInput,
+              role: data.role,
+              fullName: data.fullName || data.user?.fullName || 'User'
+            };
+          }
+
           alert('Đăng nhập thành công!');
-          
-          // Chuyển hướng dựa trên role
-          if (data.role === 'admin') {
-            window.location.href = './dashboard.html';
-          } else if (data.role === 'organizer') {
-            window.location.href = './organizer-dashboard.html';
+
+          // Use authController's redirect logic
+          if (window.authController) {
+            window.authController.redirectAfterAuth();
           } else {
-            window.location.href = './dashboard.html';
+            // Fallback to direct navigation
+            if (data.role === 'admin') {
+              window.location.href = './dashboard.html';
+            } else if (data.role === 'organizer') {
+              window.location.href = './organizer-dashboard.html';
+            } else {
+              window.location.href = './dashboard.html';
+            }
           }
         } else {
           alert(data.message || 'Đăng nhập thất bại!');
