@@ -87,7 +87,7 @@
                 <div class="news-content">
                     <p class="news-summary">
                         Chung kết giải đấu PUBG Mobile 2024 đã diễn ra với những màn trình diễn đỉnh cao từ các đội tuyển hàng đầu. 
-                        Sự kiện thu hút hơn 100.000 người xem trực tuyến và tạo ra những khoảnh khắc đáng nhớ trong lịch sử esports Việt Nam.
+                        Sự kiện thu hút hơn 100.000 người xem tr��c tuyến và tạo ra những khoảnh khắc đáng nhớ trong lịch sử esports Việt Nam.
                     </p>
 
                     <p>
@@ -107,7 +107,7 @@
                         <li>16 đội tuyển mạnh nhất Việt Nam tham gia</li>
                         <li>Hơn 100.000 người xem trực tuyến</li>
                         <li>Công nghệ livestream 4K chất lượng cao</li>
-                        <li>Sự kiện được t��� chức theo tiêu chuẩn quốc tế</li>
+                        <li>Sự kiện được tổ chức theo tiêu chuẩn quốc tế</li>
                     </ul>
 
                     <p>
@@ -304,16 +304,37 @@
             const categoryElement = document.querySelector('.news-category');
             const dateElement = document.querySelector('.news-date');
             const authorElement = document.querySelector('.author-name');
-            
-            if (titleElement) titleElement.textContent = news.title;
-            if (categoryElement) categoryElement.textContent = news.category || 'Tin tức';
-            if (dateElement) dateElement.textContent = formatDate(news.createdAt);
-            if (authorElement) authorElement.textContent = news.author || 'Quản trị viên';
-            
+            const featuredImageElement = document.querySelector('.featured-img');
+
+            if (titleElement && news.title) {
+                titleElement.textContent = news.title;
+            }
+
+            if (categoryElement) {
+                categoryElement.textContent = news.category || 'Tin tức esports';
+            }
+
+            if (dateElement) {
+                const date = news.publishedAt || news.createdAt || news.updatedAt;
+                dateElement.textContent = formatDate(date);
+            }
+
+            if (authorElement) {
+                const authorName = news.authorId?.fullName || news.author || 'Quản trị viên';
+                authorElement.textContent = authorName;
+            }
+
+            if (featuredImageElement && news.images && news.images[0]) {
+                featuredImageElement.src = news.images[0];
+            }
+
             if (contentElement && news.content) {
+                // Create summary from content if not provided
+                const summary = news.summary || news.content.substring(0, 200) + '...';
+
                 contentElement.innerHTML = `
-                    <p class="news-summary">${news.summary || news.content.substring(0, 200) + '...'}</p>
-                    <div>${news.content}</div>
+                    <p class="news-summary">${summary}</p>
+                    <div class="news-body">${news.content}</div>
                 `;
             }
         }
