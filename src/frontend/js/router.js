@@ -155,8 +155,8 @@ class Router {
 
         this.showLoading();
         try {
-            await this.loadHTMLPage('dashboard.html');
-            this.setupUserDashboardEvents();
+            await renderUserView();
+            this.hideLoading();
         } catch (error) {
             console.error('Error rendering user home page:', error);
             this.showError('Lỗi tải trang chủ người dùng');
@@ -172,8 +172,8 @@ class Router {
 
         this.showLoading();
         try {
-            await this.loadHTMLPage('organizer-dashboard.html');
-            this.setupOrganizerDashboardEvents();
+            await renderOrganizerView();
+            this.hideLoading();
         } catch (error) {
             console.error('Error rendering organizer home page:', error);
             this.showError('Lỗi tải trang chủ nhà tổ chức');
@@ -206,7 +206,7 @@ class Router {
                     <header class="page-header">
                         <div class="header-content">
                             <h1>🏆 Quản lý Giải đấu</h1>
-                            <p>Tìm kiếm và quản lý c��c giải đấu</p>
+                            <p>Tìm kiếm và quản lý các giải đấu</p>
                         </div>
                         
                         <div class="header-actions">
@@ -501,7 +501,7 @@ class Router {
                     await authController.register(userData);
                     this.navigate('/dashboard');
                 } catch (error) {
-                    this.showError('Đăng ký thất bại: ' + error.message);
+                    this.showError('Đăng k�� thất bại: ' + error.message);
                 }
             });
         }
