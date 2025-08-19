@@ -14,8 +14,9 @@ const connectDB = async () => {
         return true;
     } catch (error) {
         console.error('MongoDB connection failed:', error.message);
-        console.error('Server cannot start without MongoDB connection.');
-        process.exit(1); // Exit if MongoDB connection fails
+        console.warn('Switching to mock mode using JSON files...');
+        global.mockMode = true;
+        return false; // Continue with mock mode
     }
 };
 
