@@ -151,7 +151,7 @@ class TournamentController {
             // Check if we're in mock mode
             if (global.mockMode) {
                 console.log('Getting tournaments from mock data...');
-                const tournaments = this.getMockTournaments();
+                const tournaments = TournamentController.getMockTournaments();
 
                 return res.json({
                     success: true,
