@@ -662,6 +662,20 @@ class TournamentController {
     // Get upcoming tournaments
     static async getUpcomingTournaments(req, res) {
         try {
+            // Check if we're in mock mode
+            if (global.mockMode) {
+                console.log('Getting upcoming tournaments from mock data...');
+                const tournaments = TournamentController.getMockTournaments();
+                const upcomingTournaments = tournaments.filter(t => t.status === 'upcoming');
+
+                return res.json({
+                    success: true,
+                    message: 'Upcoming tournaments retrieved successfully from mock data',
+                    data: { tournaments: upcomingTournaments }
+                });
+            }
+
+            // MongoDB mode
             const now = new Date();
             const tournaments = await Tournament.find({ status: 'upcoming', startDate: { $gte: now } })
                 .populate('organizerId', 'fullName email')
@@ -683,6 +697,20 @@ class TournamentController {
     // Get ongoing tournaments
     static async getOngoingTournaments(req, res) {
         try {
+            // Check if we're in mock mode
+            if (global.mockMode) {
+                console.log('Getting ongoing tournaments from mock data...');
+                const tournaments = TournamentController.getMockTournaments();
+                const ongoingTournaments = tournaments.filter(t => t.status === 'ongoing');
+
+                return res.json({
+                    success: true,
+                    message: 'Ongoing tournaments retrieved successfully from mock data',
+                    data: { tournaments: ongoingTournaments }
+                });
+            }
+
+            // MongoDB mode
             const now = new Date();
             const tournaments = await Tournament.find({ status: 'ongoing', startDate: { $lte: now } })
                 .populate('organizerId', 'fullName email');
