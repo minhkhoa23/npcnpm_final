@@ -20,6 +20,8 @@
   <link rel="stylesheet" href="./src/assets/styles/carousel.css" />
   <!-- Use dashboard styles so sections match dashboard.html exactly -->
   <link rel="stylesheet" href="./src/assets/styles/dashboard.css" />
+  <link rel="stylesheet" href="./src/assets/styles/organizer-dashboard.css" />
+  <link rel="stylesheet" href="./src/assets/styles/role-based-styles.css" />
   
   <style>
     /* Loading screen styles */
@@ -114,8 +116,10 @@
   <!-- Initialize Application -->
   <script type="module">
     import App from './src/frontend/js/app.js';
+    import { router } from './src/frontend/js/router.js';
     import { renderGuestView } from './src/frontend/js/views/guestView.js';
     import GuestController from './src/frontend/js/controllers/GuestController.js';
+    import { authController } from './src/frontend/js/controllers/auth.js';
     import { backendStarter } from './src/frontend/js/backend-starter.js';
 
     // Show loading status
@@ -133,7 +137,7 @@
       
       statusMessage.innerHTML = `
         <div class="error-message">
-          <strong>❌ Lỗi kết nối!</strong><br>
+          <strong>❌ Lỗi k��t nối!</strong><br>
           ${message}
           ${showRetry ? `
             <div class="error-actions">
@@ -209,21 +213,25 @@
     async function startApp() {
       try {
         updateStatus('Đang tải giao diện...');
-        
-        // Initialize both systems
+
+        // Make global references available
+        window.router = router;
+        window.authController = authController;
+
+        // Initialize guest controller for fallback
         const guestController = new GuestController();
         window.guestController = guestController;
-        
-        // Load guest view as fallback (có nút Đăng nhập/Đăng ký và carousel nhiều mục)
-        await guestController.renderGuestView();
-        
+
+        // Hide loading screen first
+        hideLoadingScreen();
+
+        // Use router to handle initial navigation based on authentication
+        router.handleRoute();
+
         updateStatus('✅ Hệ thống đã sẵn sàng!');
-        
-        // Hide loading screen after a short delay
-        setTimeout(hideLoadingScreen, 1000);
-        
+
         console.log('🎉 Tournament Management System started successfully!');
-        
+
       } catch (error) {
         console.error('App startup error:', error);
         showError('Có lỗi khi tải giao diện: ' + error.message);
