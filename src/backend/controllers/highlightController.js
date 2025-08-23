@@ -1,6 +1,19 @@
 const Highlight = require('../models/Highlight');
+const fs = require('fs');
+const path = require('path');
 
 class HighlightController {
+    // Get mock highlights data
+    static getMockHighlights() {
+        try {
+            const mockDataPath = path.join(__dirname, '../data/highlights.json');
+            const mockData = fs.readFileSync(mockDataPath, 'utf8');
+            return JSON.parse(mockData);
+        } catch (error) {
+            console.error('Error reading mock highlights data:', error);
+            return [];
+        }
+    }
     // Create new highlight
     static async createHighlight(req, res) {
         try {
@@ -572,6 +585,23 @@ class HighlightController {
     // Get published highlights
     static async getPublishedHighlights(req, res) {
         try {
+            // Check if we're in mock mode
+            if (global.mockMode) {
+                console.log('Getting published highlights from mock data...');
+                const highlights = HighlightController.getMockHighlights();
+                const publishedHighlights = highlights.filter(h => h.status === 'public');
+
+                return res.json({
+                    success: true,
+                    message: "Published highlights retrieved successfully from mock data",
+                    data: {
+                        highlights: publishedHighlights,
+                        total: publishedHighlights.length
+                    }
+                });
+            }
+
+            // MongoDB mode
             const highlights = await Highlight.find({ status: 'public' })
                 .populate('tournamentId', 'name status')
                 .populate('matchId', 'teamA teamB scheduledAt')
