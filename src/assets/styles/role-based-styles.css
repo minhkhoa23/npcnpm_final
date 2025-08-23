@@ -1,0 +1,224 @@
+/* Role-based Navigation Styles */
+
+/* User dropdown styles */
+.user-avatar {
+  position: relative;
+  cursor: pointer;
+}
+
+.user-dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: rgba(30, 30, 30, 0.95);
+  backdrop-filter: blur(10px);
+  border: 1px solid #333;
+  border-radius: 8px;
+  padding: 8px 0;
+  min-width: 150px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-10px);
+  transition: all 0.3s ease;
+  z-index: 1000;
+}
+
+.user-dropdown.active {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.user-dropdown a {
+  display: block;
+  padding: 10px 16px;
+  color: #F5F5F5;
+  text-decoration: none;
+  transition: background-color 0.2s ease;
+  font-size: 0.9rem;
+}
+
+.user-dropdown a:hover {
+  background: rgba(241, 158, 220, 0.2);
+  color: #F19EDC;
+}
+
+/* Home navigation highlight */
+.home-nav-item.active,
+.home-button.active {
+  background: rgba(241, 158, 220, 0.2);
+  border-radius: 8px;
+}
+
+.home-nav-item:hover,
+.home-button:hover {
+  background: rgba(241, 158, 220, 0.1);
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+/* Empty state styles for organizer dashboard */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  text-align: center;
+  background: rgba(30, 30, 30, 0.5);
+  border: 2px dashed #444;
+  border-radius: 12px;
+  margin: 20px;
+}
+
+.empty-state h3 {
+  color: #F5F5F5;
+  margin: 0 0 10px 0;
+  font-size: 1.2rem;
+}
+
+.empty-state p {
+  color: #999;
+  margin: 0 0 20px 0;
+  font-size: 0.9rem;
+}
+
+.empty-action-btn {
+  background: linear-gradient(135deg, #F19EDC, #E081C7);
+  color: #1E1E1E;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.empty-action-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(241, 158, 220, 0.3);
+}
+
+/* Error and fallback styles */
+.error-placeholder,
+.fallback-message {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 30px 20px;
+  text-align: center;
+  background: rgba(231, 76, 60, 0.1);
+  border: 1px solid rgba(231, 76, 60, 0.3);
+  border-radius: 8px;
+  color: #e74c3c;
+  margin: 20px;
+}
+
+.error-placeholder button,
+.fallback-message button {
+  background: #e74c3c;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background-color 0.2s ease;
+}
+
+.error-placeholder button:hover,
+.fallback-message button:hover {
+  background: #c0392b;
+}
+
+/* Loading placeholder improvements */
+.loading-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  color: #999;
+  font-style: italic;
+  background: rgba(30, 30, 30, 0.3);
+  border-radius: 8px;
+  margin: 20px;
+}
+
+/* Organizer-specific button styles */
+.section-controls {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.section-controls button {
+  background: rgba(241, 158, 220, 0.2);
+  color: #F19EDC;
+  border: 1px solid rgba(241, 158, 220, 0.3);
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.section-controls button:hover {
+  background: rgba(241, 158, 220, 0.3);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(241, 158, 220, 0.2);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .section-controls {
+    flex-direction: column;
+  }
+  
+  .section-controls button {
+    width: 100%;
+  }
+  
+  .user-dropdown {
+    right: -20px;
+    min-width: 120px;
+  }
+  
+  .empty-state {
+    padding: 20px 15px;
+    margin: 10px;
+  }
+}
+
+/* Follow button states */
+.follow-btn.following {
+  background: #4CAF50 !important;
+  color: white !important;
+}
+
+/* Navigation text alignment */
+.nav-text {
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+/* Ensure proper spacing */
+.header-left .nav-item {
+  margin-right: 20px;
+}
+
+/* Animation for role transitions */
+.role-transition {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInUp 0.5s ease forwards;
+}
+
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
