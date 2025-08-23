@@ -17,14 +17,13 @@
   <link rel="stylesheet" href="../assets/styles/layout.css" />
   <link rel="stylesheet" href="../assets/styles/guest-new.css" />
   <link rel="stylesheet" href="../assets/styles/login.css" />
-  <link rel="stylesheet" href="../assets/styles/role-based-styles.css" />
 </head>
 <body>
   <!-- Header Navigation -->
   <header class="main-header">
     <div class="header-container">
       <div class="header-left">
-        <div class="nav-item home-nav-item" data-home-nav>
+        <div class="nav-item" onclick="window.location.href='../../index.html'">
           <svg class="nav-icon" width="40" height="40" viewBox="0 0 40 40" fill="none">
             <path d="M15 36.6667V20H25V36.6667M5 15L20 3.33334L35 15V33.3333C35 34.2174 34.6488 35.0652 34.0237 35.6904C33.3986 36.3155 32.5507 36.6667 31.6667 36.6667H8.33333C7.44928 36.6667 6.60143 36.3155 5.97631 35.6904C5.35119 35.0652 5 34.2174 5 33.3333V15Z" stroke="#F5F5F5" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
@@ -197,18 +196,6 @@
   <script type="module" src="./js/models/User.js"></script>
   <script type="module" src="./js/controllers/UserController.js"></script>
   <script type="module" src="./js/lang.js"></script>
-  <script type="module">
-    // Import router for home navigation
-    import { router } from './js/router.js';
-    import { authController } from './js/controllers/auth.js';
-
-    // Make router available globally for home navigation
-    window.router = router;
-    window.authController = authController;
-
-    // Setup router navigation
-    router.setupGlobalNavigation();
-  </script>
   <script>
     // Password toggle functionality
     document.getElementById('passwordToggle').addEventListener('click', function() {
@@ -266,31 +253,16 @@
           // Lưu token
           localStorage.setItem('authToken', data.token);
           localStorage.setItem('userRole', data.role);
-
-          // Set user in authController
-          if (window.authController) {
-            window.authController.currentUser = data.user || {
-              id: data.userId || 'unknown',
-              email: loginInput,
-              role: data.role,
-              fullName: data.fullName || data.user?.fullName || 'User'
-            };
-          }
-
+          
           alert('Đăng nhập thành công!');
-
-          // Use authController's redirect logic
-          if (window.authController) {
-            window.authController.redirectAfterAuth();
+          
+          // Chuyển hướng dựa trên role
+          if (data.role === 'admin') {
+            window.location.href = './dashboard.html';
+          } else if (data.role === 'organizer') {
+            window.location.href = './organizer-dashboard.html';
           } else {
-            // Fallback to direct navigation
-            if (data.role === 'admin') {
-              window.location.href = './dashboard.html';
-            } else if (data.role === 'organizer') {
-              window.location.href = './organizer-dashboard.html';
-            } else {
-              window.location.href = './dashboard.html';
-            }
+            window.location.href = './dashboard.html';
           }
         } else {
           alert(data.message || 'Đăng nhập thất bại!');

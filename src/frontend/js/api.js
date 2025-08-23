@@ -1,14 +1,5 @@
-// API Configuration - Dynamic base URL for development and production
-const getApiBaseUrl = () => {
-    // In production (fly.dev), use relative API path
-    if (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
-        return '/api';
-    }
-    // In development, use localhost
-    return 'http://localhost:3000/api';
-};
-
-const API_BASE_URL = getApiBaseUrl();
+// API Configuration
+const API_BASE_URL = 'http://localhost:3000/api';
 
 // Token management
 class TokenManager {
