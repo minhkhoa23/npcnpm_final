@@ -134,10 +134,26 @@
     function showError(message, showRetry = true) {
       const loadingScreen = document.getElementById('loadingScreen');
       const statusMessage = document.getElementById('statusMessage');
-      
+
+      // Check if elements exist before manipulating them
+      if (!statusMessage) {
+        console.error('statusMessage element not found');
+        // Create a fallback error display
+        const errorDiv = document.createElement('div');
+        errorDiv.className = 'error-fallback';
+        errorDiv.style.cssText = 'position:fixed;top:20px;left:20px;right:20px;background:#ff4444;color:white;padding:15px;border-radius:5px;z-index:9999;';
+        errorDiv.innerHTML = `
+          <strong>❌ Lỗi kết nối!</strong><br>
+          ${message}
+          ${showRetry ? `<button onclick="window.location.reload()" style="margin-top:10px;padding:5px 10px;border:none;background:white;color:#333;border-radius:3px;cursor:pointer;">Thử lại</button>` : ''}
+        `;
+        document.body.appendChild(errorDiv);
+        return;
+      }
+
       statusMessage.innerHTML = `
         <div class="error-message">
-          <strong>❌ Lỗi k��t nối!</strong><br>
+          <strong>❌ Lỗi kết nối!</strong><br>
           ${message}
           ${showRetry ? `
             <div class="error-actions">
