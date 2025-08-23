@@ -151,38 +151,19 @@ class AuthController {
 
         const urlParams = new URLSearchParams(window.location.search);
         const redirectUrl = urlParams.get('redirect');
-
+        
         if (redirectUrl) {
             window.location.href = redirectUrl;
         } else {
-            // Redirect to role-based homepage using router
-            if (window.router) {
-                switch (this.currentUser.role) {
-                    case 'admin':
-                        window.router.navigate('/dashboard');
-                        break;
-                    case 'organizer':
-                        window.router.navigate('/organizer-home');
-                        break;
-                    case 'user':
-                    default:
-                        window.router.navigate('/user-home');
-                        break;
-                }
-            } else {
-                // Fallback to direct navigation if router not available
-                switch (this.currentUser.role) {
-                    case 'admin':
-                        window.location.href = '/dashboard.html';
-                        break;
-                    case 'organizer':
-                        window.location.href = '/organizer-dashboard.html';
-                        break;
-                    case 'user':
-                    default:
-                        window.location.href = '/dashboard.html';
-                        break;
-                }
+            switch (this.currentUser.role) {
+                case 'admin':
+                    window.location.href = '/dashboard.html';
+                    break;
+                case 'organizer':
+                    window.location.href = '/organizer-dashboard.html';
+                    break;
+                default:
+                    window.location.href = '/index.html';
             }
         }
     }

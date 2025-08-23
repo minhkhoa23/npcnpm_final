@@ -20,8 +20,6 @@
   <link rel="stylesheet" href="./src/assets/styles/carousel.css" />
   <!-- Use dashboard styles so sections match dashboard.html exactly -->
   <link rel="stylesheet" href="./src/assets/styles/dashboard.css" />
-  <link rel="stylesheet" href="./src/assets/styles/organizer-dashboard.css" />
-  <link rel="stylesheet" href="./src/assets/styles/role-based-styles.css" />
   
   <style>
     /* Loading screen styles */
@@ -116,10 +114,8 @@
   <!-- Initialize Application -->
   <script type="module">
     import App from './src/frontend/js/app.js';
-    import { router } from './src/frontend/js/router.js';
     import { renderGuestView } from './src/frontend/js/views/guestView.js';
     import GuestController from './src/frontend/js/controllers/GuestController.js';
-    import { authController } from './src/frontend/js/controllers/auth.js';
     import { backendStarter } from './src/frontend/js/backend-starter.js';
 
     // Show loading status
@@ -134,23 +130,7 @@
     function showError(message, showRetry = true) {
       const loadingScreen = document.getElementById('loadingScreen');
       const statusMessage = document.getElementById('statusMessage');
-
-      // Check if elements exist before manipulating them
-      if (!statusMessage) {
-        console.error('statusMessage element not found');
-        // Create a fallback error display
-        const errorDiv = document.createElement('div');
-        errorDiv.className = 'error-fallback';
-        errorDiv.style.cssText = 'position:fixed;top:20px;left:20px;right:20px;background:#ff4444;color:white;padding:15px;border-radius:5px;z-index:9999;';
-        errorDiv.innerHTML = `
-          <strong>❌ Lỗi kết nối!</strong><br>
-          ${message}
-          ${showRetry ? `<button onclick="window.location.reload()" style="margin-top:10px;padding:5px 10px;border:none;background:white;color:#333;border-radius:3px;cursor:pointer;">Thử lại</button>` : ''}
-        `;
-        document.body.appendChild(errorDiv);
-        return;
-      }
-
+      
       statusMessage.innerHTML = `
         <div class="error-message">
           <strong>❌ Lỗi kết nối!</strong><br>
@@ -229,25 +209,21 @@
     async function startApp() {
       try {
         updateStatus('Đang tải giao diện...');
-
-        // Make global references available
-        window.router = router;
-        window.authController = authController;
-
-        // Initialize guest controller for fallback
+        
+        // Initialize both systems
         const guestController = new GuestController();
         window.guestController = guestController;
-
-        // Hide loading screen first
-        hideLoadingScreen();
-
-        // Use router to handle initial navigation based on authentication
-        router.handleRoute();
-
+        
+        // Load guest view as fallback (có nút Đăng nhập/Đăng ký và carousel nhiều mục)
+        await guestController.renderGuestView();
+        
         updateStatus('✅ Hệ thống đã sẵn sàng!');
-
+        
+        // Hide loading screen after a short delay
+        setTimeout(hideLoadingScreen, 1000);
+        
         console.log('🎉 Tournament Management System started successfully!');
-
+        
       } catch (error) {
         console.error('App startup error:', error);
         showError('Có lỗi khi tải giao diện: ' + error.message);

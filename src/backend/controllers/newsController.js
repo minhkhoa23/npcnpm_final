@@ -367,20 +367,6 @@ class NewsController {
         try {
             const { limit = 5 } = req.query;
 
-            // Check if we're in mock mode
-            if (global.mockMode) {
-                console.log('Getting featured news from mock data...');
-                const mockNews = NewsController.getMockNews();
-                const featuredNews = mockNews.filter(n => n.status === 'public').slice(0, parseInt(limit));
-
-                return res.json({
-                    success: true,
-                    message: 'Featured news retrieved successfully from mock data',
-                    data: { news: featuredNews }
-                });
-            }
-
-            // MongoDB mode
             const news = await News.find({ status: 'public' })
                 .populate('authorId', 'fullName email')
                 .populate('tournamentId', 'name status')
