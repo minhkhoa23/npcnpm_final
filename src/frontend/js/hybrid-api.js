@@ -3,10 +3,20 @@
 
 import LocalStorageAPI from './localStorage-api.js';
 
+// Environment detection
+const isLocalEnvironment = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+const isCloudEnvironment = !isLocalEnvironment && (
+    window.location.hostname.includes('.fly.dev') ||
+    window.location.hostname.includes('.vercel.app') ||
+    window.location.hostname.includes('.netlify.app') ||
+    window.location.hostname.includes('.herokuapp.com') ||
+    window.location.hostname.includes('github.io') ||
+    window.location.port === '' // Production-like environment
+);
+
 // API Configuration - auto-detect environment
 const API_BASE_URL = (() => {
-    // If running on localhost, use localhost:3000
-    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+    if (isLocalEnvironment) {
         return 'http://localhost:3000/api';
     }
     // Otherwise use relative URL (works in cloud environments)
@@ -14,7 +24,7 @@ const API_BASE_URL = (() => {
 })();
 
 // System state tracking
-let backendAvailable = null; // null = unknown, true = available, false = not available
+let backendAvailable = isCloudEnvironment ? false : null; // Force localStorage in cloud environments
 let localStorageReady = false;
 
 // Initialize localStorage API
