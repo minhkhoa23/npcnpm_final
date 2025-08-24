@@ -1,12 +1,18 @@
-// Helper function to check authentication and handle navigation
+// Helper function to handle navigation to detail pages (public access)
+window.handlePublicNavigation = function(url) {
+  // Allow public access to detail pages
+  window.location.href = url;
+};
+
+// Helper function to check authentication and handle navigation for restricted pages
 window.handleAuthenticatedNavigation = function(url) {
   // Check if user is authenticated
   const token = localStorage.getItem('authToken');
   const isAuthenticated = !!token;
 
   if (!isAuthenticated) {
-    // Redirect to index.html if not authenticated
-    window.location.href = '/';
+    // Redirect to login page for restricted content
+    window.location.href = '/src/frontend/login.html?redirect=' + encodeURIComponent(url);
     return;
   }
 
