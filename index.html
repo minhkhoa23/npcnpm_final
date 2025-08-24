@@ -81,7 +81,7 @@
     <div class="loading-logo">Tournament Manager</div>
     <div class="loading-text">Đang khởi động hệ thống...</div>
     <div class="loading-spinner"></div>
-    <div id="statusMessage" class="status-message">Đang kết nối với backend server...</div>
+    <div id="statusMessage" class="status-message">Đang khởi tạo hệ thống...</div>
   </div>
 
   <!-- Main Content -->
@@ -99,7 +99,7 @@
       if (statusElement) {
         statusElement.textContent = message;
       } else {
-        console.log('���� Status:', message);
+        console.log('📊 Status:', message);
       }
     }
 
@@ -129,7 +129,7 @@
         <div class="success-icon">✅</div>
         <div class="loading-logo">Tournament Manager</div>
         <div class="loading-text">Hệ thống đã sẵn sàng!</div>
-        <div class="status-message">Đã kết nối với backend server thành công!</div>
+        <div class="status-message">Hệ thống API hybrid đã sẵn sàng!</div>
       `;
 
       setTimeout(hideLoadingScreen, 2000);
@@ -179,8 +179,8 @@
         // Show success and hide loading
         showSuccess();
 
-        console.log('🎉 Tournament Management System initialized with backend API!');
-        console.log('🚀 Backend server connected successfully');
+        console.log('🎉 Tournament Management System initialized with hybrid API!');
+        console.log('🚀 Hybrid API system ready (backend + localStorage fallback)');
 
       } catch (error) {
         console.error('App initialization error:', error);
