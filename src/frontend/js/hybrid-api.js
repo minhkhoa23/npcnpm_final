@@ -343,14 +343,20 @@ export const API_ENDPOINTS = {
 export { TokenManager };
 
 // Initialize system on import
-console.log('🔧 Hybrid API system initialized');
+console.log(`🔧 Hybrid API system initialized`);
+console.log(`🌍 Environment: ${isCloudEnvironment ? 'Cloud (localStorage-only mode)' : isLocalEnvironment ? 'Local (backend+localStorage mode)' : 'Unknown'}`);
+console.log(`🎯 Backend availability: ${backendAvailable === false ? 'Disabled (cloud mode)' : backendAvailable === true ? 'Available' : 'Unknown'}`);
 
-// Check backend availability on startup (non-blocking)
-checkBackendAvailability().then(() => {
-    console.log(`🏥 Backend status: ${backendAvailable ? 'Available' : 'Not available'}`);
-});
+// Only check backend availability if not in cloud environment
+if (!isCloudEnvironment) {
+    checkBackendAvailability().then(() => {
+        console.log(`🏥 Backend status: ${backendAvailable ? 'Available' : 'Not available'}`);
+    });
+} else {
+    console.log(`☁️ Cloud environment detected - backend checks disabled`);
+}
 
-// Initialize localStorage as backup (non-blocking)
+// Initialize localStorage (always needed)
 initializeLocalStorage().then((ready) => {
     console.log(`💾 localStorage API status: ${ready ? 'Ready' : 'Not ready'}`);
 });
