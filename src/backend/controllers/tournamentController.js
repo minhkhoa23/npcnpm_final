@@ -167,6 +167,16 @@ class TournamentController {
                 const populatedTournament = await Tournament.findById(tournament._id)
                     .populate('organizerId', 'fullName email');
 
+                // Generate matches automatically if competitors are provided
+                if (req.body.selectedTeams && req.body.selectedTeams.length >= 2) {
+                    try {
+                        await TournamentController.generateMatches(tournament._id, tournament.format, req.body.selectedTeams);
+                    } catch (error) {
+                        console.error('Error generating matches:', error);
+                        // Don't fail tournament creation if match generation fails
+                    }
+                }
+
                 res.status(201).json({
                     success: true,
                     message: 'Tournament created successfully',
