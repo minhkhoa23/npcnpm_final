@@ -149,18 +149,7 @@ export async function renderGuestView() {
           </div>
         </div>
         <div class="header-right">
-          <button id="loginGuestBtn" class="auth-btn login-btn" data-route="/login">
-            <svg class="auth-icon" width="35" height="35" viewBox="0 0 35 35" fill="none">
-              <path d="M21.875 4.375H27.7083C28.4819 4.375 29.2237 4.68229 29.7707 5.22927C30.3177 5.77625 30.625 6.51812 30.625 7.29167V27.7083C30.625 28.4819 30.3177 29.2237 29.7707 29.7707C29.2237 30.3177 28.4819 30.625 27.7083 30.625H21.875M14.5833 24.7917L21.875 17.5M21.875 17.5L14.5833 10.2083M21.875 17.5H4.375" stroke="#303030" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-            Đăng nhập
-          </button>
-          <button id="registerGuestBtn" class="auth-btn register-btn" data-route="/register">
-            <svg class="auth-icon" width="35" height="35" viewBox="0 0 35 35" fill="none">
-              <path d="M17.5 10.2083C17.5 8.66124 16.8854 7.17751 15.7914 6.08354C14.6975 4.98958 13.2138 4.375 11.6667 4.375H2.91666V26.25H13.125C14.2853 26.25 15.3981 26.7109 16.2186 27.5314C17.0391 28.3519 17.5 29.4647 17.5 30.625M17.5 10.2083V30.625M17.5 10.2083C17.5 8.66124 18.1146 7.17751 19.2085 6.08354C20.3025 4.98958 21.7862 4.375 23.3333 4.375H32.0833V26.25H21.875C20.7147 26.25 19.6019 26.7109 18.7814 27.5314C17.9609 28.3519 17.5 29.4647 17.5 30.625" stroke="#2C2C2C" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-            Đăng ký
-          </button>
+          ${headerRightContent}
         </div>
       </div>
     </header>
