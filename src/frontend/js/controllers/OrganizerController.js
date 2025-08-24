@@ -1,6 +1,6 @@
 import Organizer from '../models/Organizer.js';
 import { renderCreateTournament } from '../views/organizerView.js';
-import { apiCall, API_ENDPOINTS } from '../api.js';
+import { apiCall, API_ENDPOINTS } from '../hybrid-api.js';
 
 class OrganizerController {
     constructor() {

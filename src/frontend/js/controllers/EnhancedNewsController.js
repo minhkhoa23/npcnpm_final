@@ -1,5 +1,5 @@
 // Enhanced News Controller with CRUD operations and Real-time interactions
-import { apiCall, API_ENDPOINTS, TokenManager } from '../api.js';
+import { apiCall, API_ENDPOINTS, TokenManager } from '../hybrid-api.js';
 import { SearchComponent } from '../components/SearchComponent.js';
 
 export class EnhancedNewsController {

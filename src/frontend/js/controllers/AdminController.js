@@ -1,5 +1,5 @@
 import { renderStats } from '../views/adminView.js';
-import { apiCall, API_ENDPOINTS } from '../api.js';
+import { apiCall, API_ENDPOINTS } from '../hybrid-api.js';
 
 class AdminController {
     async getStats() {
