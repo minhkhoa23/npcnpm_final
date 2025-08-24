@@ -145,33 +145,10 @@
 
         updateStatus('Hệ thống API đã sẵn sàng!');
 
-        updateStatus('Đang khởi tạo hệ thống...');
+        updateStatus('Đang tải giao diện...');
 
-        // Check if user is authenticated and token is valid
-        let isUserAuthenticated = false;
-        if (TokenManager.isAuthenticated()) {
-          try {
-            // Verify token is still valid
-            const user = TokenManager.getCurrentUser();
-            if (user && user._id) {
-              // User is authenticated, but don't redirect - let them stay on index
-              updateStatus('Người dùng đã đăng nhập, tải trang chủ...');
-              isUserAuthenticated = true;
-            }
-          } catch (error) {
-            // Token is invalid, clear it and continue as guest
-            console.error('Invalid token, clearing:', error);
-            TokenManager.removeToken();
-          }
-        }
-
-        if (isUserAuthenticated) {
-          updateStatus('Đang tải giao diện cho người dùng đã đăng nhập...');
-        } else {
-          updateStatus('Đang tải giao diện guest...');
-        }
-
-        // Initialize guest router and render appropriate view
+        // Always start in guest mode for clean initialization
+        // Users can register/login through the UI
         await guestRouter.ensureGuestView();
 
         updateStatus('✅ Hoàn thành!');
