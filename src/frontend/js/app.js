@@ -77,11 +77,9 @@ class App {
     // Initialize authentication
     async initAuth() {
         try {
-            // Check if user is already authenticated
-            if (TokenManager.isAuthenticated()) {
-                await this.controllers.auth.loadUserProfile();
-            }
-            
+            // For clean guest mode, don't auto-load profile
+            // Users will authenticate through login form
+
             // Update UI based on authentication state
             this.updateNavigationUI();
         } catch (error) {

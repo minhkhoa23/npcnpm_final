@@ -24,7 +24,8 @@ const API_BASE_URL = (() => {
 })();
 
 // System state tracking
-let backendAvailable = isCloudEnvironment ? false : null; // Force localStorage in cloud environments
+// Always start with null to allow backend checking, but prefer localStorage in cloud environments
+let backendAvailable = null;
 let localStorageReady = false;
 
 // Initialize localStorage API
@@ -200,8 +201,10 @@ const callLocalStorageAPI = async (endpoint, data = {}, method = 'GET', requireA
             return api.getTournaments();
         }
     } else if (endpointLower.includes('/news')) {
-        if (endpointLower.includes('/published') || endpointLower.includes('/featured')) {
+        if (endpointLower.includes('/featured')) {
             return api.getFeaturedNews();
+        } else if (endpointLower.includes('/published')) {
+            return api.getNews();
         } else if (method === 'POST') {
             return api.createNews(data);
         } else if (method === 'PUT') {
@@ -211,10 +214,12 @@ const callLocalStorageAPI = async (endpoint, data = {}, method = 'GET', requireA
             const id = endpoint.split('/').pop();
             return api.deleteNews(id);
         } else {
-            return api.getFeaturedNews();
+            return api.getNews();
         }
     } else if (endpointLower.includes('/highlights')) {
-        if (endpointLower.includes('/published') || endpointLower.includes('/featured')) {
+        if (endpointLower.includes('/featured')) {
+            return api.getFeaturedHighlights();
+        } else if (endpointLower.includes('/published')) {
             return api.getPublishedHighlights();
         } else if (method === 'POST') {
             return api.createHighlight(data);
@@ -225,16 +230,29 @@ const callLocalStorageAPI = async (endpoint, data = {}, method = 'GET', requireA
             const id = endpoint.split('/').pop();
             return api.deleteHighlight(id);
         } else {
-            return api.getPublishedHighlights();
+            return api.getHighlights();
         }
     } else if (endpointLower.includes('/auth')) {
         if (endpointLower.includes('/login')) {
             return api.login(data);
         } else if (endpointLower.includes('/register')) {
             return api.register(data);
+        } else if (endpointLower.includes('/logout')) {
+            return api.logout();
         } else if (endpointLower.includes('/profile')) {
-            return api.getUserProfile();
+            if (method === 'GET') {
+                const token = TokenManager.getToken();
+                return api.getUserProfile(token);
+            } else if (method === 'PUT') {
+                const token = TokenManager.getToken();
+                const decoded = JSON.parse(atob(token));
+                return api.updateUserProfile(decoded.userId, data, token);
+            }
         }
+    } else if (endpointLower.includes('/competitors')) {
+        return api.getCompetitors();
+    } else if (endpointLower.includes('/health')) {
+        return api.health();
     }
 
     throw new Error(`Endpoint not supported in localStorage mode: ${endpoint}`);
@@ -243,26 +261,19 @@ const callLocalStorageAPI = async (endpoint, data = {}, method = 'GET', requireA
 // Main hybrid API call function
 export async function apiCall(endpoint, data = {}, method = 'GET', requireAuth = false) {
     console.log(`📡 Hybrid API call: ${method} ${endpoint} (Environment: ${isCloudEnvironment ? 'Cloud' : isLocalEnvironment ? 'Local' : 'Unknown'})`);
+    console.log(`🔍 Environment details - hostname: ${window.location.hostname}, port: ${window.location.port}`);
 
-    // In cloud environments, skip backend and go directly to localStorage
+    // In cloud environments, prefer localStorage but allow backend fallback
     if (isCloudEnvironment) {
-        console.log(`☁️ Cloud environment detected, using localStorage directly for: ${method} ${endpoint}`);
+        console.log(`☁️ Cloud environment detected, prioritizing localStorage for: ${method} ${endpoint}`);
         try {
             const result = await callLocalStorageAPI(endpoint, data, method, requireAuth);
             console.log(`✅ Cloud localStorage API success: ${method} ${endpoint}`);
             return result;
         } catch (error) {
             console.error(`❌ Cloud localStorage API failed for: ${method} ${endpoint}`, error.message);
-            return {
-                success: false,
-                data: {
-                    tournaments: [],
-                    news: [],
-                    highlights: [],
-                    users: []
-                },
-                message: `Cloud API temporarily unavailable: ${error.message}`
-            };
+            // In cloud environment, still try backend as fallback
+            console.log(`🔄 Attempting backend fallback in cloud environment...`);
         }
     }
 
