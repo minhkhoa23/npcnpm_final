@@ -180,16 +180,6 @@ class LocalStorageAPI {
         return inputHash === hash;
     }
 
-    // Debug function to check users
-    debugUsers() {
-        const users = this.getData('users');
-        console.log('🔍 Debug Users:');
-        console.log(`Total users: ${users.length}`);
-        users.forEach(user => {
-            console.log(`📧 ${user.email} | 👤 ${user.fullName} | 🏷️ ${user.role}`);
-        });
-        return users;
-    }
 
     // Auth endpoints
     async register(userData) {
