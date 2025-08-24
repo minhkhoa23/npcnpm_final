@@ -139,24 +139,23 @@
     // Main initialization
     async function initializeApp() {
       try {
-        updateStatus('Đang khởi tạo localStorage database...');
+        updateStatus('Đang kết nối với backend server...');
 
-        // Wait for localStorage API to be initialized
-        let attempts = 0;
-        while (!window.localStorageAPI && attempts < 50) {
-          await new Promise(resolve => setTimeout(resolve, 100));
-          attempts++;
-          updateStatus(`Đang khởi tạo API... (${attempts}/50)`);
+        // Test backend connection
+        try {
+          const response = await fetch('/api/health');
+          if (response.ok) {
+            updateStatus('Backend server đã kết nối thành công!');
+          } else {
+            updateStatus('Backend server phản hồi nhưng có lỗi...');
+          }
+        } catch (error) {
+          updateStatus('Không thể kết nối backend, tiếp tục với localStorage...');
+          // Fallback to localStorage if backend is not available
+          const { default: LocalStorageAPI } = await import('./src/frontend/js/localStorage-api.js');
         }
 
-        if (!window.localStorageAPI) {
-          throw new Error('Failed to initialize localStorage API after 50 attempts');
-        }
-
-        updateStatus('Đang tải dữ liệu ban đầu...');
-
-        // Wait a bit for data initialization
-        await new Promise(resolve => setTimeout(resolve, 1000));
+        updateStatus('Đang tải dữ liệu...');
 
         updateStatus('Đang khởi tạo hệ thống...');
 
