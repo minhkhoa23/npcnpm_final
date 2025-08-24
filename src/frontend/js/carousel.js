@@ -148,7 +148,7 @@ export class TournamentCarousel extends Carousel {
 
   renderItem(tournament) {
     return `
-      <div class="tournament-card" data-tournament-id="${tournament._id}" onclick="handlePublicNavigation('./src/frontend/tournament-detail.html?id=${tournament._id}')" style="cursor: pointer;">
+      <div class="tournament-card" data-tournament-id="${tournament._id}" data-tournament-name="${tournament.name}" onclick="handlePublicNavigation('./src/frontend/tournament-detail.html?id=${tournament._id}')" style="cursor: pointer;">
         <div class="tournament-image" style="background-image: url('${tournament.avatarUrl || ''}')"></div>
         <div class="tournament-info">
           <h3 class="tournament-name">${tournament.name}</h3>
