@@ -482,38 +482,80 @@
                 return;
             }
 
-            const tournamentPayload = {
-                name: tournamentData.tournamentName,
-                gameName: tournamentData.gameName,
-                description: document.getElementById('description').value.trim(),
-                maxPlayers: parseInt(tournamentData.playerCount),
-                format: tournamentData.format || 'single-elimination', // Use selected format
-                startDate: document.getElementById('startDate').value,
-                endDate: document.getElementById('endDate').value,
-                avatarUrl: document.getElementById('avatarUrl').value.trim(),
-                selectedTeams: tournamentData.selectedTeams?.map(team => team._id) || []
-            };
-
             try {
                 showLoading(true);
-                
+
                 // Import the hybrid API
                 const { apiCall } = await import('./js/hybrid-api.js');
-                const result = await apiCall('/tournaments', tournamentPayload, 'POST', true);
-                
-                if (result.success) {
-                    showSuccess('Giải đấu đã được tạo thành công!');
-                    
-                    // Clear saved data
-                    localStorage.removeItem('tournamentCreationData');
-                    
-                    // Redirect after success
-                    setTimeout(() => {
-                        window.location.href = 'organizer-dashboard.html';
-                    }, 2000);
-                } else {
-                    throw new Error(result.message || 'Có lỗi xảy ra khi tạo giải đấu');
+
+                // Step 1: Create the tournament
+                const tournamentPayload = {
+                    name: tournamentData.tournamentName,
+                    gameName: tournamentData.gameName,
+                    description: document.getElementById('description').value.trim(),
+                    maxPlayers: parseInt(tournamentData.playerCount),
+                    format: tournamentData.format || 'single-elimination', // Use selected format
+                    startDate: document.getElementById('startDate').value,
+                    endDate: document.getElementById('endDate').value,
+                    avatarUrl: document.getElementById('avatarUrl').value.trim()
+                };
+
+                const tournamentResult = await apiCall('/tournaments', tournamentPayload, 'POST', true);
+
+                if (!tournamentResult.success) {
+                    throw new Error(tournamentResult.message || 'Có lỗi xảy ra khi tạo giải đấu');
                 }
+
+                const tournament = tournamentResult.data.tournament;
+
+                // Step 2: Register selected teams as competitors
+                if (tournamentData.selectedTeams && tournamentData.selectedTeams.length > 0) {
+                    const competitorIds = [];
+
+                    for (const team of tournamentData.selectedTeams) {
+                        try {
+                            const competitorPayload = {
+                                name: team.name,
+                                logoUrl: team.logoUrl,
+                                description: team.description || '',
+                                mail: team.mail || '',
+                                tournamentId: tournament._id
+                            };
+
+                            const competitorResult = await apiCall('/competitors', competitorPayload, 'POST', true);
+                            if (competitorResult.success) {
+                                competitorIds.push(competitorResult.data.competitor._id);
+                            }
+                        } catch (error) {
+                            console.error('Error registering team:', team.name, error);
+                        }
+                    }
+
+                    // Step 3: Generate matches automatically
+                    if (competitorIds.length >= 2) {
+                        try {
+                            await apiCall('/tournaments/generate-matches', {
+                                tournamentId: tournament._id,
+                                format: tournamentData.format || 'single-elimination',
+                                competitorIds: competitorIds
+                            }, 'POST', true);
+                        } catch (error) {
+                            console.error('Error generating matches:', error);
+                            // Don't fail the entire process if match generation fails
+                        }
+                    }
+                }
+
+                showSuccess('Giải đấu đã được tạo thành công!');
+
+                // Clear saved data
+                localStorage.removeItem('tournamentCreationData');
+
+                // Redirect after success
+                setTimeout(() => {
+                    window.location.href = 'organizer-dashboard.html';
+                }, 2000);
+
             } catch (error) {
                 console.error('Error creating tournament:', error);
                 showError('Lỗi khi tạo giải đấu: ' + error.message);
@@ -532,7 +574,7 @@
             }
 
             if (!endDate) {
-                showError('Vui lòng chọn ngày k��t thúc.');
+                showError('Vui lòng chọn ngày kết thúc.');
                 return false;
             }
 
