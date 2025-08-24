@@ -489,16 +489,9 @@
             try {
                 showLoading(true);
                 
-                const response = await fetch('/api/tournaments', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${localStorage.getItem('authToken')}`
-                    },
-                    body: JSON.stringify(tournamentPayload)
-                });
-
-                const result = await response.json();
+                // Import the static API
+                const { apiCall } = await import('../frontend/js/static-api.js');
+                const result = await apiCall('/tournaments', tournamentPayload, 'POST', true);
                 
                 if (result.success) {
                     showSuccess('Giải đấu đã được tạo thành công!');
