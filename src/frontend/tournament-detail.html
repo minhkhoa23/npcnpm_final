@@ -142,22 +142,22 @@
         
         <div class="matches-grid">
           <div class="match-column">
-            <div class="match-card" onclick="openMatchDetail()">
+            <div class="match-card" onclick="showMatchPlaceholder()">
               <div class="team-name team-left">Team A</div>
               <div class="vs-divider">VS</div>
               <div class="team-name team-right">Team B</div>
             </div>
-            <div class="match-card" onclick="openMatchDetail()">
+            <div class="match-card" onclick="showMatchPlaceholder()">
               <div class="team-name team-left">Team C</div>
               <div class="vs-divider">VS</div>
               <div class="team-name team-right">Team D</div>
             </div>
-            <div class="match-card" onclick="openMatchDetail()">
+            <div class="match-card" onclick="showMatchPlaceholder()">
               <div class="team-name team-left">Team E</div>
               <div class="vs-divider">VS</div>
               <div class="team-name team-right">Team F</div>
             </div>
-            <div class="match-card" onclick="openMatchDetail()">
+            <div class="match-card" onclick="showMatchPlaceholder()">
               <div class="team-name team-left">Team G</div>
               <div class="vs-divider">VS</div>
               <div class="team-name team-right">Team H</div>
@@ -165,22 +165,22 @@
           </div>
           
           <div class="match-column">
-            <div class="match-card" onclick="openMatchDetail()">
+            <div class="match-card" onclick="showMatchPlaceholder()">
               <div class="team-name team-left">Team I</div>
               <div class="vs-divider">VS</div>
               <div class="team-name team-right">Team J</div>
             </div>
-            <div class="match-card" onclick="openMatchDetail()">
+            <div class="match-card" onclick="showMatchPlaceholder()">
               <div class="team-name team-left">Team K</div>
               <div class="vs-divider">VS</div>
               <div class="team-name team-right">Team L</div>
             </div>
-            <div class="match-card" onclick="openMatchDetail()">
+            <div class="match-card" onclick="showMatchPlaceholder()">
               <div class="team-name team-left">Team M</div>
               <div class="vs-divider">VS</div>
               <div class="team-name team-right">Team N</div>
             </div>
-            <div class="match-card" onclick="openMatchDetail()">
+            <div class="match-card" onclick="showMatchPlaceholder()">
               <div class="team-name team-left">Team O</div>
               <div class="vs-divider">VS</div>
               <div class="team-name team-right">Team P</div>
@@ -277,7 +277,7 @@
             <svg class="info-icon" width="40" height="40" viewBox="0 0 40 40" fill="none">
               <path d="M20 26.6667V20M20 13.3334H20.0167M36.6667 20C36.6667 29.2048 29.2047 36.6667 20 36.6667C10.7952 36.6667 3.33333 29.2048 3.33333 20C3.33333 10.7953 10.7952 3.33337 20 3.33337C29.2047 3.33337 36.6667 10.7953 36.6667 20Z" stroke="#F3F3F3" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
-            <span>Thông tin sử dụng</span>
+            <span>Thông tin sử d��ng</span>
           </div>
           <div class="info-item">
             <svg class="info-icon" width="40" height="40" viewBox="0 0 40 40" fill="none">
@@ -319,7 +319,7 @@
   <!-- Scripts -->
   <script type="module" src="./js/localStorage-api.js"></script>
   <script type="module">
-    import { apiCall, API_ENDPOINTS } from './js/static-api.js';
+    import { apiCall, API_ENDPOINTS } from './js/hybrid-api.js';
 
     // Get tournament ID from URL
     const urlParams = new URLSearchParams(window.location.search);
@@ -521,8 +521,8 @@
       loadTournamentDetails();
     });
 
-    // Match detail function
-    function openMatchDetail() {
+    // Function to show placeholder message for static matches
+    function showMatchPlaceholder() {
       alert('Tính năng xem chi tiết trận đấu sẽ sớm được cập nhật!');
     }
 

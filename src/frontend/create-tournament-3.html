@@ -489,8 +489,8 @@
             try {
                 showLoading(true);
                 
-                // Import the static API
-                const { apiCall } = await import('../frontend/js/static-api.js');
+                // Import the hybrid API
+                const { apiCall } = await import('./js/hybrid-api.js');
                 const result = await apiCall('/tournaments', tournamentPayload, 'POST', true);
                 
                 if (result.success) {
