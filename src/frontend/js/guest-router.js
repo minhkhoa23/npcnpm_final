@@ -1,6 +1,6 @@
 // Guest Router - Ensures consistent guest navigation with login/register buttons
 import { renderGuestView } from './views/guestView.js';
-import { TokenManager } from './api.js';
+import { TokenManager } from './hybrid-api.js';
 
 class GuestRouter {
     constructor() {
