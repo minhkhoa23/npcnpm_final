@@ -1,5 +1,5 @@
 // Enhanced Search Component with Real-time Search, Debouncing, and Auto-complete
-import { apiCall, API_ENDPOINTS } from '../api.js';
+import { apiCall, API_ENDPOINTS } from '../hybrid-api.js';
 
 export class SearchComponent {
     constructor(options = {}) {
