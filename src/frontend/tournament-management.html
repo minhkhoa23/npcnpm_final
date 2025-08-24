@@ -159,22 +159,134 @@
         </div>
     </div>
 
-    <script src="../frontend/js/api.js"></script>
-    <script>
+    <script type="module">
+        import { apiCall, API_ENDPOINTS, TokenManager } from './js/api.js';
+
         let tournaments = [];
         let currentDeleteId = null;
 
         // Initialize page
         document.addEventListener('DOMContentLoaded', function() {
-            loadTournaments();
+            // Check authentication
+            if (!TokenManager.isAuthenticated()) {
+                window.location.href = 'login.html';
+                return;
+            }
+
+            const currentUser = TokenManager.getCurrentUser();
+            if (!currentUser || currentUser.role !== 'organizer') {
+                alert('Access denied. Organizer role required.');
+                window.location.href = 'dashboard.html';
+                return;
+            }
+
+            loadTournaments(currentUser._id);
             initializeEventListeners();
         });
 
-        function loadTournaments() {
-            // This would typically load from API
-            // For now, using existing DOM data
-            console.log('Loading tournaments...');
+        async function loadTournaments(organizerId) {
+            try {
+                const response = await apiCall(`${API_ENDPOINTS.TOURNAMENTS.BY_ORGANIZER(organizerId)}`, {}, 'GET', true);
+
+                if (response.success) {
+                    tournaments = response.data.tournaments || [];
+                    renderTournaments();
+                } else {
+                    console.error('Failed to load tournaments:', response.message);
+                    showEmptyState();
+                }
+            } catch (error) {
+                console.error('Error loading tournaments:', error);
+                showEmptyState();
+            }
         }
+
+        function renderTournaments() {
+            const tournamentList = document.getElementById('tournamentList');
+
+            if (tournaments.length === 0) {
+                showEmptyState();
+                return;
+            }
+
+            const tournamentsHTML = tournaments.map(tournament => `
+                <div class="tournament-item" data-tournament-id="${tournament._id}">
+                    <div class="tournament-avatar">
+                        <div class="avatar-3d">
+                            <img src="${tournament.avatarUrl || 'https://via.placeholder.com/120x120'}" alt="${tournament.name}">
+                        </div>
+                    </div>
+                    <div class="tournament-name">
+                        <h3>${tournament.name}</h3>
+                        <p><strong>Game:</strong> ${tournament.gameName || 'N/A'}</p>
+                        <p><strong>Status:</strong> ${getStatusText(tournament.status)}</p>
+                        <p><strong>Format:</strong> ${getFormatText(tournament.format)}</p>
+                        <p><strong>Participants:</strong> ${tournament.numberOfPlayers || 0}/${tournament.maxPlayers || 'N/A'}</p>
+                    </div>
+                    <div class="tournament-actions">
+                        <button class="manage-participants-btn" onclick="manageTournamentParticipants('${tournament._id}')">
+                            Quản lý người tham gia
+                        </button>
+                        <button class="edit-btn" onclick="editTournament('${tournament._id}')">
+                            Chỉnh sửa
+                        </button>
+                        <button class="delete-btn" onclick="showDeleteModal('${tournament._id}')">
+                            Xóa
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+
+            tournamentList.innerHTML = tournamentsHTML;
+        }
+
+        function showEmptyState() {
+            const tournamentList = document.getElementById('tournamentList');
+            tournamentList.innerHTML = `
+                <div class="empty-state" style="text-align: center; padding: 3rem; color: #666;">
+                    <h3>Bạn chưa có giải đấu nào</h3>
+                    <p>Hãy tạo giải đấu đầu tiên của bạn!</p>
+                    <button onclick="window.location.href='create-tournament-1.html'"
+                            style="margin-top: 1rem; padding: 0.75rem 1.5rem; background: #667eea; color: white; border: none; border-radius: 8px; cursor: pointer;">
+                        Tạo giải đấu mới
+                    </button>
+                </div>
+            `;
+        }
+
+        function getStatusText(status) {
+            const statusMap = {
+                'upcoming': 'Sắp diễn ra',
+                'ongoing': 'Đang diễn ra',
+                'completed': 'Đã kết thúc',
+                'cancelled': 'Đã hủy'
+            };
+            return statusMap[status] || status;
+        }
+
+        function getFormatText(format) {
+            const formatMap = {
+                'single-elimination': 'Đấu loại trực tiếp',
+                'double-elimination': 'Vòng tròn kép',
+                'group-stage': 'Đấu tổ hợp'
+            };
+            return formatMap[format] || format;
+        }
+
+        // Make functions global for onclick handlers
+        window.manageTournamentParticipants = function(tournamentId) {
+            window.location.href = `participant-management.html?tournamentId=${tournamentId}`;
+        };
+
+        window.editTournament = function(tournamentId) {
+            window.location.href = `tournament-editor.html?id=${tournamentId}`;
+        };
+
+        window.showDeleteModal = function(tournamentId) {
+            currentDeleteId = tournamentId;
+            const modal = document.getElementById('deleteModal');
+            modal.style.display = 'block';
+        };
 
         function initializeEventListeners() {
             // Delete button event listeners
