@@ -575,6 +575,47 @@ class LocalStorageAPI {
         };
     }
 
+    // Highlight CRUD methods
+    async updateHighlight(id, updateData) {
+        const highlights = this.getData('highlights');
+        const index = highlights.findIndex(h => h._id === id);
+
+        if (index === -1) {
+            throw new Error('Highlight not found');
+        }
+
+        highlights[index] = {
+            ...highlights[index],
+            ...updateData,
+            updatedAt: new Date().toISOString()
+        };
+
+        this.saveData('highlights', highlights);
+
+        return {
+            success: true,
+            message: 'Highlight updated successfully',
+            data: { highlight: highlights[index] }
+        };
+    }
+
+    async deleteHighlight(id) {
+        const highlights = this.getData('highlights');
+        const index = highlights.findIndex(h => h._id === id);
+
+        if (index === -1) {
+            throw new Error('Highlight not found');
+        }
+
+        highlights.splice(index, 1);
+        this.saveData('highlights', highlights);
+
+        return {
+            success: true,
+            message: 'Highlight deleted successfully'
+        };
+    }
+
     // Competitors endpoints
     async getCompetitors() {
         const competitors = this.getData('competitors');
