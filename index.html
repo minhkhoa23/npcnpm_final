@@ -81,7 +81,7 @@
     <div class="loading-logo">Tournament Manager</div>
     <div class="loading-text">Đang khởi động hệ thống...</div>
     <div class="loading-spinner"></div>
-    <div id="statusMessage" class="status-message">Khởi tạo cơ sở dữ liệu localStorage...</div>
+    <div id="statusMessage" class="status-message">Đang kết nối với backend server...</div>
   </div>
 
   <!-- Main Content -->
@@ -130,7 +130,7 @@
         <div class="success-icon">✅</div>
         <div class="loading-logo">Tournament Manager</div>
         <div class="loading-text">Hệ thống đã sẵn sàng!</div>
-        <div class="status-message">Kết nối với backend server...</div>
+        <div class="status-message">Đã kết nối với backend server thành công!</div>
       `;
 
       setTimeout(hideLoadingScreen, 2000);
@@ -192,8 +192,8 @@
         // Show success and hide loading
         showSuccess();
 
-        console.log('🎉 Tournament Management System initialized with localStorage!');
-        console.log('🚀 No backend server required - works with VS Code Live Server');
+        console.log('🎉 Tournament Management System initialized with backend API!');
+        console.log('🚀 Backend server connected successfully');
 
       } catch (error) {
         console.error('App initialization error:', error);
