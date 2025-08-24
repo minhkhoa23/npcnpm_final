@@ -161,22 +161,15 @@
         updateStatus('Đang khởi tạo hệ thống...');
 
         // Check if user is authenticated and token is valid
+        let isUserAuthenticated = false;
         if (TokenManager.isAuthenticated()) {
           try {
             // Verify token is still valid
             const user = TokenManager.getCurrentUser();
             if (user && user._id) {
-              // If authenticated, redirect to appropriate dashboard
-              updateStatus('Người dùng đã đăng nhập, chuyển hướng...');
-
-              if (user.role === 'admin') {
-                window.location.href = './src/frontend/dashboard.html';
-              } else if (user.role === 'organizer') {
-                window.location.href = './src/frontend/organizer-dashboard.html';
-              } else {
-                window.location.href = './src/frontend/dashboard.html';
-              }
-              return;
+              // User is authenticated, but don't redirect - let them stay on index
+              updateStatus('Người dùng đã đăng nhập, tải trang chủ...');
+              isUserAuthenticated = true;
             }
           } catch (error) {
             // Token is invalid, clear it and continue as guest
