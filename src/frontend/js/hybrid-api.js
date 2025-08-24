@@ -176,8 +176,8 @@ const callLocalStorageAPI = async (endpoint, data = {}, method = 'GET', requireA
             return api.getTournaments();
         }
     } else if (endpointLower.includes('/news')) {
-        if (endpointLower.includes('/published')) {
-            return api.getNews();
+        if (endpointLower.includes('/published') || endpointLower.includes('/featured')) {
+            return api.getFeaturedNews();
         } else if (method === 'POST') {
             return api.createNews(data);
         } else if (method === 'PUT') {
@@ -187,11 +187,11 @@ const callLocalStorageAPI = async (endpoint, data = {}, method = 'GET', requireA
             const id = endpoint.split('/').pop();
             return api.deleteNews(id);
         } else {
-            return api.getNews();
+            return api.getFeaturedNews();
         }
     } else if (endpointLower.includes('/highlights')) {
-        if (endpointLower.includes('/published')) {
-            return api.getHighlights();
+        if (endpointLower.includes('/published') || endpointLower.includes('/featured')) {
+            return api.getPublishedHighlights();
         } else if (method === 'POST') {
             return api.createHighlight(data);
         } else if (method === 'PUT') {
@@ -201,7 +201,7 @@ const callLocalStorageAPI = async (endpoint, data = {}, method = 'GET', requireA
             const id = endpoint.split('/').pop();
             return api.deleteHighlight(id);
         } else {
-            return api.getHighlights();
+            return api.getPublishedHighlights();
         }
     } else if (endpointLower.includes('/auth')) {
         if (endpointLower.includes('/login')) {
