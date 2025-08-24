@@ -1,5 +1,12 @@
-// API Configuration
-const API_BASE_URL = 'http://localhost:3000/api';
+// API Configuration - auto-detect environment
+const API_BASE_URL = (() => {
+    // If running on localhost, use localhost:3000
+    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+        return 'http://localhost:3000/api';
+    }
+    // Otherwise use relative URL (works in cloud environments)
+    return '/api';
+})();
 
 // Token management
 class TokenManager {
