@@ -227,51 +227,560 @@
         </div>
     </footer>
 
-    <script>
-        // Basic drag and drop functionality for tournament bracket
+    <script type="module">
+        import { apiCall, API_ENDPOINTS, TokenManager } from './js/api.js';
+
+        let tournament = null;
+        let matches = [];
+
+        // Initialize page
         document.addEventListener('DOMContentLoaded', function() {
-            const draggableElements = document.querySelectorAll('.draggable');
-            const matchContainers = document.querySelectorAll('.match-container');
-            
-            draggableElements.forEach(element => {
-                element.addEventListener('dragstart', handleDragStart);
-                element.addEventListener('dragend', handleDragEnd);
-            });
-            
-            matchContainers.forEach(container => {
-                container.addEventListener('dragover', handleDragOver);
-                container.addEventListener('drop', handleDrop);
-            });
-            
-            function handleDragStart(e) {
-                e.dataTransfer.setData('text/plain', e.target.dataset.match);
-                e.target.style.opacity = '0.5';
+            // Check authentication
+            if (!TokenManager.isAuthenticated()) {
+                window.location.href = 'login.html';
+                return;
             }
-            
-            function handleDragEnd(e) {
-                e.target.style.opacity = '1';
+
+            const currentUser = TokenManager.getCurrentUser();
+            if (!currentUser || currentUser.role !== 'organizer') {
+                alert('Access denied. Organizer role required.');
+                window.location.href = 'dashboard.html';
+                return;
             }
-            
-            function handleDragOver(e) {
-                e.preventDefault();
+
+            // Get tournament ID from URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const tournamentId = urlParams.get('id');
+
+            if (!tournamentId) {
+                alert('Tournament ID is required');
+                window.location.href = 'tournament-management.html';
+                return;
             }
-            
-            function handleDrop(e) {
-                e.preventDefault();
-                const matchData = e.dataTransfer.getData('text/plain');
-                // Handle match reordering logic here
-                console.log('Dropped match:', matchData);
-            }
-            
-            // Click handler for match results
-            const matchResultItems = document.querySelectorAll('.match-result-item.clickable');
-            matchResultItems.forEach(item => {
-                item.addEventListener('click', function() {
-                    // Navigate to match detail entry page
-                    window.location.href = 'match-detail-entry.html';
-                });
-            });
+
+            loadTournamentData(tournamentId, currentUser._id);
         });
+
+        async function loadTournamentData(tournamentId, userId) {
+            try {
+                // Load tournament details
+                const tournamentResponse = await apiCall(`${API_ENDPOINTS.TOURNAMENTS.BY_ID(tournamentId)}`, {}, 'GET', true);
+
+                if (!tournamentResponse.success) {
+                    alert('Tournament not found');
+                    window.location.href = 'tournament-management.html';
+                    return;
+                }
+
+                tournament = tournamentResponse.data.tournament;
+
+                // Check if user is the organizer
+                if (tournament.organizerId._id !== userId && tournament.organizerId !== userId) {
+                    alert('You can only edit your own tournaments');
+                    window.location.href = 'tournament-management.html';
+                    return;
+                }
+
+                // Update page title
+                document.title = `Chỉnh sửa ${tournament.name} - Tournament Manager`;
+
+                // Load matches for this tournament
+                await loadMatches(tournamentId);
+
+                // Update bracket display
+                updateBracketDisplay();
+
+            } catch (error) {
+                console.error('Error loading tournament data:', error);
+                alert('Error loading tournament data');
+                window.location.href = 'tournament-management.html';
+            }
+        }
+
+        async function loadMatches(tournamentId) {
+            try {
+                const response = await apiCall(`${API_ENDPOINTS.MATCHES.BY_TOURNAMENT(tournamentId)}`, {}, 'GET', true);
+
+                if (response.success) {
+                    matches = response.data.matches || [];
+                } else {
+                    matches = [];
+                }
+
+                renderMatches();
+            } catch (error) {
+                console.error('Error loading matches:', error);
+                matches = [];
+                renderMatches();
+            }
+        }
+
+        function renderMatches() {
+            const container = document.getElementById('matchesContainer');
+
+            if (matches.length === 0) {
+                container.innerHTML = `
+                    <div class="no-matches">
+                        <p>Chưa có trận đấu nào được tạo.</p>
+                        <button onclick="generateMatches()" class="btn-generate-matches">
+                            Tạo lịch thi đấu
+                        </button>
+                    </div>
+                `;
+                return;
+            }
+
+            // Group matches into rows (2 per row)
+            const matchRows = [];
+            for (let i = 0; i < matches.length; i += 2) {
+                matchRows.push(matches.slice(i, i + 2));
+            }
+
+            const matchesHTML = matchRows.map(row => `
+                <div class="match-row">
+                    ${row.map(match => `
+                        <div class="match-result-item clickable" onclick="openMatchEditor('${match._id}')">
+                            <div class="match-teams">
+                                <span class="team-1">${match.team1 || 'TBD'}</span>
+                                <span class="vs">VS</span>
+                                <span class="team-2">${match.team2 || 'TBD'}</span>
+                            </div>
+                            <div class="match-info">
+                                ${match.result ? `<div class="match-result">${match.result}</div>` : ''}
+                                <div class="match-status">${getMatchStatusText(match.status)}</div>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            `).join('');
+
+            container.innerHTML = matchesHTML;
+        }
+
+        function getMatchStatusText(status) {
+            const statusMap = {
+                'scheduled': 'Đã lên lịch',
+                'live': 'Đang diễn ra',
+                'completed': 'Đã kết thúc',
+                'cancelled': 'Đã hủy'
+            };
+            return statusMap[status] || status;
+        }
+
+        window.openMatchEditor = function(matchId) {
+            const match = matches.find(m => m._id === matchId);
+            if (!match) {
+                alert('Match not found');
+                return;
+            }
+
+            showMatchEditModal(match);
+        };
+
+        function showMatchEditModal(match) {
+            const modal = createMatchEditModal(match);
+            document.body.appendChild(modal);
+        }
+
+        function createMatchEditModal(match) {
+            const modal = document.createElement('div');
+            modal.className = 'match-edit-modal';
+            modal.innerHTML = `
+                <div class="modal-overlay">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h3>Cập nhật kết quả trận đấu</h3>
+                            <button class="close-btn" onclick="closeMatchModal()">&times;</button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="match-teams-display">
+                                <span class="team">${match.team1 || 'TBD'}</span>
+                                <span class="vs">VS</span>
+                                <span class="team">${match.team2 || 'TBD'}</span>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Kết quả:</label>
+                                <input type="text" id="matchResult" value="${match.result || ''}"
+                                       placeholder="Ví dụ: 2-1, Team A thắng, etc.">
+                            </div>
+
+                            <div class="form-group">
+                                <label>Trạng thái:</label>
+                                <select id="matchStatus">
+                                    <option value="scheduled" ${match.status === 'scheduled' ? 'selected' : ''}>Đã lên lịch</option>
+                                    <option value="live" ${match.status === 'live' ? 'selected' : ''}>Đang diễn ra</option>
+                                    <option value="completed" ${match.status === 'completed' ? 'selected' : ''}>Đã kết thúc</option>
+                                    <option value="cancelled" ${match.status === 'cancelled' ? 'selected' : ''}>Đã hủy</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Người thắng (tùy chọn):</label>
+                                <select id="matchWinner">
+                                    <option value="">Chưa xác định</option>
+                                    <option value="${match.team1}" ${match.winner === match.team1 ? 'selected' : ''}>${match.team1 || 'Team 1'}</option>
+                                    <option value="${match.team2}" ${match.winner === match.team2 ? 'selected' : ''}>${match.team2 || 'Team 2'}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn-cancel" onclick="closeMatchModal()">Hủy</button>
+                            <button class="btn-save" onclick="saveMatchResult('${match._id}')">Lưu</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            // Add modal styles
+            const style = document.createElement('style');
+            style.textContent = `
+                .match-edit-modal {
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    z-index: 1000;
+                }
+
+                .modal-overlay {
+                    width: 100%;
+                    height: 100%;
+                    background: rgba(0, 0, 0, 0.5);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                }
+
+                .modal-content {
+                    background: white;
+                    border-radius: 8px;
+                    width: 90%;
+                    max-width: 500px;
+                    max-height: 90vh;
+                    overflow-y: auto;
+                }
+
+                .modal-header {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    padding: 1rem;
+                    border-bottom: 1px solid #e2e8f0;
+                }
+
+                .modal-header h3 {
+                    margin: 0;
+                    color: #2d3748;
+                }
+
+                .close-btn {
+                    background: none;
+                    border: none;
+                    font-size: 1.5rem;
+                    cursor: pointer;
+                    color: #718096;
+                }
+
+                .modal-body {
+                    padding: 1rem;
+                }
+
+                .match-teams-display {
+                    text-align: center;
+                    margin-bottom: 1rem;
+                    padding: 1rem;
+                    background: #f7fafc;
+                    border-radius: 8px;
+                }
+
+                .match-teams-display .team {
+                    font-weight: 600;
+                    color: #2d3748;
+                }
+
+                .match-teams-display .vs {
+                    margin: 0 1rem;
+                    color: #718096;
+                }
+
+                .form-group {
+                    margin-bottom: 1rem;
+                }
+
+                .form-group label {
+                    display: block;
+                    margin-bottom: 0.5rem;
+                    font-weight: 500;
+                    color: #2d3748;
+                }
+
+                .form-group input,
+                .form-group select {
+                    width: 100%;
+                    padding: 0.75rem;
+                    border: 1px solid #e2e8f0;
+                    border-radius: 6px;
+                    font-size: 1rem;
+                }
+
+                .modal-footer {
+                    display: flex;
+                    justify-content: end;
+                    gap: 0.5rem;
+                    padding: 1rem;
+                    border-top: 1px solid #e2e8f0;
+                }
+
+                .btn-cancel,
+                .btn-save {
+                    padding: 0.75rem 1.5rem;
+                    border: none;
+                    border-radius: 6px;
+                    font-weight: 500;
+                    cursor: pointer;
+                }
+
+                .btn-cancel {
+                    background: #e2e8f0;
+                    color: #2d3748;
+                }
+
+                .btn-save {
+                    background: #667eea;
+                    color: white;
+                }
+
+                .btn-save:hover {
+                    background: #5a67d8;
+                }
+
+                .btn-generate-matches {
+                    background: #667eea;
+                    color: white;
+                    border: none;
+                    padding: 0.75rem 1.5rem;
+                    border-radius: 6px;
+                    cursor: pointer;
+                    font-weight: 500;
+                }
+
+                .no-matches {
+                    text-align: center;
+                    padding: 2rem;
+                    color: #718096;
+                }
+
+                .match-result-item {
+                    border: 1px solid #e2e8f0;
+                    border-radius: 8px;
+                    padding: 1rem;
+                    margin: 0.5rem;
+                    cursor: pointer;
+                    transition: all 0.2s ease;
+                    background: white;
+                }
+
+                .match-result-item:hover {
+                    border-color: #667eea;
+                    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.1);
+                }
+
+                .match-teams {
+                    text-align: center;
+                    margin-bottom: 0.5rem;
+                }
+
+                .match-teams .team-1,
+                .match-teams .team-2 {
+                    font-weight: 600;
+                    color: #2d3748;
+                }
+
+                .match-teams .vs {
+                    margin: 0 0.5rem;
+                    color: #718096;
+                }
+
+                .match-info {
+                    text-align: center;
+                    font-size: 0.9rem;
+                }
+
+                .match-result {
+                    color: #667eea;
+                    font-weight: 500;
+                    margin-bottom: 0.25rem;
+                }
+
+                .match-status {
+                    color: #718096;
+                }
+
+                .loading-message {
+                    text-align: center;
+                    padding: 2rem;
+                    color: #718096;
+                }
+            `;
+            modal.appendChild(style);
+
+            return modal;
+        }
+
+        window.closeMatchModal = function() {
+            const modal = document.querySelector('.match-edit-modal');
+            if (modal) {
+                document.body.removeChild(modal);
+            }
+        };
+
+        window.saveMatchResult = async function(matchId) {
+            const result = document.getElementById('matchResult').value.trim();
+            const status = document.getElementById('matchStatus').value;
+            const winner = document.getElementById('matchWinner').value;
+
+            try {
+                const updateData = {
+                    result: result || null,
+                    status: status,
+                    winner: winner || null
+                };
+
+                const response = await apiCall(`${API_ENDPOINTS.MATCHES.BY_ID(matchId)}`, updateData, 'PUT', true);
+
+                if (response.success) {
+                    // Update local match data
+                    const matchIndex = matches.findIndex(m => m._id === matchId);
+                    if (matchIndex !== -1) {
+                        matches[matchIndex] = { ...matches[matchIndex], ...updateData };
+                    }
+
+                    // Re-render matches
+                    renderMatches();
+
+                    // Close modal
+                    closeMatchModal();
+
+                    showNotification('Cập nhật kết quả thành công!', 'success');
+                } else {
+                    alert('Lỗi khi cập nhật kết quả: ' + response.message);
+                }
+            } catch (error) {
+                console.error('Error updating match result:', error);
+                alert('Có lỗi xảy ra khi cập nhật kết quả');
+            }
+        };
+
+        window.generateMatches = async function() {
+            if (!tournament || !tournament.competitor || tournament.competitor.length < 2) {
+                alert('Cần ít nhất 2 đội để tạo lịch thi đấu');
+                return;
+            }
+
+            if (confirm('Tạo lịch thi đấu cho giải đấu này?')) {
+                try {
+                    // This is a simplified match generation - in a real system,
+                    // you'd implement proper bracket generation based on tournament format
+                    const competitors = tournament.competitor;
+                    const generatedMatches = [];
+
+                    // Generate matches based on tournament format
+                    if (tournament.format === 'single-elimination') {
+                        // Simple elimination bracket
+                        for (let i = 0; i < competitors.length; i += 2) {
+                            if (i + 1 < competitors.length) {
+                                generatedMatches.push({
+                                    tournamentId: tournament._id,
+                                    team1: competitors[i].name,
+                                    team2: competitors[i + 1].name,
+                                    round: 1,
+                                    status: 'scheduled'
+                                });
+                            }
+                        }
+                    } else {
+                        // For other formats, generate round-robin or group matches
+                        for (let i = 0; i < competitors.length; i++) {
+                            for (let j = i + 1; j < competitors.length; j++) {
+                                generatedMatches.push({
+                                    tournamentId: tournament._id,
+                                    team1: competitors[i].name,
+                                    team2: competitors[j].name,
+                                    round: 1,
+                                    status: 'scheduled'
+                                });
+                            }
+                        }
+                    }
+
+                    // Create matches via API
+                    const promises = generatedMatches.map(match =>
+                        apiCall(API_ENDPOINTS.MATCHES.BASE, match, 'POST', true)
+                    );
+
+                    await Promise.all(promises);
+
+                    // Reload matches
+                    await loadMatches(tournament._id);
+
+                    showNotification('Lịch thi đấu đã được tạo thành công!', 'success');
+                } catch (error) {
+                    console.error('Error generating matches:', error);
+                    alert('Có lỗi xảy ra khi tạo lịch thi đấu');
+                }
+            }
+        };
+
+        function updateBracketDisplay() {
+            // Update bracket visualization if needed
+            // This could show a visual bracket based on tournament format
+        }
+
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.textContent = message;
+
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: ${type === 'success' ? '#28a745' : type === 'error' ? '#dc3545' : '#17a2b8'};
+                color: white;
+                padding: 1rem 1.5rem;
+                border-radius: 8px;
+                z-index: 1000;
+                animation: slideIn 0.3s ease;
+            `;
+
+            document.body.appendChild(notification);
+
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.3s ease';
+                setTimeout(() => {
+                    if (document.body.contains(notification)) {
+                        document.body.removeChild(notification);
+                    }
+                }, 300);
+            }, 3000);
+        }
+
+        // Add CSS for animations
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideIn {
+                from { transform: translateX(100%); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+
+            @keyframes slideOut {
+                from { transform: translateX(0); opacity: 1; }
+                to { transform: translateX(100%); opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
     </script>
 </body>
 </html>
