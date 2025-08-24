@@ -111,8 +111,13 @@ class TokenManager {
 const callBackendAPI = async (endpoint, data = {}, method = 'GET', requireAuth = false) => {
     const url = endpoint.startsWith('http') ? endpoint : `${API_BASE_URL}${endpoint}`;
 
+    // Add timeout controller for faster fallback
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 5000); // 5 second timeout
+
     const options = {
         method,
+        signal: controller.signal,
         headers: {
             'Content-Type': 'application/json'
         }
@@ -133,14 +138,21 @@ const callBackendAPI = async (endpoint, data = {}, method = 'GET', requireAuth =
         options.body = JSON.stringify(data);
     }
 
-    const response = await fetch(url, options);
-    const result = await response.json();
+    try {
+        const response = await fetch(url, options);
+        clearTimeout(timeoutId);
 
-    if (!response.ok) {
-        throw new Error(result.message || `HTTP ${response.status}: ${response.statusText}`);
+        const result = await response.json();
+
+        if (!response.ok) {
+            throw new Error(result.message || `HTTP ${response.status}: ${response.statusText}`);
+        }
+
+        return result;
+    } catch (error) {
+        clearTimeout(timeoutId);
+        throw error;
     }
-
-    return result;
 };
 
 // LocalStorage API call
