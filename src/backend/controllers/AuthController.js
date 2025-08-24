@@ -3,6 +3,7 @@ const User = require('../models/User');
 const { generateToken, generateRefreshToken } = require('../utils/jwt');
 const fs = require('fs');
 const path = require('path');
+const { v4: uuidv4 } = require('uuid');
 
 class AuthController {
     // Get mock users data
@@ -29,6 +30,17 @@ class AuthController {
             global.mockUsers = new Map();
         }
         global.mockUsers.set(userId, userData);
+    }
+
+    // Save users to JSON file
+    static saveMockUsers(users) {
+        try {
+            const mockDataPath = path.join(__dirname, '../data/users.json');
+            fs.writeFileSync(mockDataPath, JSON.stringify(users, null, 4), 'utf8');
+            console.log('Users data saved to JSON file');
+        } catch (error) {
+            console.error('Error saving users data:', error);
+        }
     }
 
     // Register new user
@@ -70,8 +82,16 @@ class AuthController {
                 });
             }
 
-            // Check if user already exists in database
-            const existingUser = await User.findOne({ email });
+            // Check if user already exists - check both database and JSON file
+            let existingUser = null;
+
+            if (global.mockMode) {
+                const mockUsers = this.getMockUsers();
+                existingUser = mockUsers.find(user => user.email === email);
+            } else {
+                existingUser = await User.findOne({ email });
+            }
+
             if (existingUser) {
                 return res.status(400).json({
                     success: false,
@@ -82,35 +102,75 @@ class AuthController {
             // Hash password
             const passwordHash = await bcrypt.hash(password, 10);
 
-            // Create new user in database
-            const newUser = new User({
-                email,
-                fullName,
-                passwordHash,
-                role,
-                avatarUrl: `https://images.unsplash.com/photo-${Math.floor(Math.random() * 1000000)}?w=150&h=150&fit=crop&crop=face`
-            });
+            if (global.mockMode) {
+                // Create new user in JSON file
+                const newUserId = uuidv4().replace(/-/g, '').substring(0, 24);
+                const newUser = {
+                    _id: newUserId,
+                    email,
+                    fullName,
+                    passwordHash,
+                    role,
+                    avatarUrl: `https://images.unsplash.com/photo-${Math.floor(Math.random() * 1000000)}?w=150&h=150&fit=crop&crop=face`,
+                    createdAt: new Date().toISOString(),
+                    updatedAt: new Date().toISOString()
+                };
 
-            await newUser.save();
-            console.log('User created in database:', { email, fullName, role });
+                // Add to JSON file
+                const mockUsers = this.getMockUsers();
+                mockUsers.push(newUser);
+                this.saveMockUsers(mockUsers);
 
-            // Generate tokens
-            const token = generateToken(newUser._id);
-            const refreshToken = generateRefreshToken(newUser._id);
+                console.log('User created in JSON file:', { email, fullName, role });
 
-            // Remove password from response
-            const userResponse = { ...newUser };
-            delete userResponse.passwordHash;
+                // Generate tokens
+                const token = generateToken(newUserId, role);
+                const refreshToken = generateRefreshToken(newUserId);
 
-            res.status(201).json({
-                success: true,
-                message: 'User registered successfully',
-                data: {
-                    user: userResponse,
-                    token,
-                    refreshToken
-                }
-            });
+                // Remove password from response
+                const userResponse = { ...newUser };
+                delete userResponse.passwordHash;
+
+                res.status(201).json({
+                    success: true,
+                    message: 'User registered successfully',
+                    data: {
+                        user: userResponse,
+                        token,
+                        refreshToken
+                    }
+                });
+            } else {
+                // Create new user in database
+                const newUser = new User({
+                    email,
+                    fullName,
+                    passwordHash,
+                    role,
+                    avatarUrl: `https://images.unsplash.com/photo-${Math.floor(Math.random() * 1000000)}?w=150&h=150&fit=crop&crop=face`
+                });
+
+                await newUser.save();
+                console.log('User created in database:', { email, fullName, role });
+
+                // Generate tokens
+                const token = generateToken(newUser._id, role);
+                const refreshToken = generateRefreshToken(newUser._id);
+
+                // Remove password from response
+                const userResponse = { ...newUser };
+                delete userResponse.passwordHash;
+
+                res.status(201).json({
+                    success: true,
+                    message: 'User registered successfully',
+                    data: {
+                        user: userResponse,
+                        token,
+                        refreshToken
+                    }
+                });
+            }
         } catch (error) {
             console.error('Registration error:', error);
             res.status(500).json({
@@ -133,9 +193,17 @@ class AuthController {
                 });
             }
 
-            // Find user in database
-            const dbUser = await User.findOne({ email });
-            
+            let dbUser = null;
+
+            if (global.mockMode) {
+                // Find user in JSON file
+                const mockUsers = this.getMockUsers();
+                dbUser = mockUsers.find(user => user.email === email);
+            } else {
+                // Find user in database
+                dbUser = await User.findOne({ email });
+            }
+
             if (!dbUser) {
                 return res.status(401).json({
                     success: false,
@@ -145,7 +213,7 @@ class AuthController {
 
             // Verify password using bcrypt
             const isPasswordValid = await bcrypt.compare(password, dbUser.passwordHash);
-            
+
             if (!isPasswordValid) {
                 return res.status(401).json({
                     success: false,
