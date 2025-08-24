@@ -294,32 +294,44 @@
         
         if (response.success && response.data.tournament) {
           const tournament = response.data.tournament;
-          
+          window.currentTournament = tournament; // Store globally for bracket rendering
+
           // Update page title
           document.title = `${tournament.name} - Tournament Manager`;
-          
+
           // Update tournament title and basic info
           document.querySelector('.tournament-title').textContent = tournament.name;
-          
+
           // Update organizer info
           updateOrganizerInfo(tournament.organizerId);
-          
+
           // Update tournament status and dates
           updateTournamentStatus(tournament.status, tournament.startDate, tournament.endDate);
-          
-          // Update bracket with competitors
+
+          // Load matches first, then update bracket
+          let matches = [];
+          try {
+            const matchResponse = await apiCall(API_ENDPOINTS.MATCHES.BY_TOURNAMENT(tournamentId), {}, 'GET');
+            if (matchResponse.success) {
+              matches = matchResponse.data.matches || [];
+            }
+          } catch (error) {
+            console.error('Error loading matches:', error);
+          }
+
+          // Update bracket with competitors and matches
           if (tournament.competitor && tournament.competitor.length > 0) {
-            updateBracketDiagram(tournament.competitor);
+            updateBracketDiagram(tournament.competitor, tournament, matches);
           }
-          
-          // Load matches if tournament has started
-          if (tournament.status !== 'upcoming') {
-            loadTournamentMatches(tournamentId);
+
+          // Update matches grid
+          if (matches.length > 0) {
+            updateMatchesGrid(matches);
           }
-          
+
           // Load highlights if available
           loadTournamentHighlights(tournamentId);
-          
+
         } else {
           console.error('Failed to load tournament details');
           alert('Không thể tải thông tin giải đấu');
