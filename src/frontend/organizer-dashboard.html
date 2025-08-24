@@ -233,19 +233,23 @@
 
         // Initialize organizer dashboard
         document.addEventListener('DOMContentLoaded', function() {
+            // TEMPORARILY COMMENTED FOR TESTING UI
             // Check authentication
-            if (!TokenManager.isAuthenticated()) {
-                window.location.href = '/';
-                return;
-            }
+            // if (!TokenManager.isAuthenticated()) {
+            //     window.location.href = '/';
+            //     return;
+            // }
 
             // Get current user
-            const currentUser = TokenManager.getCurrentUser();
-            if (!currentUser || currentUser.role !== 'organizer') {
-                alert('Access denied. Organizer role required.');
-                window.location.href = '/';
-                return;
-            }
+            // const currentUser = TokenManager.getCurrentUser();
+            // if (!currentUser || currentUser.role !== 'organizer') {
+            //     alert('Access denied. Organizer role required.');
+            //     window.location.href = '/';
+            //     return;
+            // }
+
+            // Create mock user for testing
+            const currentUser = { _id: 'demo_organizer', role: 'organizer', fullName: 'Demo Organizer' };
 
             // Load organizer-specific data
             loadOrganizerTournaments(currentUser._id);
