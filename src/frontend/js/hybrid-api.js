@@ -233,9 +233,22 @@ const callLocalStorageAPI = async (endpoint, data = {}, method = 'GET', requireA
             return api.login(data);
         } else if (endpointLower.includes('/register')) {
             return api.register(data);
+        } else if (endpointLower.includes('/logout')) {
+            return api.logout();
         } else if (endpointLower.includes('/profile')) {
-            return api.getUserProfile();
+            if (method === 'GET') {
+                const token = TokenManager.getToken();
+                return api.getUserProfile(token);
+            } else if (method === 'PUT') {
+                const token = TokenManager.getToken();
+                const decoded = JSON.parse(atob(token));
+                return api.updateUserProfile(decoded.userId, data, token);
+            }
         }
+    } else if (endpointLower.includes('/competitors')) {
+        return api.getCompetitors();
+    } else if (endpointLower.includes('/health')) {
+        return api.health();
     }
 
     throw new Error(`Endpoint not supported in localStorage mode: ${endpoint}`);
