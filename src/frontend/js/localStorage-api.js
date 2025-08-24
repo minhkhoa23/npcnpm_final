@@ -195,18 +195,31 @@ class LocalStorageAPI {
             throw new Error('Email and password are required');
         }
 
+        // Make sure data is initialized
+        await this.initializeData();
+
         const users = this.getData('users');
+        console.log(`🔍 Login attempt for: ${email}`);
+        console.log(`📊 Total users in database: ${users.length}`);
+        console.log(`👥 Available emails:`, users.map(u => u.email));
+
         const user = users.find(u => u.email === email);
 
         if (!user) {
+            console.error(`❌ User not found: ${email}`);
             throw new Error('Tài khoản không tồn tại. Vui lòng kiểm tra lại email hoặc đăng ký tài khoản mới.');
         }
+
+        console.log(`✅ User found: ${user.fullName} (${user.role})`);
 
         // Verify password
         const isValid = await this.verifyPassword(password, user.passwordHash);
         if (!isValid) {
+            console.error(`❌ Password verification failed for: ${email}`);
             throw new Error('Mật khẩu không đúng. Vui lòng nhập lại mật khẩu.');
         }
+
+        console.log(`🎉 Login successful for: ${email}`);
 
         // Generate token
         const token = btoa(JSON.stringify({ userId: user._id, role: user.role }));
