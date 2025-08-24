@@ -190,7 +190,7 @@ class LocalStorageAPI {
 
     async login(credentials) {
         const { email, password } = credentials;
-        
+
         if (!email || !password) {
             throw new Error('Email and password are required');
         }
@@ -219,6 +219,77 @@ class LocalStorageAPI {
                 token
             }
         };
+    }
+
+    // Get user profile by token
+    async getUserProfile(token) {
+        if (!token) {
+            throw new Error('Authentication token is required');
+        }
+
+        try {
+            // Decode token
+            const decoded = JSON.parse(atob(token));
+            const userId = decoded.userId;
+
+            const users = this.getData('users');
+            const user = users.find(u => u._id === userId);
+
+            if (!user) {
+                throw new Error('User not found');
+            }
+
+            return {
+                success: true,
+                data: {
+                    user: { ...user, passwordHash: undefined }
+                }
+            };
+        } catch (error) {
+            throw new Error('Invalid token');
+        }
+    }
+
+    // Update user profile
+    async updateUserProfile(userId, updateData, token) {
+        if (!token) {
+            throw new Error('Authentication token is required');
+        }
+
+        try {
+            // Verify token
+            const decoded = JSON.parse(atob(token));
+            if (decoded.userId !== userId) {
+                throw new Error('Unauthorized: Cannot update other user profile');
+            }
+
+            const users = this.getData('users');
+            const userIndex = users.findIndex(u => u._id === userId);
+
+            if (userIndex === -1) {
+                throw new Error('User not found');
+            }
+
+            // Update user data
+            users[userIndex] = {
+                ...users[userIndex],
+                ...updateData,
+                _id: userId, // Ensure ID doesn't change
+                updatedAt: new Date().toISOString()
+            };
+
+            this.saveData('users', users);
+
+            return {
+                success: true,
+                message: 'Profile updated successfully',
+                data: {
+                    user: { ...users[userIndex], passwordHash: undefined }
+                }
+            };
+        } catch (error) {
+            throw new Error('Failed to update profile: ' + error.message);
+        }
     }
 
     // Tournament endpoints
