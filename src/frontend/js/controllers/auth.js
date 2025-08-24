@@ -151,7 +151,7 @@ class AuthController {
 
         const urlParams = new URLSearchParams(window.location.search);
         const redirectUrl = urlParams.get('redirect');
-        
+
         if (redirectUrl) {
             window.location.href = redirectUrl;
         } else {
@@ -161,6 +161,9 @@ class AuthController {
                     break;
                 case 'organizer':
                     window.location.href = '/organizer-dashboard.html';
+                    break;
+                case 'user':
+                    window.location.href = '/dashboard.html';
                     break;
                 default:
                     window.location.href = '/index.html';
