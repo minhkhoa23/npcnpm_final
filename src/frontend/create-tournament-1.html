@@ -462,6 +462,21 @@
         // Load saved data on page load
         window.addEventListener('load', loadSavedData);
 
+        // Initialize navigation
+        import('./js/navigation.js').then(module => {
+            const { NavigationManager } = module;
+            NavigationManager.initializeHomeNavigation();
+        }).catch(error => {
+            console.error('Navigation module not found, using fallback:', error);
+            // Fallback navigation for organizer
+            const homeButtons = document.querySelectorAll('.home-button, .nav-item');
+            homeButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    window.location.href = 'organizer-dashboard.html';
+                });
+            });
+        });
+
         // Add CSS for animations and selection states
         const style = document.createElement('style');
         style.textContent = `
