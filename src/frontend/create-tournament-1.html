@@ -436,16 +436,24 @@
             const savedData = localStorage.getItem('tournamentCreationData');
             if (savedData) {
                 const data = JSON.parse(savedData);
-                
+
                 document.getElementById('tournamentName').value = data.tournamentName || '';
                 document.getElementById('gameName').value = data.gameName || '';
                 document.getElementById('playerCount').value = data.playerCount || '';
-                
+
                 if (data.selectedGame) {
                     const gameOption = document.querySelector(`[data-game="${data.selectedGame}"]`);
                     if (gameOption) {
                         gameOption.classList.add('selected');
                         selectedGame = data.selectedGame;
+                    }
+                }
+
+                if (data.format) {
+                    const formatOption = document.querySelector(`[data-format="${data.format}"]`);
+                    if (formatOption) {
+                        formatOption.classList.add('selected');
+                        selectedFormat = data.format;
                     }
                 }
             }
