@@ -1,4 +1,4 @@
-import { apiCall, API_ENDPOINTS } from '../api.js';
+import { apiCall, API_ENDPOINTS } from '../hybrid-api.js';
 import { createCarousel } from '../carousel.js';
 
 /**
