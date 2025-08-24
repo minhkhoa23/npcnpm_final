@@ -283,19 +283,67 @@
 /* Highlights Section Special Styling */
 .highlights-section {
     background: #870606;
-    padding: 3rem 1rem;
-    margin-left: -1rem;
-    margin-right: -1rem;
+    padding: 3rem 0;
+    margin: 0 auto 4rem auto;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.highlights-section .section-header {
+    width: 100%;
+    max-width: 1200px;
+    padding: 0 1rem;
 }
 
 .highlights-section .section-header h2 {
     color: #fff;
-    -webkit-text-stroke: 3px #fff;
+    font-family: 'Inter', sans-serif;
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 2rem;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    line-height: 1.2;
+}
+
+.highlights-section .highlights-carousel {
+    width: 100%;
+    max-width: 1200px;
+    padding: 0 1rem;
+}
+
+.highlights-section .section-controls {
+    display: flex;
+    gap: 1.5rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
 }
 
 .highlights-section .section-controls button {
     background: #fff;
     color: #870606;
+    font-family: 'Inter', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 600;
+    padding: 1.2rem 2.5rem;
+    border-radius: 50px;
+    border: 2px solid transparent;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.highlights-section .section-controls button:hover {
+    background: #870606;
+    color: #fff;
+    border-color: #fff;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
 }
 
 /* Organizers Grid */
