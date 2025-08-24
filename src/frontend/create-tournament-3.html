@@ -509,7 +509,7 @@
                     
                     // Redirect after success
                     setTimeout(() => {
-                        window.location.href = '/organizer-dashboard.html';
+                        window.location.href = 'organizer-dashboard.html';
                     }, 2000);
                 } else {
                     throw new Error(result.message || 'Có lỗi xảy ra khi tạo giải đấu');
@@ -532,7 +532,7 @@
             }
 
             if (!endDate) {
-                showError('Vui lòng chọn ngày kết thúc.');
+                showError('Vui lòng chọn ngày k��t thúc.');
                 return false;
             }
 
