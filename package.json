@@ -5,7 +5,7 @@
   "main": "simple-server.js",
   "scripts": {
     "start": "node simple-server.js",
-    "dev": "cd src/backend && npm run dev",
+    "dev": "node simple-server.js",
     "backend": "cd src/backend && npm start",
     "test": "node src/backend/tests/utils.node-test.cjs",
     "install:backend": "cd src/backend && npm install"
