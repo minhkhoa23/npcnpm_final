@@ -14,11 +14,24 @@ class LocalStorageAPI {
         if (!localStorage.getItem('tournament_users')) {
             try {
                 // Try to load users from JSON file
+                console.log('🔄 Attempting to load users from JSON file...');
                 const response = await fetch('./src/backend/data/users.json');
+                console.log('📡 JSON fetch response status:', response.status);
+
+                if (!response.ok) {
+                    throw new Error(`Failed to fetch users: ${response.status}`);
+                }
+
                 const users = await response.json();
+                console.log(`📊 Loaded ${users.length} users from JSON file`);
+                console.log('👥 Sample emails:', users.slice(0, 3).map(u => u.email));
+
                 localStorage.setItem('tournament_users', JSON.stringify(users));
-                console.log('📁 Loaded users from JSON file');
+                console.log('💾 Users saved to localStorage');
             } catch (error) {
+                console.error('❌ Failed to load users from JSON file:', error.message);
+                console.log('🔧 Creating default users...');
+
                 // Create default users if file doesn't exist
                 const defaultUsers = [
                     {
