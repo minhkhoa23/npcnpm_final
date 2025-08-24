@@ -1,9 +1,121 @@
 import { loadTranslations } from '../lang.js';
-import { apiCall, API_ENDPOINTS } from '../static-api.js';
+import { apiCall, API_ENDPOINTS, TokenManager } from '../static-api.js';
 import { createCarousel } from '../carousel.js';
 import { loadTournamentsCarousel, loadNewsCarousel, loadHighlightsCarousel } from '../utils/carouselLoaders.js';
 
 export async function renderGuestView() {
+  // Check if user is authenticated
+  const isAuthenticated = TokenManager.isAuthenticated();
+  const currentUser = isAuthenticated ? TokenManager.getCurrentUser() : null;
+
+  // Generate appropriate header content based on authentication status
+  const headerRightContent = isAuthenticated ? `
+    <div class="user-menu">
+      <button class="user-menu-btn">
+        <svg class="user-icon" width="35" height="35" viewBox="0 0 35 35" fill="none">
+          <path d="M29.1667 30.625V27.7083C29.1667 26.1612 28.5521 24.6775 27.458 23.5835C26.364 22.4896 24.8803 21.875 23.3333 21.875H11.6667C10.1196 21.875 8.63591 22.4896 7.54195 23.5835C6.44798 24.6775 5.83334 26.1612 5.83334 27.7083V30.625M23.3333 10.2083C23.3333 13.4299 20.7216 16.0417 17.5 16.0417C14.2784 16.0417 11.6667 13.4299 11.6667 10.2083C11.6667 6.98674 14.2784 4.375 17.5 4.375C20.7216 4.375 23.3333 6.98674 23.3333 10.2083Z" stroke="#F5F5F5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span class="user-name">${currentUser?.fullName || currentUser?.email || 'User'}</span>
+        <svg class="dropdown-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+          <path d="M15 7.5L10 12.5L5 7.5" stroke="#F5F5F5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+      <div class="user-dropdown">
+        <a href="./src/frontend/dashboard.html" class="dropdown-item">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <path d="M7.5 10H12.5M7.5 13.3333H12.5M10 1.66667L2.5 6.66667V16.6667C2.5 17.1087 2.67559 17.5326 2.98816 17.8452C3.30072 18.1577 3.72464 18.3333 4.16667 18.3333H15.8333C16.2754 18.3333 16.6993 18.1577 17.0118 17.8452C17.3244 17.5326 17.5 17.1087 17.5 16.6667V6.66667L10 1.66667Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Dashboard
+        </a>
+        <a href="./src/frontend/user-profile.html" class="dropdown-item">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <path d="M16.6667 17.5V15.8333C16.6667 14.9493 16.3155 14.1014 15.6904 13.4763C15.0652 12.8512 14.2174 12.5 13.3333 12.5H6.66667C5.78261 12.5 4.93476 12.8512 4.30964 13.4763C3.68452 14.1014 3.33333 14.9493 3.33333 15.8333V17.5M13.3333 6.66667C13.3333 8.50762 11.841 10 10 10C8.15905 10 6.66667 8.50762 6.66667 6.66667C6.66667 4.82571 8.15905 3.33333 10 3.33333C11.841 3.33333 13.3333 4.82571 13.3333 6.66667Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Hồ sơ
+        </a>
+        ${currentUser?.role === 'organizer' || currentUser?.role === 'admin' ? `
+        <a href="./src/frontend/create-tournament-1.html" class="dropdown-item">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <path d="M10 4.16667V15.8333M4.16667 10H15.8333" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Tạo giải đấu
+        </a>
+        ` : ''}
+        <div class="dropdown-divider"></div>
+        <button class="dropdown-item logout-btn" onclick="globalLogout()">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <path d="M7.5 17.5H4.16667C3.72464 17.5 3.30072 17.3244 2.98816 17.0118C2.67559 16.6993 2.5 16.2754 2.5 15.8333V4.16667C2.5 3.72464 2.67559 3.30072 2.98816 2.98816C3.30072 2.67559 3.72464 2.5 4.16667 2.5H7.5M13.3333 14.1667L17.5 10M17.5 10L13.3333 5.83333M17.5 10H7.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Đăng xuất
+        </button>
+      </div>
+    </div>
+  ` : `
+    <button id="loginGuestBtn" class="auth-btn login-btn" data-route="/login">
+      <svg class="auth-icon" width="35" height="35" viewBox="0 0 35 35" fill="none">
+        <path d="M21.875 4.375H27.7083C28.4819 4.375 29.2237 4.68229 29.7707 5.22927C30.3177 5.77625 30.625 6.51812 30.625 7.29167V27.7083C30.625 28.4819 30.3177 29.2237 29.7707 29.7707C29.2237 30.3177 28.4819 30.625 27.7083 30.625H21.875M14.5833 24.7917L21.875 17.5M21.875 17.5L14.5833 10.2083M21.875 17.5H4.375" stroke="#303030" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      Đăng nhập
+    </button>
+    <button id="registerGuestBtn" class="auth-btn register-btn" data-route="/register">
+      <svg class="auth-icon" width="35" height="35" viewBox="0 0 35 35" fill="none">
+        <path d="M17.5 10.2083C17.5 8.66124 16.8854 7.17751 15.7914 6.08354C14.6975 4.98958 13.2138 4.375 11.6667 4.375H2.91666V26.25H13.125C14.2853 26.25 15.3981 26.7109 16.2186 27.5314C17.0391 28.3519 17.5 29.4647 17.5 30.625M17.5 10.2083V30.625M17.5 10.2083C17.5 8.66124 18.1146 7.17751 19.2085 6.08354C20.3025 4.98958 21.7862 4.375 23.3333 4.375H32.0833V26.25H21.875C20.7147 26.25 19.6019 26.7109 18.7814 27.5314C17.9609 28.3519 17.5 29.4647 17.5 30.625" stroke="#2C2C2C" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      Đăng ký
+    </button>
+  `;
+
+  // Generate CTA section content based on authentication status
+  const ctaContent = isAuthenticated ? `
+    <div class="cta-content">
+      <div class="cta-left">
+        <h2 class="cta-title">CHÀO MỪNG TRỞ LẠI, ${currentUser?.fullName || 'BẠN'}!</h2>
+        <p class="cta-description">Khám phá các giải đấu mới hoặc tạo giải đấu của riêng bạn</p>
+        <div class="cta-buttons">
+          ${currentUser?.role === 'organizer' || currentUser?.role === 'admin' ? `
+          <a href="./src/frontend/create-tournament-1.html" class="cta-btn primary">
+            Tạo giải đấu mới
+          </a>
+          ` : ''}
+          <a href="./src/frontend/dashboard.html" class="cta-btn secondary">
+            Vào Dashboard
+          </a>
+        </div>
+      </div>
+      <div class="cta-right">
+        <div class="cta-thumbnails">
+          <div class="thumbnail-item"></div>
+          <div class="thumbnail-item"></div>
+          <div class="thumbnail-item"></div>
+          <div class="thumbnail-item"></div>
+        </div>
+      </div>
+    </div>
+  ` : `
+    <div class="cta-content">
+      <div class="cta-left">
+        <h2 class="cta-title">MUỐN TỔ CHỨC GIẢI ĐẤU, HÃY THAM GIA VỚI CHÚNG TÔI</h2>
+        <p class="cta-description">Tổ chức giải đấu, chọn thể lệ, quản lý giải đấu và nhiều hơn thế nữa ...</p>
+        <div class="cta-buttons">
+          <button id="ctaLoginBtn" class="cta-btn login">
+            Đăng nhập
+          </button>
+          <button id="ctaRegisterBtn" class="cta-btn register">
+            Đăng ký
+          </button>
+        </div>
+      </div>
+      <div class="cta-right">
+        <div class="cta-thumbnails">
+          <div class="thumbnail-item"></div>
+          <div class="thumbnail-item"></div>
+          <div class="thumbnail-item"></div>
+          <div class="thumbnail-item"></div>
+        </div>
+      </div>
+    </div>
+  `;
+
   document.body.innerHTML = `
     <!-- Header Navigation -->
     <header class="main-header">
