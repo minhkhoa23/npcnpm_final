@@ -464,6 +464,36 @@ class LocalStorageAPI {
         };
     }
 
+    // Get all highlights (alias for getPublishedHighlights)
+    async getHighlights() {
+        return await this.getPublishedHighlights();
+    }
+
+    // Get featured highlights
+    async getFeaturedHighlights() {
+        const highlights = this.getData('highlights');
+
+        const featured = highlights
+            .filter(highlight =>
+                (highlight.status === 'published' || highlight.status === 'public') &&
+                (highlight.featured === true || highlight.isFeatured === true)
+            )
+            .sort((a, b) => new Date(b.createdAt || b.publishedAt) - new Date(a.createdAt || a.publishedAt))
+            .slice(0, 5)
+            .map(highlight => ({
+                ...highlight,
+                status: 'published',
+                featured: true,
+                views: highlight.views || Math.floor(Math.random() * 15000),
+                likes: highlight.likes || Math.floor(Math.random() * 2000)
+            }));
+
+        return {
+            success: true,
+            data: { highlights: featured }
+        };
+    }
+
     // Competitors endpoints
     async getCompetitors() {
         const competitors = this.getData('competitors');
