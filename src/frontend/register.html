@@ -22,7 +22,7 @@
   <header class="main-header">
     <div class="header-container">
       <div class="header-left">
-        <div class="nav-item" onclick="window.location.href='../../index.html'">
+        <div class="nav-item" onclick="window.location.href='../../index.html'" style="cursor: pointer;">
           <svg class="nav-icon" width="40" height="40" viewBox="0 0 40 40" fill="none">
             <path d="M15 36.6667V20H25V36.6667M5 15L20 3.33334L35 15V33.3333C35 34.2174 34.6488 35.0652 34.0237 35.6904C33.3986 36.3155 32.5507 36.6667 31.6667 36.6667H8.33333C7.44928 36.6667 6.60143 36.3155 5.97631 35.6904C5.35119 35.0652 5 34.2174 5 33.3333V15Z" stroke="#F5F5F5" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
@@ -68,40 +68,44 @@
         
         <form id="registerForm" class="register-form-content">
           <div class="form-group">
-            <input 
-              type="text" 
-              id="usernameInput" 
-              class="form-input" 
-              placeholder="Nhập tên tài khoản hoặc số điện thoại"
+            <input
+              type="email"
+              id="usernameInput"
+              name="email"
+              class="form-input"
+              placeholder="Nhập email"
               required
             >
           </div>
           
           <div class="form-group">
-            <input 
-              type="password" 
-              id="passwordInput" 
-              class="form-input" 
+            <input
+              type="password"
+              id="passwordInput"
+              name="password"
+              class="form-input"
               placeholder="Nhập mật khẩu"
               required
             >
           </div>
           
           <div class="form-group">
-            <input 
-              type="password" 
-              id="confirmPasswordInput" 
-              class="form-input" 
+            <input
+              type="password"
+              id="confirmPasswordInput"
+              name="confirmPassword"
+              class="form-input"
               placeholder="Nhập lại mật khẩu"
               required
             >
           </div>
           
           <div class="form-group">
-            <input 
-              type="text" 
-              id="displayNameInput" 
-              class="form-input" 
+            <input
+              type="text"
+              id="displayNameInput"
+              name="fullName"
+              class="form-input"
               placeholder="Nhập tên người dùng của bạn"
               required
             >
@@ -213,41 +217,44 @@
   <!-- Scripts -->
   <script type="module" src="./js/localStorage-api.js"></script>
   <script>
-    // Registration form submission
+    // Registration form submission using consistent field mapping
     document.getElementById('registerForm').addEventListener('submit', async function(e) {
       e.preventDefault();
-      
-      const email = document.getElementById('usernameInput').value;
-      const password = document.getElementById('passwordInput').value;
-      const confirmPassword = document.getElementById('confirmPasswordInput').value;
-      const fullName = document.getElementById('displayNameInput').value;
-      const role = document.querySelector('input[name="role"]:checked')?.value;
-      
+
+      const formData = new FormData(e.target);
+      const userData = {
+        email: formData.get('email'),
+        password: formData.get('password'),
+        fullName: formData.get('fullName'),
+        role: formData.get('role')
+      };
+      const confirmPassword = formData.get('confirmPassword');
+
       // Validation
-      if (!email || !password || !confirmPassword || !fullName || !role) {
+      if (!userData.email || !userData.password || !confirmPassword || !userData.fullName || !userData.role) {
         alert('Vui lòng nhập đầy đủ thông tin!');
         return;
       }
-      
+
       // Kiểm tra email format
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!emailRegex.test(email)) {
+      if (!emailRegex.test(userData.email)) {
         alert('Email không hợp lệ!');
         return;
       }
-      
-      if (password !== confirmPassword) {
+
+      if (userData.password !== confirmPassword) {
         alert('Mật khẩu xác nhận không khớp! Vui lòng nhập lại.');
         document.getElementById('confirmPasswordInput').value = '';
         document.getElementById('confirmPasswordInput').focus();
         return;
       }
-      
-      if (password.length < 6) {
+
+      if (userData.password.length < 6) {
         alert('Mật khẩu phải có ít nhất 6 ký tự!');
         return;
       }
-      
+
       try {
         // Wait for localStorage API to be ready
         console.log('🔐 Waiting for localStorage API...');
@@ -263,13 +270,8 @@
 
         console.log('🔐 Attempting registration...');
 
-        // Use localStorage API instead of fetch
-        const result = await window.localStorageAPI.register({
-          email: email,
-          password: password,
-          fullName: fullName,
-          role: role
-        });
+        // Use localStorage API with consistent data structure
+        const result = await window.localStorageAPI.register(userData);
 
         if (result.success) {
           alert('Đăng ký thành công! Vui lòng đăng nhập.');

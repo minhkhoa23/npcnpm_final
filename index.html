@@ -160,20 +160,29 @@
 
         updateStatus('Đang khởi tạo hệ thống...');
 
-        // Check if user is authenticated
+        // Check if user is authenticated and token is valid
         if (TokenManager.isAuthenticated()) {
-          // If authenticated, redirect to appropriate dashboard
-          updateStatus('Người dùng đã đăng nhập, chuyển hướng...');
-          const user = TokenManager.getCurrentUser();
+          try {
+            // Verify token is still valid
+            const user = TokenManager.getCurrentUser();
+            if (user && user._id) {
+              // If authenticated, redirect to appropriate dashboard
+              updateStatus('Người dùng đã đăng nhập, chuyển hướng...');
 
-          if (user && user.role === 'admin') {
-            window.location.href = './src/frontend/dashboard.html';
-          } else if (user && user.role === 'organizer') {
-            window.location.href = './src/frontend/organizer-dashboard.html';
-          } else {
-            window.location.href = './src/frontend/dashboard.html';
+              if (user.role === 'admin') {
+                window.location.href = './src/frontend/dashboard.html';
+              } else if (user.role === 'organizer') {
+                window.location.href = './src/frontend/organizer-dashboard.html';
+              } else {
+                window.location.href = './src/frontend/dashboard.html';
+              }
+              return;
+            }
+          } catch (error) {
+            // Token is invalid, clear it and continue as guest
+            console.error('Invalid token, clearing:', error);
+            TokenManager.removeToken();
           }
-          return;
         }
 
         updateStatus('Đang tải giao diện guest...');
@@ -197,6 +206,28 @@
 
     // Start initialization when DOM is ready
     document.addEventListener('DOMContentLoaded', initializeApp);
+
+    // Global logout function
+    window.globalLogout = function() {
+      TokenManager.removeToken();
+      // Always redirect to index.html for logout
+      if (window.location.pathname !== '/' && window.location.pathname !== '/index.html') {
+        window.location.href = '/';
+      } else {
+        // If already on index.html, reload to show guest view
+        window.location.reload();
+      }
+    };
+
+    // Handle authentication expiry across all pages
+    window.addEventListener('storage', function(e) {
+      if (e.key === 'authToken' && e.newValue === null) {
+        // Token was removed, redirect to index
+        if (window.location.pathname !== '/' && window.location.pathname !== '/index.html') {
+          window.location.href = '/';
+        }
+      }
+    });
 
     // Global error handling
     window.addEventListener('error', (event) => {

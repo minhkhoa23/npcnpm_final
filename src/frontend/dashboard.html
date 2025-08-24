@@ -268,8 +268,9 @@
   </footer>
 
   <!-- Scripts -->
+  <script type="module" src="./js/localStorage-api.js"></script>
   <script type="module">
-    import { apiCall, API_ENDPOINTS } from './js/api.js';
+    import { apiCall, API_ENDPOINTS } from './js/static-api.js';
     import { createCarousel } from './js/carousel.js';
     
     // Dashboard functionality
@@ -277,12 +278,17 @@
       // Follow button functionality
       document.querySelectorAll('.follow-btn').forEach(btn => {
         btn.addEventListener('click', function() {
+          const tournamentCard = this.closest('.organizer-card');
+          const tournamentId = tournamentCard?.dataset?.tournamentId;
+
           if (this.textContent === 'theo dõi') {
             this.textContent = 'đã theo dõi';
             this.style.background = '#4CAF50';
+            followTournament(tournamentId);
           } else {
             this.textContent = 'theo dõi';
             this.style.background = '';
+            unfollowTournament(tournamentId);
           }
         });
       });
@@ -306,6 +312,17 @@
 
     async function loadTournaments() {
       try {
+        // Wait for localStorage API to be ready
+        let attempts = 0;
+        while (!window.localStorageAPI && attempts < 50) {
+          await new Promise(resolve => setTimeout(resolve, 100));
+          attempts++;
+        }
+
+        if (!window.localStorageAPI) {
+          throw new Error('localStorage API not ready after 5 seconds');
+        }
+
         // Thử lấy giải đang diễn ra trước
         let res = await apiCall(API_ENDPOINTS.TOURNAMENTS.ONGOING, {}, 'GET');
         let tournaments = res?.data?.tournaments || [];
@@ -345,6 +362,17 @@
 
     async function loadNews() {
       try {
+        // Wait for localStorage API to be ready
+        let attempts = 0;
+        while (!window.localStorageAPI && attempts < 50) {
+          await new Promise(resolve => setTimeout(resolve, 100));
+          attempts++;
+        }
+
+        if (!window.localStorageAPI) {
+          throw new Error('localStorage API not ready after 5 seconds');
+        }
+
         const res = await apiCall(API_ENDPOINTS.NEWS.PUBLISHED, {}, 'GET');
         let news = res?.data?.news || [];
         
@@ -373,6 +401,17 @@
 
     async function loadHighlights() {
       try {
+        // Wait for localStorage API to be ready
+        let attempts = 0;
+        while (!window.localStorageAPI && attempts < 50) {
+          await new Promise(resolve => setTimeout(resolve, 100));
+          attempts++;
+        }
+
+        if (!window.localStorageAPI) {
+          throw new Error('localStorage API not ready after 5 seconds');
+        }
+
         const res = await apiCall(API_ENDPOINTS.HIGHLIGHTS.PUBLISHED, {}, 'GET');
         let highlights = res?.data?.highlights || [];
         
@@ -399,6 +438,59 @@
       }
     }
 
+    // Follow/Unfollow tournament functions
+    function followTournament(tournamentId) {
+      if (!tournamentId) return;
+
+      const currentUser = TokenManager.getCurrentUser();
+      if (!currentUser) return;
+
+      try {
+        const savedTournaments = JSON.parse(localStorage.getItem(`followedTournaments_${currentUser._id}`)) || [];
+        if (!savedTournaments.includes(tournamentId)) {
+          savedTournaments.push(tournamentId);
+          localStorage.setItem(`followedTournaments_${currentUser._id}`, JSON.stringify(savedTournaments));
+          console.log('Tournament followed:', tournamentId);
+        }
+      } catch (error) {
+        console.error('Error following tournament:', error);
+      }
+    }
+
+    function unfollowTournament(tournamentId) {
+      if (!tournamentId) return;
+
+      const currentUser = TokenManager.getCurrentUser();
+      if (!currentUser) return;
+
+      try {
+        const savedTournaments = JSON.parse(localStorage.getItem(`followedTournaments_${currentUser._id}`)) || [];
+        const updatedTournaments = savedTournaments.filter(id => id !== tournamentId);
+        localStorage.setItem(`followedTournaments_${currentUser._id}`, JSON.stringify(updatedTournaments));
+        console.log('Tournament unfollowed:', tournamentId);
+      } catch (error) {
+        console.error('Error unfollowing tournament:', error);
+      }
+    }
+
+    // Logout functionality - check authentication on page load
+    window.addEventListener('load', function() {
+      if (!TokenManager.isAuthenticated()) {
+        window.location.href = '/';
+        return;
+      }
+
+      // Setup logout button if exists
+      const logoutBtn = document.getElementById('logoutBtn');
+      if (logoutBtn) {
+        logoutBtn.addEventListener('click', function() {
+          if (confirm('Bạn có muốn đăng xuất không?')) {
+            TokenManager.removeToken();
+            window.location.href = '/';
+          }
+        });
+      }
+    });
 
   </script>
 </body>

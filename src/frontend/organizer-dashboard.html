@@ -19,7 +19,7 @@
                         <path d="M5 20H35M5 10H35M5 30H35" stroke="#F3F3F3" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
                     </svg>
                 </button>
-                <button class="home-button" onclick="window.location.href='dashboard.html'">
+                <button class="home-button" onclick="window.location.href='/'">
                     <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
                         <path d="M15 36.6667V20H25V36.6667M5 15L20 3.33333L35 15V33.3333C35 34.2174 34.6488 35.0652 34.0237 35.6904C33.3986 36.3155 32.5507 36.6667 31.6667 36.6667H8.33333C7.44928 36.6667 6.60143 36.3155 5.97631 35.6904C5.35119 35.0652 5 34.2174 5 33.3333V15Z" stroke="#F5F5F5" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
                     </svg>
@@ -59,7 +59,7 @@
                     </svg>
                 </button>
                 
-                <div class="user-avatar">
+                <div class="user-avatar" id="userAvatar" title="Click để đăng xuất">
                     <img src="https://api.builder.io/api/v1/image/assets/TEMP/2791d338714d3870b4bb42ac5a5390446faac948?width=80" alt="User Avatar">
                 </div>
             </div>
@@ -88,42 +88,7 @@
                     </svg>
                 </button>
                 <div class="tournaments-grid" id="tournaments-grid">
-                    <div class="tournament-card">
-                        <div class="tournament-image">
-                            <img src="https://api.builder.io/api/v1/image/assets/TEMP/036505534371a586d445b9136dc7c87ecab53729?width=364" alt="Tournament 1">
-                        </div>
-                        <div class="tournament-info">
-                            <h3>Giải Đấu Esports 2025</h3>
-                            <p>Đang diễn ra</p>
-                        </div>
-                    </div>
-                    <div class="tournament-card">
-                        <div class="tournament-image">
-                            <img src="https://api.builder.io/api/v1/image/assets/TEMP/036505534371a586d445b9136dc7c87ecab53729?width=364" alt="Tournament 2">
-                        </div>
-                        <div class="tournament-info">
-                            <h3>Championship League</h3>
-                            <p>Sắp diễn ra</p>
-                        </div>
-                    </div>
-                    <div class="tournament-card">
-                        <div class="tournament-image">
-                            <img src="https://api.builder.io/api/v1/image/assets/TEMP/036505534371a586d445b9136dc7c87ecab53729?width=364" alt="Tournament 3">
-                        </div>
-                        <div class="tournament-info">
-                            <h3>Pro Gaming Series</h3>
-                            <p>Đã kết thúc</p>
-                        </div>
-                    </div>
-                    <div class="tournament-card">
-                        <div class="tournament-image">
-                            <img src="https://api.builder.io/api/v1/image/assets/TEMP/036505534371a586d445b9136dc7c87ecab53729?width=364" alt="Tournament 4">
-                        </div>
-                        <div class="tournament-info">
-                            <h3>Weekly Competition</h3>
-                            <p>Đang diễn ra</p>
-                        </div>
-                    </div>
+                    <div class="loading-placeholder">Đang tải giải đấu...</div>
                 </div>
                 <button class="carousel-btn next" id="tournaments-next">
                     <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
@@ -138,8 +103,8 @@
             <div class="section-header">
                 <h2>Cập nhật tin tức giải đấu của bạn</h2>
                 <div class="section-controls">
-                    <button class="manage-news-btn">Quản lý tin tức của bạn</button>
-                    <button class="add-news-btn">Thêm tin tức mới</button>
+                    <button class="manage-news-btn" onclick="window.location.href='news-management.html'">Quản lý tin tức của bạn</button>
+                    <button class="add-news-btn" onclick="window.location.href='create-news.html'">Thêm tin tức mới</button>
                 </div>
             </div>
             <div class="news-carousel">
@@ -149,33 +114,7 @@
                     </svg>
                 </button>
                 <div class="news-grid" id="news-grid">
-                    <div class="news-card">
-                        <div class="news-image">
-                            <img src="https://api.builder.io/api/v1/image/assets/TEMP/6a3282d5e9f3a76176baa5168512e890d813f89b?width=446" alt="News 1">
-                        </div>
-                        <div class="news-info">
-                            <h3>Khai mạc giải đấu mùa xuân</h3>
-                            <p>15/01/2025</p>
-                        </div>
-                    </div>
-                    <div class="news-card">
-                        <div class="news-image">
-                            <img src="https://api.builder.io/api/v1/image/assets/TEMP/6a3282d5e9f3a76176baa5168512e890d813f89b?width=446" alt="News 2">
-                        </div>
-                        <div class="news-info">
-                            <h3>Cập nhật luật thi đấu</h3>
-                            <p>12/01/2025</p>
-                        </div>
-                    </div>
-                    <div class="news-card">
-                        <div class="news-image">
-                            <img src="https://api.builder.io/api/v1/image/assets/TEMP/6a3282d5e9f3a76176baa5168512e890d813f89b?width=446" alt="News 3">
-                        </div>
-                        <div class="news-info">
-                            <h3>Giải thưởng hấp dẫn</h3>
-                            <p>10/01/2025</p>
-                        </div>
-                    </div>
+                    <div class="loading-placeholder">Đang tải tin tức...</div>
                 </div>
                 <button class="carousel-btn next" id="news-next">
                     <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
@@ -190,8 +129,8 @@
             <div class="section-header">
                 <h2>Quản lý HIGHLIGHT</h2>
                 <div class="section-controls">
-                    <button class="manage-highlights-btn">Quản lý highlight của bạn</button>
-                    <button class="create-highlights-btn">Tạo highlight mới của bạn</button>
+                    <button class="manage-highlights-btn" onclick="window.location.href='highlight-management.html'">Quản lý highlight của bạn</button>
+                    <button class="create-highlights-btn" onclick="window.location.href='create-highlight.html'">Tạo highlight mới của bạn</button>
                 </div>
             </div>
             <div class="highlights-carousel">
@@ -201,62 +140,7 @@
                     </svg>
                 </button>
                 <div class="highlights-grid" id="highlights-grid">
-                    <div class="highlight-card">
-                        <div class="highlight-image">
-                            <img src="https://api.builder.io/api/v1/image/assets/TEMP/6a3282d5e9f3a76176baa5168512e890d813f89b?width=446" alt="Highlight 1">
-                            <div class="play-button">
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                                    <path d="M8 5v14l11-7z" fill="#fff"/>
-                                </svg>
-                            </div>
-                        </div>
-                        <div class="highlight-info">
-                            <h3>Top Plays - Tuần 1</h3>
-                            <p>2:45</p>
-                        </div>
-                    </div>
-                    <div class="highlight-card">
-                        <div class="highlight-image">
-                            <img src="https://api.builder.io/api/v1/image/assets/TEMP/6a3282d5e9f3a76176baa5168512e890d813f89b?width=446" alt="Highlight 2">
-                            <div class="play-button">
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                                    <path d="M8 5v14l11-7z" fill="#fff"/>
-                                </svg>
-                            </div>
-                        </div>
-                        <div class="highlight-info">
-                            <h3>Final Match Recap</h3>
-                            <p>5:12</p>
-                        </div>
-                    </div>
-                    <div class="highlight-card">
-                        <div class="highlight-image">
-                            <img src="https://api.builder.io/api/v1/image/assets/TEMP/6a3282d5e9f3a76176baa5168512e890d813f89b?width=446" alt="Highlight 3">
-                            <div class="play-button">
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                                    <path d="M8 5v14l11-7z" fill="#fff"/>
-                                </svg>
-                            </div>
-                        </div>
-                        <div class="highlight-info">
-                            <h3>Best Moments</h3>
-                            <p>3:28</p>
-                        </div>
-                    </div>
-                    <div class="highlight-card">
-                        <div class="highlight-image">
-                            <img src="https://api.builder.io/api/v1/image/assets/TEMP/6a3282d5e9f3a76176baa5168512e890d813f89b?width=446" alt="Highlight 4">
-                            <div class="play-button">
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                                    <path d="M8 5v14l11-7z" fill="#fff"/>
-                                </svg>
-                            </div>
-                        </div>
-                        <div class="highlight-info">
-                            <h3>Pro Skills Showcase</h3>
-                            <p>4:15</p>
-                        </div>
-                    </div>
+                    <div class="loading-placeholder">Đang tải highlights...</div>
                 </div>
                 <button class="carousel-btn next" id="highlights-next">
                     <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
@@ -266,52 +150,13 @@
             </div>
         </section>
 
-        <!-- Organizers Following Section -->
+        <!-- Following Tournaments Section -->
         <section class="organizers-section">
             <div class="section-header">
                 <h2>Theo dõi các giải đấu để nhận thông báo mới nhất từ các nhà tổ chức hàng đầu</h2>
             </div>
-            <div class="organizers-grid">
-                <div class="organizer-card">
-                    <div class="organizer-image">
-                        <img src="https://api.builder.io/api/v1/image/assets/TEMP/ddb1cc92770c71e345f46a5daa69ebcf884a6526?width=446" alt="Organizer 1">
-                    </div>
-                    <div class="organizer-info">
-                        <h3>ESL Gaming</h3>
-                        <p>Nhà tổ chức hàng đầu</p>
-                    </div>
-                    <button class="follow-btn">theo dõi</button>
-                </div>
-                <div class="organizer-card">
-                    <div class="organizer-image">
-                        <img src="https://api.builder.io/api/v1/image/assets/TEMP/ddb1cc92770c71e345f46a5daa69ebcf884a6526?width=446" alt="Organizer 2">
-                    </div>
-                    <div class="organizer-info">
-                        <h3>Riot Games</h3>
-                        <p>Chuyên nghiệp</p>
-                    </div>
-                    <button class="follow-btn">theo dõi</button>
-                </div>
-                <div class="organizer-card">
-                    <div class="organizer-image">
-                        <img src="https://api.builder.io/api/v1/image/assets/TEMP/ddb1cc92770c71e345f46a5daa69ebcf884a6526?width=446" alt="Organizer 3">
-                    </div>
-                    <div class="organizer-info">
-                        <h3>DreamHack</h3>
-                        <p>Sự kiện lớn</p>
-                    </div>
-                    <button class="follow-btn">theo dõi</button>
-                </div>
-                <div class="organizer-card">
-                    <div class="organizer-image">
-                        <img src="https://api.builder.io/api/v1/image/assets/TEMP/ddb1cc92770c71e345f46a5daa69ebcf884a6526?width=446" alt="Organizer 4">
-                    </div>
-                    <div class="organizer-info">
-                        <h3>MLG Events</h3>
-                        <p>Kinh nghiệm lâu năm</p>
-                    </div>
-                    <button class="follow-btn">theo dõi</button>
-                </div>
+            <div class="organizers-grid" id="following-grid">
+                <div class="loading-placeholder">Đang tải giải đấu đã lưu...</div>
             </div>
         </section>
     </main>
@@ -367,100 +212,292 @@
         </div>
     </footer>
 
-    <script src="../frontend/js/api.js"></script>
-    <script src="../frontend/js/controllers/OrganizerController.js"></script>
-    <script>
+    <script type="module">
+        import { apiCall, API_ENDPOINTS, TokenManager } from './js/api.js';
+
         // Initialize organizer dashboard
         document.addEventListener('DOMContentLoaded', function() {
-            // Initialize carousel functionality
-            initializeCarousels();
+            // Check authentication
+            if (!TokenManager.isAuthenticated()) {
+                window.location.href = '/';
+                return;
+            }
+
+            // Get current user
+            const currentUser = TokenManager.getCurrentUser();
+            if (!currentUser || currentUser.role !== 'organizer') {
+                alert('Access denied. Organizer role required.');
+                window.location.href = '/';
+                return;
+            }
+
+            // Load organizer-specific data
+            loadOrganizerTournaments(currentUser._id);
+            loadOrganizerNews(currentUser._id);
+            loadOrganizerHighlights(currentUser._id);
+            loadFollowedTournaments(currentUser._id);
             
-            // Load organizer data
-            loadOrganizerData();
+            // Setup logout functionality
+            setupLogout();
         });
 
-        function initializeCarousels() {
-            // Tournament carousel
-            setupCarousel('tournaments');
-            // News carousel  
-            setupCarousel('news');
-            // Highlights carousel
-            setupCarousel('highlights');
-        }
-
-        function setupCarousel(type) {
-            const prevBtn = document.getElementById(`${type}-prev`);
-            const nextBtn = document.getElementById(`${type}-next`);
-            const grid = document.getElementById(`${type}-grid`);
-            
-            if (!grid) return;
-            
-            let currentIndex = 0;
-            const itemsPerView = getItemsPerView();
-            const totalItems = grid.children.length;
-            const maxIndex = Math.max(0, totalItems - itemsPerView);
-
-            function updateCarousel() {
-                const translateX = -(currentIndex * (100 / itemsPerView));
-                grid.style.transform = `translateX(${translateX}%)`;
-                
-                // Update button states
-                if (prevBtn) prevBtn.disabled = currentIndex === 0;
-                if (nextBtn) nextBtn.disabled = currentIndex >= maxIndex;
-            }
-
-            if (prevBtn) {
-                prevBtn.addEventListener('click', () => {
-                    if (currentIndex > 0) {
-                        currentIndex--;
-                        updateCarousel();
-                    }
-                });
-            }
-
-            if (nextBtn) {
-                nextBtn.addEventListener('click', () => {
-                    if (currentIndex < maxIndex) {
-                        currentIndex++;
-                        updateCarousel();
-                    }
-                });
-            }
-
-            // Initial update
-            updateCarousel();
-        }
-
-        function getItemsPerView() {
-            if (window.innerWidth <= 768) return 1;
-            if (window.innerWidth <= 1024) return 2;
-            return 3;
-        }
-
-        function loadOrganizerData() {
-            // Load tournaments, news, highlights data
-            // This would typically come from API
-            console.log('Loading organizer dashboard data...');
-        }
-
-        // Follow button functionality
-        document.addEventListener('click', function(e) {
-            if (e.target.classList.contains('follow-btn')) {
-                const btn = e.target;
-                if (btn.textContent === 'theo dõi') {
-                    btn.textContent = 'đã theo dõi';
-                    btn.classList.add('following');
+        // Load organizer's tournaments
+        async function loadOrganizerTournaments(organizerId) {
+            try {
+                const response = await apiCall(`${API_ENDPOINTS.TOURNAMENTS.BY_ORGANIZER(organizerId)}`, {}, 'GET', true);
+                if (response.success) {
+                    const tournaments = response.data.tournaments || [];
+                    renderTournaments(tournaments);
                 } else {
-                    btn.textContent = 'theo dõi';
-                    btn.classList.remove('following');
+                    console.error('Failed to load tournaments:', response.message);
+                    renderEmptyState('tournaments', 'Không có giải đấu nào');
                 }
+            } catch (error) {
+                console.error('Error loading organizer tournaments:', error);
+                renderEmptyState('tournaments', 'Lỗi tải giải đấu');
             }
-        });
+        }
 
-        // Responsive carousel update
-        window.addEventListener('resize', function() {
-            initializeCarousels();
-        });
+        // Load organizer's news
+        async function loadOrganizerNews(authorId) {
+            try {
+                const response = await apiCall(`${API_ENDPOINTS.NEWS.BY_AUTHOR(authorId)}`, {}, 'GET', true);
+                if (response.success) {
+                    const news = response.data.news || [];
+                    renderNews(news);
+                } else {
+                    console.error('Failed to load news:', response.message);
+                    renderEmptyState('news', 'Không có tin tức nào');
+                }
+            } catch (error) {
+                console.error('Error loading organizer news:', error);
+                renderEmptyState('news', 'Lỗi tải tin tức');
+            }
+        }
+
+        // Load organizer's highlights (filter by tournament ownership)
+        async function loadOrganizerHighlights(organizerId) {
+            try {
+                // First get organizer's tournaments
+                const tournamentsResponse = await apiCall(`${API_ENDPOINTS.TOURNAMENTS.BY_ORGANIZER(organizerId)}`, {}, 'GET', true);
+                if (!tournamentsResponse.success) {
+                    renderEmptyState('highlights', 'Không có highlight nào');
+                    return;
+                }
+
+                const tournaments = tournamentsResponse.data.tournaments || [];
+                const tournamentIds = tournaments.map(t => t._id);
+
+                if (tournamentIds.length === 0) {
+                    renderEmptyState('highlights', 'Không có highlight nào');
+                    return;
+                }
+
+                // Get all highlights and filter by tournament
+                const highlightsResponse = await apiCall(API_ENDPOINTS.HIGHLIGHTS.BASE, {}, 'GET');
+                if (highlightsResponse.success) {
+                    const allHighlights = highlightsResponse.data.highlights || [];
+                    const organizerHighlights = allHighlights.filter(h => 
+                        h.tournamentId && tournamentIds.includes(h.tournamentId._id || h.tournamentId)
+                    );
+                    renderHighlights(organizerHighlights);
+                } else {
+                    renderEmptyState('highlights', 'Không có highlight nào');
+                }
+            } catch (error) {
+                console.error('Error loading organizer highlights:', error);
+                renderEmptyState('highlights', 'Lỗi tải highlights');
+            }
+        }
+
+        // Load followed tournaments from localStorage
+        function loadFollowedTournaments(userId) {
+            try {
+                const savedTournaments = JSON.parse(localStorage.getItem(`followedTournaments_${userId}`)) || [];
+                if (savedTournaments.length === 0) {
+                    renderFollowingEmptyState();
+                    return;
+                }
+
+                // Fetch full tournament data for saved IDs
+                Promise.all(
+                    savedTournaments.map(id => apiCall(`${API_ENDPOINTS.TOURNAMENTS.BY_ID(id)}`, {}, 'GET'))
+                ).then(responses => {
+                    const tournaments = responses
+                        .filter(r => r.success)
+                        .map(r => r.data.tournament || r.data);
+                    renderFollowedTournaments(tournaments);
+                }).catch(error => {
+                    console.error('Error loading followed tournaments:', error);
+                    renderFollowingEmptyState();
+                });
+            } catch (error) {
+                console.error('Error loading followed tournaments:', error);
+                renderFollowingEmptyState();
+            }
+        }
+
+        // Render functions
+        function renderTournaments(tournaments) {
+            const grid = document.getElementById('tournaments-grid');
+            if (!grid) return;
+
+            if (tournaments.length === 0) {
+                renderEmptyState('tournaments', 'Bạn chưa tạo giải đấu nào');
+                return;
+            }
+
+            grid.innerHTML = tournaments.map(tournament => `
+                <div class="tournament-card" onclick="window.location.href='tournament-detail.html?id=${tournament._id}'">
+                    <div class="tournament-image">
+                        <img src="${tournament.avatarUrl || 'https://via.placeholder.com/364x200'}" alt="${tournament.name}">
+                    </div>
+                    <div class="tournament-info">
+                        <h3>${tournament.name}</h3>
+                        <p>${getStatusText(tournament.status)}</p>
+                        <small>Game: ${tournament.gameName || 'N/A'}</small>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderNews(newsItems) {
+            const grid = document.getElementById('news-grid');
+            if (!grid) return;
+
+            if (newsItems.length === 0) {
+                renderEmptyState('news', 'Bạn chưa tạo tin tức nào');
+                return;
+            }
+
+            grid.innerHTML = newsItems.map(news => `
+                <div class="news-card" onclick="window.location.href='view-news.html?id=${news._id}'">
+                    <div class="news-image">
+                        <img src="${news.images && news.images[0] || 'https://via.placeholder.com/446x250'}" alt="${news.title}">
+                    </div>
+                    <div class="news-info">
+                        <h3>${news.title}</h3>
+                        <p>${new Date(news.publishedAt || news.createdAt).toLocaleDateString('vi-VN')}</p>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderHighlights(highlights) {
+            const grid = document.getElementById('highlights-grid');
+            if (!grid) return;
+
+            if (highlights.length === 0) {
+                renderEmptyState('highlights', 'Không có highlight nào cho giải đấu của bạn');
+                return;
+            }
+
+            grid.innerHTML = highlights.map(highlight => `
+                <div class="highlight-card" onclick="window.location.href='view-highlight.html?id=${highlight._id}'">
+                    <div class="highlight-image">
+                        <img src="${highlight.thumbnailUrl || 'https://via.placeholder.com/446x250'}" alt="${highlight.title}">
+                        <div class="play-button">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                <path d="M8 5v14l11-7z" fill="#fff"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="highlight-info">
+                        <h3>${highlight.title}</h3>
+                        <p>${highlight.duration || '0:00'}</p>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderFollowedTournaments(tournaments) {
+            const grid = document.getElementById('following-grid');
+            if (!grid) return;
+
+            if (tournaments.length === 0) {
+                renderFollowingEmptyState();
+                return;
+            }
+
+            grid.innerHTML = tournaments.map(tournament => `
+                <div class="organizer-card" onclick="window.location.href='tournament-detail.html?id=${tournament._id}'">
+                    <div class="organizer-image">
+                        <img src="${tournament.avatarUrl || 'https://via.placeholder.com/446x250'}" alt="${tournament.name}">
+                    </div>
+                    <div class="organizer-info">
+                        <h3>${tournament.name}</h3>
+                        <p>${getStatusText(tournament.status)}</p>
+                    </div>
+                    <button class="follow-btn" onclick="event.stopPropagation(); unfollowTournament('${tournament._id}')">đã theo dõi</button>
+                </div>
+            `).join('');
+        }
+
+        function renderEmptyState(type, message) {
+            const grid = document.getElementById(`${type}-grid`);
+            if (!grid) return;
+
+            grid.innerHTML = `
+                <div class="empty-state">
+                    <p>${message}</p>
+                </div>
+            `;
+        }
+
+        function renderFollowingEmptyState() {
+            const grid = document.getElementById('following-grid');
+            if (!grid) return;
+
+            grid.innerHTML = `
+                <div class="empty-state">
+                    <p>Bạn chưa theo dõi giải đấu n��o</p>
+                </div>
+            `;
+        }
+
+        function getStatusText(status) {
+            const statusMap = {
+                'upcoming': 'Sắp diễn ra',
+                'ongoing': 'Đang diễn ra', 
+                'completed': 'Đã kết thúc',
+                'cancelled': 'Đã hủy'
+            };
+            return statusMap[status] || status;
+        }
+
+        function setupLogout() {
+            const userAvatar = document.getElementById('userAvatar');
+            if (userAvatar) {
+                userAvatar.addEventListener('click', () => {
+                    if (confirm('Bạn có muốn đăng xuất không?')) {
+                        if (window.globalLogout) {
+                            window.globalLogout();
+                        } else {
+                            TokenManager.removeToken();
+                            window.location.href = '/';
+                        }
+                    }
+                });
+                userAvatar.style.cursor = 'pointer';
+            }
+        }
+
+        // Unfollow tournament function
+        window.unfollowTournament = function(tournamentId) {
+            const currentUser = TokenManager.getCurrentUser();
+            if (!currentUser) return;
+
+            try {
+                const savedTournaments = JSON.parse(localStorage.getItem(`followedTournaments_${currentUser._id}`)) || [];
+                const updatedTournaments = savedTournaments.filter(id => id !== tournamentId);
+                localStorage.setItem(`followedTournaments_${currentUser._id}`, JSON.stringify(updatedTournaments));
+                
+                // Reload followed tournaments
+                loadFollowedTournaments(currentUser._id);
+            } catch (error) {
+                console.error('Error unfollowing tournament:', error);
+            }
+        };
     </script>
 </body>
 </html>
