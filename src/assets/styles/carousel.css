@@ -191,11 +191,7 @@
 }
 
 .tournament-description {
-  font-size: 14px;
-  color: #ccc;
-  line-height: 1.5;
-  flex: 1;
-  margin: 0 0 15px 0;
+  display: none;
 }
 
 .tournament-meta {
