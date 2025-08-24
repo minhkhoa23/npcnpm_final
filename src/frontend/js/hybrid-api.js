@@ -24,7 +24,8 @@ const API_BASE_URL = (() => {
 })();
 
 // System state tracking
-let backendAvailable = isCloudEnvironment ? false : null; // Force localStorage in cloud environments
+// Always start with null to allow backend checking, but prefer localStorage in cloud environments
+let backendAvailable = null;
 let localStorageReady = false;
 
 // Initialize localStorage API
