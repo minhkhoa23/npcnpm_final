@@ -4,70 +4,90 @@
         "name": "Team Flash",
         "logoUrl": "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=150&h=150&fit=crop",
         "description": "Đội tuyển hàng đầu Việt Nam với nhiều thành tích xuất sắc trong các giải đấu quốc tế.",
-        "mail": "teamflash@esport.com"
+        "mail": "teamflash@esport.com",
+        "games": ["League of Legends", "Liên Quân Mobile"],
+        "region": "Việt Nam"
     },
     {
         "_id": "507f1f77bcf86cd799439032",
         "name": "Saigon Phantom",
         "logoUrl": "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=150&h=150&fit=crop",
         "description": "Đội tuyển trẻ với nhiều tài năng mới nổi trong làng game Việt Nam.",
-        "mail": "saigonphantom@esport.com"
+        "mail": "saigonphantom@esport.com",
+        "games": ["Liên Quân Mobile", "Street Fighter"],
+        "region": "Việt Nam"
     },
     {
         "_id": "507f1f77bcf86cd799439033",
         "name": "MZ Gaming",
         "logoUrl": "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=150&h=150&fit=crop",
         "description": "Đội tuyển chuyên nghiệp với kinh nghiệm dày dặn trong các giải đấu Counter-Strike.",
-        "mail": "mzgaming@esport.com"
+        "mail": "mzgaming@esport.com",
+        "games": ["Counter-Strike", "Overwatch"],
+        "region": "Việt Nam"
     },
     {
         "_id": "507f1f77bcf86cd799439034",
         "name": "Vikings Gaming",
         "logoUrl": "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=150&h=150&fit=crop",
-        "description": "Đội tuyển mạnh trong các game MOBA với phong cách chơi tấn công mạnh mẽ.",
-        "mail": "vikingsgaming@esport.com"
+        "description": "Đội tuyển mạnh trong các game MOBA với phong cách chơi t���n công mạnh mẽ.",
+        "mail": "vikingsgaming@esport.com",
+        "games": ["League of Legends", "Liên Quân Mobile"],
+        "region": "Việt Nam"
     },
     {
         "_id": "507f1f77bcf86cd799439035",
         "name": "EVOS Esports",
         "logoUrl": "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=150&h=150&fit=crop",
         "description": "Đội tuyển quốc tế với nhiều thành viên từ các quốc gia khác nhau.",
-        "mail": "evosesports@esport.com"
+        "mail": "evosesports@esport.com",
+        "games": ["Liên Quân Mobile", "League of Legends"],
+        "region": "Đông Nam Á"
     },
     {
         "_id": "507f1f77bcf86cd799439036",
         "name": "RRQ Hoshi",
         "logoUrl": "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=150&h=150&fit=crop",
         "description": "Đội tuyển hàng đầu Indonesia với nhiều thành tích xuất sắc.",
-        "mail": "rrqhoshi@esport.com"
+        "mail": "rrqhoshi@esport.com",
+        "games": ["Liên Quân Mobile", "League of Legends"],
+        "region": "Indonesia"
     },
     {
         "_id": "507f1f77bcf86cd799439037",
         "name": "Fnatic",
         "logoUrl": "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=150&h=150&fit=crop",
         "description": "Đội tuyển quốc tế nổi tiếng với nhiều thành tích xuất sắc trên toàn thế giới.",
-        "mail": "fnatic@esport.com"
+        "mail": "fnatic@esport.com",
+        "games": ["League of Legends", "Counter-Strike", "Overwatch"],
+        "region": "Châu Âu"
     },
     {
         "_id": "507f1f77bcf86cd799439038",
         "name": "Team Liquid",
         "logoUrl": "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=150&h=150&fit=crop",
         "description": "Đội tuyển Bắc Mỹ với nhiều thành tích xuất sắc trong các game khác nhau.",
-        "mail": "teamliquid@esport.com"
+        "mail": "teamliquid@esport.com",
+        "games": ["League of Legends", "Counter-Strike", "Overwatch"],
+        "region": "Bắc Mỹ"
     },
     {
         "_id": "507f1f77bcf86cd799439039",
         "name": "Cloud9",
         "logoUrl": "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=150&h=150&fit=crop",
         "description": "Đội tuyển Bắc Mỹ nổi tiếng với nhiều tài năng trẻ.",
-        "mail": "cloud9@esport.com"
+        "mail": "cloud9@esport.com",
+        "games": ["League of Legends", "Overwatch"],
+        "region": "Bắc Mỹ"
     },
     {
         "_id": "507f1f77bcf86cd799439040",
         "name": "T1",
         "logoUrl": "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=150&h=150&fit=crop",
         "description": "Đội tuyển Hàn Quốc với nhiều thành tích xuất sắc trong League of Legends.",
-        "mail": "t1@esport.com"
+        "mail": "t1@esport.com",
+        "games": ["League of Legends"],
+        "region": "Hàn Quốc"
     },
     {
         "_id": "507f1f77bcf86cd799439057",
