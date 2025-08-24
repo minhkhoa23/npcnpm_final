@@ -1,53 +1,110 @@
 const Match = require('../models/Match');
 const Tournament = require('../models/Tournament');
 const Competitor = require('../models/Competitor');
+const fs = require('fs');
+const path = require('path');
+const { v4: uuidv4 } = require('uuid');
 
 class MatchController {
+    // Get mock matches data
+    static getMockMatches() {
+        try {
+            const mockDataPath = path.join(__dirname, '../data/matches.json');
+            const mockData = fs.readFileSync(mockDataPath, 'utf8');
+            return JSON.parse(mockData);
+        } catch (error) {
+            console.error('Error reading mock matches data:', error);
+            return [];
+        }
+    }
+
+    // Save matches to JSON file
+    static saveMockMatches(matches) {
+        try {
+            const mockDataPath = path.join(__dirname, '../data/matches.json');
+            fs.writeFileSync(mockDataPath, JSON.stringify(matches, null, 4), 'utf8');
+            console.log('Matches data saved to JSON file');
+        } catch (error) {
+            console.error('Error saving matches data:', error);
+        }
+    }
     // Create new match
     static async createMatch(req, res) {
         try {
             const { tournamentId, teamA, teamB, scheduledAt } = req.body;
 
-            // Validate tournament exists
-            const tournament = await Tournament.findById(tournamentId);
-            if (!tournament) {
-                return res.status(404).json({
-                    success: false,
-                    message: 'Tournament not found'
+            if (global.mockMode) {
+                // Create match in JSON file
+                const newMatchId = uuidv4().replace(/-/g, '').substring(0, 24);
+                const newMatch = {
+                    _id: newMatchId,
+                    tournamentId,
+                    teamA,
+                    teamB,
+                    scheduledAt: scheduledAt ? new Date(scheduledAt).toISOString() : null,
+                    status: 'scheduled',
+                    result: null,
+                    scoreTeamA: null,
+                    scoreTeamB: null,
+                    games: [],
+                    createdAt: new Date().toISOString(),
+                    updatedAt: new Date().toISOString()
+                };
+
+                // Add to JSON file
+                const matches = MatchController.getMockMatches();
+                matches.push(newMatch);
+                MatchController.saveMockMatches(matches);
+
+                console.log('Match created in JSON file:', { id: newMatchId, teamA, teamB });
+
+                res.status(201).json({
+                    success: true,
+                    message: 'Match created successfully',
+                    data: { match: newMatch }
+                });
+            } else {
+                // Validate tournament exists
+                const tournament = await Tournament.findById(tournamentId);
+                if (!tournament) {
+                    return res.status(404).json({
+                        success: false,
+                        message: 'Tournament not found'
+                    });
+                }
+
+                // Validate competitors exist
+                const [teamADoc, teamBDoc] = await Promise.all([
+                    Competitor.findById(teamA),
+                    Competitor.findById(teamB)
+                ]);
+                if (!teamADoc || !teamBDoc) {
+                    return res.status(400).json({
+                        success: false,
+                        message: 'One or both competitors not found'
+                    });
+                }
+
+                const match = new Match({
+                    tournamentId,
+                    teamA,
+                    teamB,
+                    scheduledAt: scheduledAt ? new Date(scheduledAt) : undefined
+                });
+
+                await match.save();
+
+                const populatedMatch = await Match.findById(match._id)
+                    .populate('teamA', 'name logoUrl')
+                    .populate('teamB', 'name logoUrl')
+                    .populate('tournamentId', 'name format');
+
+                res.status(201).json({
+                    success: true,
+                    message: 'Match created successfully',
+                    data: { match: populatedMatch }
                 });
             }
-
-            // Validate competitors exist
-            const [teamADoc, teamBDoc] = await Promise.all([
-                Competitor.findById(teamA),
-                Competitor.findById(teamB)
-            ]);
-            if (!teamADoc || !teamBDoc) {
-                return res.status(400).json({
-                    success: false,
-                    message: 'One or both competitors not found'
-                });
-            }
-
-            const match = new Match({
-                tournamentId,
-                teamA,
-                teamB,
-                scheduledAt: scheduledAt ? new Date(scheduledAt) : undefined
-            });
-
-            await match.save();
-
-            const populatedMatch = await Match.findById(match._id)
-                .populate('teamA', 'name logoUrl')
-                .populate('teamB', 'name logoUrl')
-                .populate('tournamentId', 'name format');
-
-            res.status(201).json({
-                success: true,
-                message: 'Match created successfully',
-                data: { match: populatedMatch }
-            });
         } catch (error) {
             console.error('Create match error:', error);
 
