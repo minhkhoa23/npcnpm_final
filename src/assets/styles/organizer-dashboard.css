@@ -2,7 +2,7 @@
 
 .main-content {
     background: linear-gradient(135deg, #383535 0%, #2a2727 100%);
-    min-height: calc(100vh - 140px);
+    min-height: 100vh;
     padding: 2rem 0;
 }
 
