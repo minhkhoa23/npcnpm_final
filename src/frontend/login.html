@@ -23,7 +23,7 @@
   <header class="main-header">
     <div class="header-container">
       <div class="header-left">
-        <div class="nav-item" onclick="window.location.href='../../index.html'">
+        <div class="nav-item" onclick="window.location.href='../../index.html'" style="cursor: pointer;">
           <svg class="nav-icon" width="40" height="40" viewBox="0 0 40 40" fill="none">
             <path d="M15 36.6667V20H25V36.6667M5 15L20 3.33334L35 15V33.3333C35 34.2174 34.6488 35.0652 34.0237 35.6904C33.3986 36.3155 32.5507 36.6667 31.6667 36.6667H8.33333C7.44928 36.6667 6.60143 36.3155 5.97631 35.6904C5.35119 35.0652 5 34.2174 5 33.3333V15Z" stroke="#F5F5F5" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
@@ -69,21 +69,23 @@
         
         <form id="loginForm" class="login-form-content">
           <div class="form-group">
-            <input 
-              type="text" 
-              id="loginInput" 
-              class="form-input" 
-              placeholder="Nhập tên tài khoản hoặc số điện thoại"
+            <input
+              type="email"
+              id="loginInput"
+              name="email"
+              class="form-input"
+              placeholder="Nhập email"
               required
             >
           </div>
           
           <div class="form-group">
             <div class="password-container">
-              <input 
-                type="password" 
-                id="passwordInput" 
-                class="form-input" 
+              <input
+                type="password"
+                id="passwordInput"
+                name="password"
+                class="form-input"
                 placeholder="Nhập mật khẩu"
                 required
               >
@@ -235,13 +237,16 @@
       return window.localStorageAPI;
     }
 
-    // Login form submission
+    // Login form submission using the auth controller
     document.getElementById('loginForm').addEventListener('submit', async function(e) {
       e.preventDefault();
-      const loginInput = document.getElementById('loginInput').value;
-      const passwordInput = document.getElementById('passwordInput').value;
+      const formData = new FormData(e.target);
+      const credentials = {
+        email: formData.get('email'),
+        password: formData.get('password')
+      };
 
-      if (!loginInput || !passwordInput) {
+      if (!credentials.email || !credentials.password) {
         alert('Vui lòng nhập đầy đủ thông tin!');
         return;
       }
@@ -257,19 +262,17 @@
 
         console.log('🔐 Attempting login...');
 
-        // Use localStorage API instead of fetch
-        const result = await api.login({
-          email: loginInput,
-          password: passwordInput
-        });
+        // Use localStorage API with correct method
+        const result = await api.login(credentials);
 
         if (result.success) {
-          // Lưu token
-          localStorage.setItem('authToken', result.data.token);
+          // Store auth token
+          const token = btoa(JSON.stringify(result.data.user));
+          localStorage.setItem('authToken', token);
 
           alert('Đăng nhập thành công!');
 
-          // Chuyển hướng dựa trên role
+          // Redirect based on user role
           const user = result.data.user;
           if (user.role === 'admin') {
             window.location.href = './dashboard.html';
@@ -283,7 +286,7 @@
         }
       } catch (error) {
         console.error('Login error:', error);
-        alert('Lỗi kết nối server!');
+        alert('Lỗi đăng nhập: ' + (error.message || 'Không thể kết nối hệ thống!'));
       }
     });
 

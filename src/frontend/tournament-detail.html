@@ -317,8 +317,9 @@
   </footer>
 
   <!-- Scripts -->
+  <script type="module" src="./js/localStorage-api.js"></script>
   <script type="module">
-    import { apiCall, API_ENDPOINTS } from './js/api.js';
+    import { apiCall, API_ENDPOINTS } from './js/static-api.js';
 
     // Get tournament ID from URL
     const urlParams = new URLSearchParams(window.location.search);
