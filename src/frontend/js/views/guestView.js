@@ -65,33 +65,8 @@ export async function renderGuestView() {
     </button>
   `;
 
-  // Generate CTA section content based on authentication status
-  const ctaContent = isAuthenticated ? `
-    <div class="cta-content">
-      <div class="cta-left">
-        <h2 class="cta-title">CHÀO MỪNG TRỞ LẠI, ${currentUser?.fullName || 'BẠN'}!</h2>
-        <p class="cta-description">Khám phá các giải đấu mới hoặc tạo giải đấu của riêng bạn</p>
-        <div class="cta-buttons">
-          ${currentUser?.role === 'organizer' || currentUser?.role === 'admin' ? `
-          <a href="./src/frontend/create-tournament-1.html" class="cta-btn primary">
-            Tạo giải đấu mới
-          </a>
-          ` : ''}
-          <a href="./src/frontend/dashboard.html" class="cta-btn secondary">
-            Vào Dashboard
-          </a>
-        </div>
-      </div>
-      <div class="cta-right">
-        <div class="cta-thumbnails">
-          <div class="thumbnail-item"></div>
-          <div class="thumbnail-item"></div>
-          <div class="thumbnail-item"></div>
-          <div class="thumbnail-item"></div>
-        </div>
-      </div>
-    </div>
-  ` : `
+  // Always show guest CTA for clean initialization
+  const ctaContent = `
     <div class="cta-content">
       <div class="cta-left">
         <h2 class="cta-title">MUỐN TỔ CHỨC GIẢI ĐẤU, HÃY THAM GIA VỚI CHÚNG TÔI</h2>
