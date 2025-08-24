@@ -9,6 +9,11 @@ class LocalStorageAPI {
 
     // Initialize data from JSON files or create default data
     async initializeData() {
+        if (this.isInitialized) {
+            console.log('✅ LocalStorage already initialized');
+            return;
+        }
+
         console.log('🔧 Initializing localStorage database...');
         
         // Load initial data if not exists
