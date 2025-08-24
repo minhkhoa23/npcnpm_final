@@ -413,6 +413,22 @@ class NewsController {
         try {
             const { limit = 5 } = req.query;
 
+            if (global.mockMode) {
+                console.log('Getting featured news from mock data...');
+                const allNews = NewsController.getMockNews();
+
+                // Filter for public/published news
+                const featuredNews = allNews
+                    .filter(news => news.status === 'public' || news.isPublished)
+                    .sort((a, b) => new Date(b.createdAt || b.publishedAt) - new Date(a.createdAt || a.publishedAt))
+                    .slice(0, parseInt(limit));
+
+                return res.json({
+                    success: true,
+                    data: { news: featuredNews }
+                });
+            }
+
             const news = await News.find({ status: 'public' })
                 .populate('authorId', 'fullName email')
                 .populate('tournamentId', 'name status')
