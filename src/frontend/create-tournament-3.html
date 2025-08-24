@@ -418,6 +418,14 @@
             document.getElementById('gameName').textContent = tournamentData.gameName || '-';
             document.getElementById('playerCount').textContent = tournamentData.playerCount || '-';
             document.getElementById('teamCount').textContent = (tournamentData.selectedTeams?.length || 0);
+
+            // Display tournament format
+            const formatNames = {
+                'single-elimination': 'Đấu loại trực tiếp',
+                'double-elimination': 'Vòng tròn kép',
+                'group-stage': 'Đấu tổ hợp'
+            };
+            document.getElementById('tournamentFormat').textContent = formatNames[tournamentData.format] || 'Đấu loại trực tiếp';
         }
 
         function displaySelectedTeams() {
