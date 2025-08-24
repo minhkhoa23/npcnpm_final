@@ -504,7 +504,8 @@
 
         // Unfollow tournament function
         window.unfollowTournament = function(tournamentId) {
-            const currentUser = TokenManager.getCurrentUser();
+            // Use mock user for testing
+            const currentUser = { _id: 'demo_organizer', role: 'organizer', fullName: 'Demo Organizer' };
             if (!currentUser) return;
 
             try {
