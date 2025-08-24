@@ -1,6 +1,7 @@
 const News = require('../models/News');
 const fs = require('fs');
 const path = require('path');
+const { v4: uuidv4 } = require('uuid');
 const AuthController = require('./AuthController');
 const TournamentController = require('./tournamentController');
 
@@ -17,30 +18,75 @@ class NewsController {
         }
     }
 
+    // Save news to JSON file
+    static saveMockNews(newsArray) {
+        try {
+            const mockDataPath = path.join(__dirname, '../data/news.json');
+            fs.writeFileSync(mockDataPath, JSON.stringify(newsArray, null, 4), 'utf8');
+            console.log('News data saved to JSON file');
+        } catch (error) {
+            console.error('Error saving news data:', error);
+        }
+    }
+
     // Create new news article
     static async createNews(req, res) {
         try {
             const { title, content, tournamentId, images = [] } = req.body;
 
-            const news = new News({
-                title,
-                content,
-                authorId: req.user._id,
-                tournamentId,
-                images
-            });
+            if (global.mockMode) {
+                // Create news in JSON file
+                const newNewsId = uuidv4().replace(/-/g, '').substring(0, 24);
+                const newNews = {
+                    _id: newNewsId,
+                    title,
+                    content,
+                    authorId: req.user._id,
+                    tournamentId: tournamentId || null,
+                    images: images || [],
+                    isPublished: true,
+                    publishedAt: new Date().toISOString(),
+                    createdAt: new Date().toISOString(),
+                    updatedAt: new Date().toISOString(),
+                    views: 0,
+                    likes: 0,
+                    comments: []
+                };
 
-            await news.save();
+                // Add to JSON file
+                const newsArray = NewsController.getMockNews();
+                newsArray.push(newNews);
+                NewsController.saveMockNews(newsArray);
 
-            const populatedNews = await News.findById(news._id)
-                .populate('authorId', 'fullName email')
-                .populate('tournamentId', 'name status');
+                console.log('News created in JSON file:', { title: newNews.title, id: newNewsId });
 
-            res.status(201).json({
-                success: true,
-                message: 'News article created successfully',
-                data: { news: populatedNews }
-            });
+                res.status(201).json({
+                    success: true,
+                    message: 'News article created successfully',
+                    data: { news: newNews }
+                });
+            } else {
+                // Create news in database
+                const news = new News({
+                    title,
+                    content,
+                    authorId: req.user._id,
+                    tournamentId,
+                    images
+                });
+
+                await news.save();
+
+                const populatedNews = await News.findById(news._id)
+                    .populate('authorId', 'fullName email')
+                    .populate('tournamentId', 'name status');
+
+                res.status(201).json({
+                    success: true,
+                    message: 'News article created successfully',
+                    data: { news: populatedNews }
+                });
+            }
         } catch (error) {
             console.error('Create news error:', error);
 
