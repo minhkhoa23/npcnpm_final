@@ -4,7 +4,7 @@
 import { authController } from './controllers/auth.js';
 import { tournamentController } from './controllers/tournaments.js';
 import { newsController } from './controllers/news.js';
-import { apiCall, API_ENDPOINTS, TokenManager } from './static-api.js';
+import { apiCall, API_ENDPOINTS, TokenManager } from './api.js';
 import { backendStarter } from './backend-starter.js';
 
 class App {
