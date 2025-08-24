@@ -390,8 +390,9 @@
 
         async function loadTeamsForGame() {
             try {
-                const response = await fetch(`/api/competitors/by-game/${encodeURIComponent(tournamentData.gameName)}`);
-                const result = await response.json();
+                // Import the static API
+                const { apiCall } = await import('../frontend/js/static-api.js');
+                const result = await apiCall(`/competitors/by-game/${encodeURIComponent(tournamentData.gameName)}`);
                 
                 if (result.success) {
                     availableTeams = result.data.competitors;

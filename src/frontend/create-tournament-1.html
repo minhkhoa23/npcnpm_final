@@ -106,7 +106,7 @@
 
                 <!-- Game Name Input -->
                 <div class="form-group">
-                    <label for="gameName">Nhập tên game của giải đấu của bạn:</label>
+                    <label for="gameName">Nhập tên game của giải ��ấu của bạn:</label>
                     <input type="text" id="gameName" class="form-input" placeholder="Tên game" required>
                 </div>
 
@@ -234,8 +234,9 @@
 
         async function showTeamPreview(gameName) {
             try {
-                const response = await fetch(`/api/competitors/by-game/${encodeURIComponent(gameName)}`);
-                const result = await response.json();
+                // Import the static API
+                const { apiCall } = await import('../frontend/js/static-api.js');
+                const result = await apiCall(`/competitors/by-game/${encodeURIComponent(gameName)}`);
 
                 if (result.success) {
                     const teams = result.data.competitors;
