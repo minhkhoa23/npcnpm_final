@@ -7,10 +7,8 @@ class AuthController {
     }
 
     init() {
-        // Check if user is already authenticated on page load
-        if (TokenManager.isAuthenticated()) {
-            this.loadUserProfile();
-        }
+        // For clean guest mode initialization, don't auto-load profile
+        // Users will authenticate through login form
     }
 
     // Register new user
