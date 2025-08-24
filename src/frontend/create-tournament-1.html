@@ -376,6 +376,11 @@
                 return false;
             }
 
+            if (!selectedFormat) {
+                showError('Vui lòng chọn thể thức giải đấu');
+                return false;
+            }
+
             if (!playerCount || playerCount < 2 || playerCount > 128) {
                 showError('Số lượng người chơi phải từ 2 đến 128');
                 return false;
