@@ -1,4 +1,4 @@
-import { apiCall, API_ENDPOINTS, TokenManager } from '../api.js';
+import { apiCall, API_ENDPOINTS, TokenManager } from '../static-api.js';
 import { authController } from './auth.js';
 
 class TournamentController {
@@ -295,7 +295,7 @@ class TournamentController {
             const result = await apiCall(API_ENDPOINTS.TOURNAMENTS.WITHDRAW(tournamentId), {}, 'DELETE', true);
             
             if (result.success) {
-                this.showSuccess('Rút khỏi giải đấu thành công!');
+                this.showSuccess('Rút khỏi giải đ���u thành công!');
                 
                 // Update UI to show unregistered status
                 this.updateRegistrationUI(tournamentId, false);
