@@ -349,6 +349,27 @@ class LocalStorageAPI {
         };
     }
 
+    // Logout (clear token)
+    async logout() {
+        return {
+            success: true,
+            message: 'Logged out successfully'
+        };
+    }
+
+    // Get all news
+    async getNews() {
+        const news = this.getData('news');
+        const published = news
+            .filter(article => article.status === 'public' || article.isPublished || article.status === 'published')
+            .sort((a, b) => new Date(b.createdAt || b.publishedAt) - new Date(a.createdAt || a.publishedAt));
+
+        return {
+            success: true,
+            data: { news: published }
+        };
+    }
+
     // News endpoints
     async createNews(newsData) {
         const news = this.getData('news');
