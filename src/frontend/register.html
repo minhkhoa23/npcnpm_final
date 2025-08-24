@@ -248,30 +248,37 @@
       }
       
       try {
-        const response = await fetch('http://localhost:3000/api/auth/register', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            email: email,
-            password: password,
-            fullName: fullName,
-            role: role
-          })
+        // Wait for localStorage API to be ready
+        console.log('🔐 Waiting for localStorage API...');
+        let attempts = 0;
+        while (!window.localStorageAPI && attempts < 50) {
+          await new Promise(resolve => setTimeout(resolve, 100));
+          attempts++;
+        }
+
+        if (!window.localStorageAPI) {
+          throw new Error('Hệ thống chưa sẵn sàng. Vui lòng thử lại sau.');
+        }
+
+        console.log('🔐 Attempting registration...');
+
+        // Use localStorage API instead of fetch
+        const result = await window.localStorageAPI.register({
+          email: email,
+          password: password,
+          fullName: fullName,
+          role: role
         });
 
-        const data = await response.json();
-
-        if (data.success) {
+        if (result.success) {
           alert('Đăng ký thành công! Vui lòng đăng nhập.');
           window.location.href = './login.html';
         } else {
-          alert(data.message || 'Đăng ký thất bại!');
+          alert(result.message || 'Đăng ký thất bại!');
         }
       } catch (error) {
         console.error('Registration error:', error);
-        alert('Lỗi kết nối server!');
+        alert('Lỗi đăng ký: ' + (error.message || 'Không thể kết nối hệ thống!'));
       }
     });
   </script>
