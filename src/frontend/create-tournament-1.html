@@ -244,10 +244,12 @@
     <script src="../frontend/js/api.js"></script>
     <script>
         let selectedGame = null;
+        let selectedFormat = null;
 
         // Initialize page
         document.addEventListener('DOMContentLoaded', function() {
             initializeGameSelection();
+            initializeFormatSelection();
             initializeForm();
         });
 
