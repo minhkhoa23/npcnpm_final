@@ -148,7 +148,7 @@ export class TournamentCarousel extends Carousel {
 
   renderItem(tournament) {
     return `
-      <div class="tournament-card" data-tournament-id="${tournament._id}" onclick="handleAuthenticatedNavigation('/src/frontend/tournament-detail.html?id=${tournament._id}')"
+      <div class="tournament-card" data-tournament-id="${tournament._id}" onclick="handlePublicNavigation('./src/frontend/tournament-detail.html?id=${tournament._id}')" style="cursor: pointer;">
         <div class="tournament-image" style="background-image: url('${tournament.avatarUrl || ''}')"></div>
         <div class="tournament-info">
           <h3 class="tournament-name">${tournament.name}</h3>
@@ -171,7 +171,7 @@ export class NewsCarousel extends Carousel {
 
   renderItem(news) {
     return `
-      <div class="news-card simplified" data-news-id="${news._id}" onclick="handleAuthenticatedNavigation('/src/frontend/view-news.html?id=${news._id}')" title="${news.title}">
+      <div class="news-card simplified" data-news-id="${news._id}" onclick="handlePublicNavigation('./src/frontend/view-news.html?id=${news._id}')" title="${news.title}" style="cursor: pointer;">
         <div class="news-image" style="background-image: url('${(news.images && news.images[0]) || ''}')"></div>
         <div class="news-overlay">
           <h4 class="news-title">${news.title}</h4>
@@ -189,7 +189,7 @@ export class HighlightCarousel extends Carousel {
 
   renderItem(highlight) {
     return `
-      <div class="highlight-card" data-highlight-id="${highlight._id}" onclick="handleAuthenticatedNavigation('/src/frontend/view-highlight.html?id=${highlight._id}')"
+      <div class="highlight-card" data-highlight-id="${highlight._id}" onclick="handlePublicNavigation('./src/frontend/view-highlight.html?id=${highlight._id}')" style="cursor: pointer;">
         <div class="highlight-thumbnail" style="background-image: url('${highlight.thumbnailUrl || ''}')"></div>
         <div class="highlight-info">
           <h5 class="highlight-title">${highlight.title}</h5>
