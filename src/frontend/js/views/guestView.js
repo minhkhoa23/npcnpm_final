@@ -4,12 +4,13 @@ import { createCarousel } from '../carousel.js';
 import { loadTournamentsCarousel, loadNewsCarousel, loadHighlightsCarousel } from '../utils/carouselLoaders.js';
 
 export async function renderGuestView() {
-  // Check if user is authenticated
-  const isAuthenticated = TokenManager.isAuthenticated();
-  const currentUser = isAuthenticated ? TokenManager.getCurrentUser() : null;
+  // Always show guest interface for clean initialization
+  // Users will authenticate through login/register buttons
+  const isAuthenticated = false;
+  const currentUser = null;
 
-  // Generate appropriate header content based on authentication status
-  const headerRightContent = isAuthenticated ? `
+  // Always show login/register buttons for guest mode
+  const headerRightContent = `
     <div class="user-menu">
       <button class="user-menu-btn">
         <svg class="user-icon" width="35" height="35" viewBox="0 0 35 35" fill="none">
@@ -50,7 +51,6 @@ export async function renderGuestView() {
         </button>
       </div>
     </div>
-  ` : `
     <button id="loginGuestBtn" class="auth-btn login-btn" data-route="/login">
       <svg class="auth-icon" width="35" height="35" viewBox="0 0 35 35" fill="none">
         <path d="M21.875 4.375H27.7083C28.4819 4.375 29.2237 4.68229 29.7707 5.22927C30.3177 5.77625 30.625 6.51812 30.625 7.29167V27.7083C30.625 28.4819 30.3177 29.2237 29.7707 29.7707C29.2237 30.3177 28.4819 30.625 27.7083 30.625H21.875M14.5833 24.7917L21.875 17.5M21.875 17.5L14.5833 10.2083M21.875 17.5H4.375" stroke="#303030" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
