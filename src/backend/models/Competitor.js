@@ -3,73 +3,86 @@ const mongoose = require('mongoose');
 const competitorSchema = new mongoose.Schema({
     name: {
         type: String,
-        required: [true, 'Team name is required'],
-        trim: true,
-        maxlength: [100, 'Team name cannot exceed 100 characters']
+        required: [true, 'Competitor name is required'],
+        trim: true
     },
     logoUrl: {
         type: String,
-        trim: true,
-        validate: {
-            validator: function (v) {
-                if (!v) return true; // Allow empty
-                return /^https?:\/\/.+/.test(v);
-            },
-            message: 'Logo URL must be a valid HTTP/HTTPS URL'
-        }
+        trim: true
     },
     description: {
         type: String,
-        trim: true,
-        maxlength: [500, 'Description cannot exceed 500 characters']
+        trim: true
     },
     mail: {
         type: String,
         trim: true,
-        lowercase: true,
-        validate: {
-            validator: function (v) {
-                if (!v) return true; // Allow empty
-                return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
-            },
-            message: 'Email must be a valid email address'
+        lowercase: true
+    },
+    games: [{
+        type: String,
+        trim: true
+    }],
+    region: {
+        type: String,
+        trim: true
+    },
+    members: [{
+        name: {
+            type: String,
+            trim: true
+        },
+        role: {
+            type: String,
+            trim: true
+        },
+        avatar: {
+            type: String,
+            trim: true
+        }
+    }],
+    achievements: [{
+        title: {
+            type: String,
+            trim: true
+        },
+        year: {
+            type: Number
+        },
+        tournament: {
+            type: String,
+            trim: true
+        }
+    }],
+    socialLinks: {
+        facebook: {
+            type: String,
+            trim: true
+        },
+        twitter: {
+            type: String,
+            trim: true
+        },
+        youtube: {
+            type: String,
+            trim: true
+        },
+        twitch: {
+            type: String,
+            trim: true
         }
     },
-    tournamentId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Tournament',
-        required: [true, 'Tournament ID is required']
-    },
-    userId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
-        required: [true, 'User ID is required']
+    isActive: {
+        type: Boolean,
+        default: true
     }
 }, {
     timestamps: true
 });
 
-// Compound index to prevent duplicate registrations
-competitorSchema.index({ tournamentId: 1, userId: 1 }, { unique: true });
-
-// Index for performance
-competitorSchema.index({ tournamentId: 1 });
-competitorSchema.index({ userId: 1 });
-competitorSchema.index({ createdAt: 1 });
-
-// Pre-save middleware to ensure data consistency
-competitorSchema.pre('save', function (next) {
-    // Ensure name is not empty
-    if (!this.name || this.name.trim() === '') {
-        this.name = 'Unnamed Team';
-    }
-
-    // Ensure description is not empty if provided
-    if (this.description && this.description.trim() === '') {
-        this.description = undefined;
-    }
-
-    next();
-});
+// Indexes for better query performance
+competitorSchema.index({ games: 1 });
+competitorSchema.index({ region: 1 });
+competitorSchema.index({ name: 'text', description: 'text' });
 
 module.exports = mongoose.model('Competitor', competitorSchema);
