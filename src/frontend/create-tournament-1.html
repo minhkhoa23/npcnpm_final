@@ -274,6 +274,22 @@
             });
         }
 
+        function initializeFormatSelection() {
+            const formatOptions = document.querySelectorAll('.format-option');
+            formatOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    // Remove previous selection
+                    formatOptions.forEach(opt => opt.classList.remove('selected'));
+
+                    // Add selection to clicked option
+                    this.classList.add('selected');
+                    selectedFormat = this.dataset.format;
+
+                    console.log('Selected format:', selectedFormat);
+                });
+            });
+        }
+
         async function showTeamPreview(gameName) {
             try {
                 // Import the hybrid API
