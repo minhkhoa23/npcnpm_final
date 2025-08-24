@@ -19,73 +19,10 @@
   <link rel="stylesheet" href="./src/assets/styles/carousel.css" />
   <link rel="stylesheet" href="./src/assets/styles/dashboard.css" />
   
-  <style>
-    /* Loading screen styles */
-    .loading-screen {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      z-index: 10000;
-      color: white;
-      font-family: 'Orbitron', monospace;
-    }
-    
-    .loading-logo {
-      font-size: 3rem;
-      font-weight: 700;
-      margin-bottom: 1rem;
-      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-    }
-    
-    .loading-text {
-      font-size: 1.2rem;
-      margin-bottom: 2rem;
-    }
-    
-    .loading-spinner {
-      width: 50px;
-      height: 50px;
-      border: 3px solid rgba(255,255,255,0.3);
-      border-radius: 50%;
-      border-top-color: white;
-      animation: spin 1s ease-in-out infinite;
-    }
-    
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-    
-    .status-message {
-      margin-top: 1rem;
-      font-size: 0.9rem;
-      opacity: 0.8;
-    }
-    
-    .success-icon {
-      color: #28a745;
-      font-size: 2rem;
-      margin-bottom: 1rem;
-    }
-  </style>
 </head>
 <body>
-  <!-- Loading Screen -->
-  <div id="loadingScreen" class="loading-screen">
-    <div class="loading-logo">Tournament Manager</div>
-    <div class="loading-text">Đang khởi động hệ thống...</div>
-    <div class="loading-spinner"></div>
-    <div id="statusMessage" class="status-message">Đang khởi tạo hệ thống...</div>
-  </div>
-
   <!-- Main Content -->
-  <main id="content" style="display: none;"></main>
+  <main id="content"></main>
 
   <!-- Initialize Application -->
   <script type="module">
@@ -93,78 +30,22 @@
     import { guestRouter } from './src/frontend/js/guest-router.js';
     import { TokenManager } from './src/frontend/js/hybrid-api.js';
 
-    // Show loading status
-    function updateStatus(message) {
-      const statusElement = document.getElementById('statusMessage');
-      if (statusElement) {
-        statusElement.textContent = message;
-      } else {
-        console.log('📊 Status:', message);
-      }
-    }
-
-    // Hide loading screen and show content
-    function hideLoadingScreen() {
-      const loadingScreen = document.getElementById('loadingScreen');
-      const content = document.getElementById('content');
-
-      if (loadingScreen) {
-        loadingScreen.style.display = 'none';
-      }
-      if (content) {
-        content.style.display = 'block';
-      }
-    }
-
-    // Show success
-    function showSuccess() {
-      const loadingScreen = document.getElementById('loadingScreen');
-      if (!loadingScreen) {
-        console.log('✅ System ready - loading screen not found');
-        hideLoadingScreen();
-        return;
-      }
-
-      loadingScreen.innerHTML = `
-        <div class="success-icon">✅</div>
-        <div class="loading-logo">Tournament Manager</div>
-        <div class="loading-text">Hệ thống đã sẵn sàng!</div>
-        <div class="status-message">Hệ thống API hybrid đã sẵn sàng!</div>
-      `;
-
-      setTimeout(hideLoadingScreen, 2000);
-    }
-
     // Main initialization
     async function initializeApp() {
       try {
-        updateStatus('Đang khởi tạo hệ thống API...');
-
-        // Import hybrid API which will automatically check backend availability
+        // Import hybrid API
         await import('./src/frontend/js/hybrid-api.js');
-
-        updateStatus('Hệ thống API đã sẵn sàng!');
 
         // Clear any old authentication tokens for clean start
         TokenManager.removeToken();
 
-        updateStatus('Đang tải giao diện...');
-
         // Always start in guest mode for clean initialization
-        // Users can register/login through the UI
         await guestRouter.ensureGuestView();
 
-        updateStatus('✅ Hoàn thành!');
-
-        // Show success and hide loading
-        showSuccess();
-
-        console.log('🎉 Tournament Management System initialized with hybrid API!');
-        console.log('🚀 Hybrid API system ready (backend + localStorage fallback)');
+        console.log('🎉 Tournament Management System ready!');
 
       } catch (error) {
         console.error('App initialization error:', error);
-        updateStatus('❌ Lỗi khởi tạo: ' + error.message);
       }
     }
 
