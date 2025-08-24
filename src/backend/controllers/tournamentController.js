@@ -710,6 +710,24 @@ class TournamentController {
     // Get upcoming tournaments
     static async getUpcomingTournaments(req, res) {
         try {
+            if (global.mockMode) {
+                console.log('Getting upcoming tournaments from mock data...');
+                const allTournaments = TournamentController.getMockTournaments();
+                const now = new Date();
+
+                const upcomingTournaments = allTournaments.filter(tournament => {
+                    const tournamentStatus = tournament.status || 'upcoming';
+                    const startDate = tournament.startDate ? new Date(tournament.startDate) : new Date(Date.now() + 24 * 60 * 60 * 1000);
+
+                    return tournamentStatus === 'upcoming' && startDate >= now;
+                }).slice(0, 10); // Limit to 10
+
+                return res.json({
+                    success: true,
+                    data: { tournaments: upcomingTournaments }
+                });
+            }
+
             const now = new Date();
             const tournaments = await Tournament.find({ status: 'upcoming', startDate: { $gte: now } })
                 .populate('organizerId', 'fullName email')
@@ -731,6 +749,24 @@ class TournamentController {
     // Get ongoing tournaments
     static async getOngoingTournaments(req, res) {
         try {
+            if (global.mockMode) {
+                console.log('Getting ongoing tournaments from mock data...');
+                const allTournaments = TournamentController.getMockTournaments();
+                const now = new Date();
+
+                const ongoingTournaments = allTournaments.filter(tournament => {
+                    const tournamentStatus = tournament.status || 'upcoming';
+                    const startDate = tournament.startDate ? new Date(tournament.startDate) : new Date(Date.now() - 24 * 60 * 60 * 1000);
+
+                    return tournamentStatus === 'ongoing' && startDate <= now;
+                });
+
+                return res.json({
+                    success: true,
+                    data: { tournaments: ongoingTournaments }
+                });
+            }
+
             const now = new Date();
             const tournaments = await Tournament.find({ status: 'ongoing', startDate: { $lte: now } })
                 .populate('organizerId', 'fullName email');
