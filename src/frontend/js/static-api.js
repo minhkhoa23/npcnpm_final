@@ -97,9 +97,15 @@ export async function apiCall(endpoint, data = {}, method = 'GET', requireAuth =
         else if (endpoint === '/news/featured') {
             result = await api.getFeaturedNews();
         }
+        else if (endpoint === '/news/published') {
+            result = await api.getFeaturedNews(); // Use same logic as featured news
+        }
         // Highlight endpoints
         else if (endpoint === '/highlights' && method === 'POST') {
             result = await api.createHighlight(data);
+        }
+        else if (endpoint === '/highlights/published') {
+            result = await api.getPublishedHighlights();
         }
         // Competitor endpoints
         else if (endpoint === '/competitors') {
