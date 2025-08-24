@@ -321,7 +321,7 @@ class LocalStorageAPI {
     // Highlights endpoints
     async createHighlight(highlightData) {
         const highlights = this.getData('highlights');
-        
+
         const newHighlight = {
             _id: this.generateId(),
             ...highlightData,
@@ -340,6 +340,20 @@ class LocalStorageAPI {
             success: true,
             message: 'Highlight created successfully',
             data: { highlight: newHighlight }
+        };
+    }
+
+    async getPublishedHighlights() {
+        const highlights = this.getData('highlights');
+
+        const published = highlights
+            .filter(highlight => highlight.status === 'published')
+            .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+            .slice(0, 10);
+
+        return {
+            success: true,
+            data: { highlights: published }
         };
     }
 
