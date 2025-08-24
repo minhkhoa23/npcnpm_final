@@ -68,21 +68,44 @@ export async function loadNewsCarousel(containerId, itemsPerPage = 3) {
 // Highlight loader (match dashboard behavior)
 export async function loadHighlightsCarousel(containerId, itemsPerPage = 1) {
   const container = document.getElementById(containerId);
-  if (!container) return;
+  if (!container) {
+    console.error('🎬 Highlights container not found:', containerId);
+    return;
+  }
+
+  console.log('🎬 Loading highlights carousel...');
 
   try {
+    // Wait for localStorage API to be ready
+    let attempts = 0;
+    while (!window.localStorageAPI && attempts < 20) {
+      await new Promise(resolve => setTimeout(resolve, 100));
+      attempts++;
+    }
+
+    if (!window.localStorageAPI) {
+      throw new Error('localStorage API not ready after 2 seconds');
+    }
+
     const res = await apiCall(API_ENDPOINTS.HIGHLIGHTS.PUBLISHED, {}, 'GET');
+    console.log('🎬 Highlights API response:', res);
+
     const highlights = res?.data?.highlights || [];
 
     if (!highlights.length) {
+      console.log('🎬 No highlights found');
       container.innerHTML = '<div class="loading-placeholder">Chưa có highlights</div>';
       return;
     }
 
+    console.log(`🎬 Found ${highlights.length} highlights, creating carousel...`);
+
     const carousel = createCarousel('highlight', containerId, { itemsPerPage });
     carousel.setItems(highlights);
+
+    console.log('🎬 Highlights carousel loaded successfully');
   } catch (e) {
-    console.error('Error loading highlights:', e);
-    container.innerHTML = '<div class="loading-placeholder">Lỗi tải highlights</div>';
+    console.error('🎬 Error loading highlights:', e);
+    container.innerHTML = `<div class="loading-placeholder">Lỗi tải highlights: ${e.message}</div>`;
   }
 }
