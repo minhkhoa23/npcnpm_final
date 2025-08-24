@@ -145,6 +145,9 @@
 
         updateStatus('Hệ thống API đã sẵn sàng!');
 
+        // Clear any old authentication tokens for clean start
+        TokenManager.removeToken();
+
         updateStatus('Đang tải giao diện...');
 
         // Always start in guest mode for clean initialization
