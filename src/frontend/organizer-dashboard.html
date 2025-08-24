@@ -101,7 +101,7 @@
         <!-- News Management Section -->
         <section class="news-section">
             <div class="section-header">
-                <h2>Cập nhật tin tức giải đấu của bạn</h2>
+                <h2>Cập nhật tin t���c giải đấu của bạn</h2>
                 <div class="section-controls">
                     <button class="manage-news-btn" onclick="window.location.href='news-management.html'">Quản lý tin tức của bạn</button>
                     <button class="add-news-btn" onclick="window.location.href='create-news.html'">Thêm tin tức mới</button>
@@ -127,7 +127,7 @@
         <!-- Highlights Management Section -->
         <section class="highlights-section">
             <div class="section-header">
-                <h2>Qu���n lý HIGHLIGHT</h2>
+                <h2>Quản lý HIGHLIGHT</h2>
                 <div class="section-controls">
                     <button class="manage-highlights-btn" onclick="window.location.href='highlight-management.html'">Quản lý highlight của bạn</button>
                     <button class="create-highlights-btn" onclick="window.location.href='create-highlight.html'">Tạo highlight mới của bạn</button>
@@ -214,6 +214,7 @@
 
     <script type="module">
         import { apiCall, API_ENDPOINTS, TokenManager } from './js/api.js';
+        import { NavigationManager } from './js/navigation.js';
 
         // Initialize organizer dashboard
         document.addEventListener('DOMContentLoaded', function() {
