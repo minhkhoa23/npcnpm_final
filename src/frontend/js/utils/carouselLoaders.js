@@ -1,4 +1,4 @@
-import { apiCall, API_ENDPOINTS } from '../static-api.js';
+import { apiCall, API_ENDPOINTS } from '../api.js';
 import { createCarousel } from '../carousel.js';
 
 /**
