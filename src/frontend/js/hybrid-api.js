@@ -162,8 +162,10 @@ const callLocalStorageAPI = async (endpoint, data = {}, method = 'GET', requireA
     const endpointLower = endpoint.toLowerCase();
     
     if (endpointLower.includes('/tournaments')) {
-        if (endpointLower.includes('/ongoing') || endpointLower.includes('/published')) {
-            return api.getTournaments();
+        if (endpointLower.includes('/upcoming')) {
+            return api.getUpcomingTournaments();
+        } else if (endpointLower.includes('/ongoing') || endpointLower.includes('/published')) {
+            return api.getTournaments({ status: 'ongoing' });
         } else if (method === 'POST') {
             return api.createTournament(data);
         } else if (method === 'PUT') {
