@@ -1,31 +1,90 @@
 const Highlight = require('../models/Highlight');
+const fs = require('fs');
+const path = require('path');
+const { v4: uuidv4 } = require('uuid');
 
 class HighlightController {
+    // Get mock highlights data
+    static getMockHighlights() {
+        try {
+            const mockDataPath = path.join(__dirname, '../data/highlights.json');
+            const mockData = fs.readFileSync(mockDataPath, 'utf8');
+            return JSON.parse(mockData);
+        } catch (error) {
+            console.error('Error reading mock highlights data:', error);
+            return [];
+        }
+    }
+
+    // Save highlights to JSON file
+    static saveMockHighlights(highlights) {
+        try {
+            const mockDataPath = path.join(__dirname, '../data/highlights.json');
+            fs.writeFileSync(mockDataPath, JSON.stringify(highlights, null, 4), 'utf8');
+            console.log('Highlights data saved to JSON file');
+        } catch (error) {
+            console.error('Error saving highlights data:', error);
+        }
+    }
     // Create new highlight
     static async createHighlight(req, res) {
         try {
             const { title, description, videoUrl, tournamentId, matchId, status } = req.body;
 
-            const highlight = new Highlight({
-                title,
-                description,
-                videoUrl,
-                tournamentId,
-                matchId,
-                status
-            });
+            if (global.mockMode) {
+                // Create highlight in JSON file
+                const newHighlightId = uuidv4().replace(/-/g, '').substring(0, 24);
+                const newHighlight = {
+                    _id: newHighlightId,
+                    title,
+                    description,
+                    videoUrl,
+                    tournamentId: tournamentId || null,
+                    matchId: matchId || null,
+                    status: status || 'draft',
+                    featured: false,
+                    views: 0,
+                    likes: 0,
+                    duration: null,
+                    createdAt: new Date().toISOString(),
+                    updatedAt: new Date().toISOString()
+                };
 
-            await highlight.save();
+                // Add to JSON file
+                const highlights = HighlightController.getMockHighlights();
+                highlights.push(newHighlight);
+                HighlightController.saveMockHighlights(highlights);
 
-            const populatedHighlight = await Highlight.findById(highlight._id)
-                .populate('tournamentId', 'name status')
-                .populate('matchId', 'teamA teamB scheduledAt');
+                console.log('Highlight created in JSON file:', { title: newHighlight.title, id: newHighlightId });
 
-            res.status(201).json({
-                success: true,
-                message: 'Highlight created successfully',
-                data: { highlight: populatedHighlight }
-            });
+                res.status(201).json({
+                    success: true,
+                    message: 'Highlight created successfully',
+                    data: { highlight: newHighlight }
+                });
+            } else {
+                // Create highlight in database
+                const highlight = new Highlight({
+                    title,
+                    description,
+                    videoUrl,
+                    tournamentId,
+                    matchId,
+                    status
+                });
+
+                await highlight.save();
+
+                const populatedHighlight = await Highlight.findById(highlight._id)
+                    .populate('tournamentId', 'name status')
+                    .populate('matchId', 'teamA teamB scheduledAt');
+
+                res.status(201).json({
+                    success: true,
+                    message: 'Highlight created successfully',
+                    data: { highlight: populatedHighlight }
+                });
+            }
         } catch (error) {
             console.error('Create highlight error:', error);
 
