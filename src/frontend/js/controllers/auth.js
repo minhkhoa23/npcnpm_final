@@ -16,7 +16,21 @@ class AuthController {
     // Register new user
     async register(userData) {
         try {
+            // Wait for localStorage API to be ready
+            let attempts = 0;
+            while (!window.localStorageAPI && attempts < 50) {
+                await new Promise(resolve => setTimeout(resolve, 100));
+                attempts++;
+            }
+
+            if (!window.localStorageAPI) {
+                throw new Error('Hệ thống chưa sẵn sàng. Vui lòng thử lại sau.');
+            }
+
+            console.log('🔐 Attempting registration with data:', { ...userData, password: '[HIDDEN]' });
+
             const result = await apiCall(API_ENDPOINTS.AUTH.REGISTER, userData, 'POST');
+            console.log('🔐 Registration result:', result);
 
             if (result.success) {
                 // Auto login after successful registration
@@ -29,12 +43,18 @@ class AuthController {
                 }
 
                 this.showSuccess('Đăng ký thành công!');
-                this.redirectAfterAuth();
+
+                // Small delay before redirect to let user see success message
+                setTimeout(() => {
+                    this.redirectAfterAuth();
+                }, 1000);
+
                 return result;
             } else {
                 throw new Error(result.message || 'Registration failed');
             }
         } catch (error) {
+            console.error('🔐 Registration error:', error);
             this.showError('Đăng ký thất bại: ' + (error.message || error));
             throw error;
         }
