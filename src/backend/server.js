@@ -231,6 +231,17 @@ app.use('/api/*', (req, res) => {
     });
 });
 
+// Serve specific HTML files
+app.get('*.html', (req, res) => {
+    const filePath = path.join(__dirname, '../frontend', req.path);
+    res.sendFile(filePath, (err) => {
+        if (err) {
+            // If file not found, serve index.html
+            res.sendFile(path.join(__dirname, '../../index.html'));
+        }
+    });
+});
+
 // Serve frontend for all other routes
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, '../../index.html'));
