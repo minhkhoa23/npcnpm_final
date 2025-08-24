@@ -1,4 +1,4 @@
-import { apiCall, API_ENDPOINTS, TokenManager } from '../api.js';
+import { apiCall, API_ENDPOINTS, TokenManager } from '../static-api.js';
 
 class AuthController {
     constructor() {
@@ -17,20 +17,25 @@ class AuthController {
     async register(userData) {
         try {
             const result = await apiCall(API_ENDPOINTS.AUTH.REGISTER, userData, 'POST');
-            
+
             if (result.success) {
                 // Auto login after successful registration
-                if (result.token) {
+                if (result.data && result.data.token) {
+                    TokenManager.setToken(result.data.token);
+                    this.currentUser = result.data.user;
+                } else if (result.token) {
                     TokenManager.setToken(result.token);
                     this.currentUser = result.user;
                 }
-                
+
                 this.showSuccess('Đăng ký thành công!');
                 this.redirectAfterAuth();
                 return result;
+            } else {
+                throw new Error(result.message || 'Registration failed');
             }
         } catch (error) {
-            this.showError('Đăng ký thất bại: ' + error.message);
+            this.showError('Đăng ký thất bại: ' + (error.message || error));
             throw error;
         }
     }
@@ -39,17 +44,24 @@ class AuthController {
     async login(credentials) {
         try {
             const result = await apiCall(API_ENDPOINTS.AUTH.LOGIN, credentials, 'POST');
-            
-            if (result.success && result.token) {
-                TokenManager.setToken(result.token);
-                this.currentUser = result.user;
-                
+
+            if (result.success) {
+                if (result.data && result.data.token) {
+                    TokenManager.setToken(result.data.token);
+                    this.currentUser = result.data.user;
+                } else if (result.token) {
+                    TokenManager.setToken(result.token);
+                    this.currentUser = result.user;
+                }
+
                 this.showSuccess('Đăng nhập thành công!');
                 this.redirectAfterAuth();
                 return result;
+            } else {
+                throw new Error(result.message || 'Login failed');
             }
         } catch (error) {
-            this.showError('Đăng nhập thất bại: ' + error.message);
+            this.showError('Đăng nhập thất bại: ' + (error.message || error));
             throw error;
         }
     }
@@ -115,7 +127,7 @@ class AuthController {
                 return result;
             }
         } catch (error) {
-            this.showError('Đổi mật khẩu thất bại: ' + error.message);
+            this.showError('Đổi mật khẩu th��t bại: ' + error.message);
             throw error;
         }
     }
@@ -147,26 +159,36 @@ class AuthController {
 
     // Redirect after authentication based on user role
     redirectAfterAuth() {
-        if (!this.currentUser) return;
+        if (!this.currentUser) {
+            console.log('❌ No current user found for redirect');
+            return;
+        }
+
+        console.log('🔄 Redirecting user:', this.currentUser.role, this.currentUser.fullName);
 
         const urlParams = new URLSearchParams(window.location.search);
         const redirectUrl = urlParams.get('redirect');
 
         if (redirectUrl) {
+            console.log('🔗 Using redirect URL:', redirectUrl);
             window.location.href = redirectUrl;
         } else {
             switch (this.currentUser.role) {
                 case 'admin':
-                    window.location.href = '/dashboard.html';
+                    console.log('👑 Redirecting admin to dashboard.html');
+                    window.location.href = './dashboard.html';
                     break;
                 case 'organizer':
-                    window.location.href = '/organizer-dashboard.html';
+                    console.log('🎯 Redirecting organizer to organizer-dashboard.html');
+                    window.location.href = './organizer-dashboard.html';
                     break;
                 case 'user':
-                    window.location.href = '/dashboard.html';
+                    console.log('👤 Redirecting user to dashboard.html');
+                    window.location.href = './dashboard.html';
                     break;
                 default:
-                    window.location.href = '/index.html';
+                    console.log('🏠 Default redirect to index.html');
+                    window.location.href = './index.html';
             }
         }
     }
