@@ -243,28 +243,7 @@ export async function renderGuestView() {
       <!-- Call to Action Section -->
       <section class="cta-section">
         <div class="section-container">
-          <div class="cta-content">
-            <div class="cta-left">
-              <h2 class="cta-title">MUỐN TỔ CHỨC GIẢI ĐẤU, HÃY THAM GIA VỚI CHÚNG TÔI</h2>
-              <p class="cta-description">Tổ chức giải đấu, chọn thể lệ, quản lý giải đấu và nhiều hơn thế nữa ...</p>
-              <div class="cta-buttons">
-                <button id="ctaLoginBtn" class="cta-btn login">
-                  Đăng nhập
-                </button>
-                <button id="ctaRegisterBtn" class="cta-btn register">
-                  Đăng ký
-                </button>
-              </div>
-            </div>
-            <div class="cta-right">
-              <div class="cta-thumbnails">
-                <div class="thumbnail-item"></div>
-                <div class="thumbnail-item"></div>
-                <div class="thumbnail-item"></div>
-                <div class="thumbnail-item"></div>
-              </div>
-            </div>
-          </div>
+          ${ctaContent}
         </div>
       </section>
     </main>
