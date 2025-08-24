@@ -13,12 +13,8 @@ class GuestRouter {
         return TokenManager.isAuthenticated();
     }
 
-    // Always render guest view when not authenticated
+    // Always render guest view for clean initialization
     async ensureGuestView() {
-        if (this.isAuthenticated()) {
-            return; // User is logged in, don't show guest view
-        }
-
         console.log('🏠 Rendering guest view with login/register buttons');
         await renderGuestView();
         this.setupAuthenticationButtons();
