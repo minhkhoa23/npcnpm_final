@@ -145,10 +145,11 @@
         while (!window.localStorageAPI && attempts < 50) {
           await new Promise(resolve => setTimeout(resolve, 100));
           attempts++;
+          updateStatus(`Đang khởi tạo API... (${attempts}/50)`);
         }
-        
+
         if (!window.localStorageAPI) {
-          throw new Error('Failed to initialize localStorage API');
+          throw new Error('Failed to initialize localStorage API after 50 attempts');
         }
         
         updateStatus('Đang tải dữ liệu ban đầu...');
