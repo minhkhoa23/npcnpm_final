@@ -217,7 +217,9 @@ const callLocalStorageAPI = async (endpoint, data = {}, method = 'GET', requireA
             return api.getNews();
         }
     } else if (endpointLower.includes('/highlights')) {
-        if (endpointLower.includes('/published') || endpointLower.includes('/featured')) {
+        if (endpointLower.includes('/featured')) {
+            return api.getFeaturedHighlights();
+        } else if (endpointLower.includes('/published')) {
             return api.getPublishedHighlights();
         } else if (method === 'POST') {
             return api.createHighlight(data);
@@ -228,7 +230,7 @@ const callLocalStorageAPI = async (endpoint, data = {}, method = 'GET', requireA
             const id = endpoint.split('/').pop();
             return api.deleteHighlight(id);
         } else {
-            return api.getPublishedHighlights();
+            return api.getHighlights();
         }
     } else if (endpointLower.includes('/auth')) {
         if (endpointLower.includes('/login')) {
