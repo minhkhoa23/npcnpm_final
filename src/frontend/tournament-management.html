@@ -289,22 +289,7 @@
         };
 
         function initializeEventListeners() {
-            // Delete button event listeners
-            document.addEventListener('click', function(e) {
-                if (e.target.classList.contains('delete-btn')) {
-                    const tournamentItem = e.target.closest('.tournament-item');
-                    const tournamentId = tournamentItem.dataset.tournamentId;
-                    showDeleteModal(tournamentId);
-                }
-                
-                if (e.target.classList.contains('manage-participants-btn')) {
-                    const tournamentItem = e.target.closest('.tournament-item');
-                    const tournamentId = tournamentItem.dataset.tournamentId;
-                    manageTournamentParticipants(tournamentId);
-                }
-            });
-
-            // Load more button
+            // Load more button (if exists)
             const loadMoreBtn = document.getElementById('loadMoreBtn');
             if (loadMoreBtn) {
                 loadMoreBtn.addEventListener('click', loadMoreTournaments);
@@ -319,66 +304,54 @@
             }
         }
 
-        function showDeleteModal(tournamentId) {
-            currentDeleteId = tournamentId;
-            const modal = document.getElementById('deleteModal');
-            modal.style.display = 'block';
-        }
-
-        function closeDeleteModal() {
+        window.closeDeleteModal = function() {
             const modal = document.getElementById('deleteModal');
             modal.style.display = 'none';
             currentDeleteId = null;
-        }
+        };
 
-        function confirmDelete() {
+        window.confirmDelete = async function() {
             if (currentDeleteId) {
-                deleteTournament(currentDeleteId);
+                await deleteTournament(currentDeleteId);
                 closeDeleteModal();
             }
-        }
+        };
 
-        function deleteTournament(tournamentId) {
-            const tournamentItem = document.querySelector(`[data-tournament-id="${tournamentId}"]`);
-            if (tournamentItem) {
-                // Add fade out animation
-                tournamentItem.style.opacity = '0';
-                tournamentItem.style.transform = 'translateX(-100%)';
-                
-                setTimeout(() => {
-                    tournamentItem.remove();
+        async function deleteTournament(tournamentId) {
+            try {
+                const response = await apiCall(`${API_ENDPOINTS.TOURNAMENTS.BY_ID(tournamentId)}`, {}, 'DELETE', true);
+
+                if (response.success) {
+                    // Remove from local array
+                    tournaments = tournaments.filter(t => t._id !== tournamentId);
+
+                    // Re-render tournaments
+                    renderTournaments();
+
                     showNotification('Giải đấu đã được xóa thành công', 'success');
-                }, 300);
+                } else {
+                    showNotification('Lỗi khi xóa giải đấu: ' + response.message, 'error');
+                }
+            } catch (error) {
+                console.error('Error deleting tournament:', error);
+                showNotification('Có lỗi xảy ra khi xóa giải đấu', 'error');
             }
-        }
-
-        function manageTournamentParticipants(tournamentId) {
-            // Navigate to participant management page
-            window.location.href = `participant-management.html?tournamentId=${tournamentId}`;
         }
 
         function loadMoreTournaments() {
-            // Simulate loading more tournaments
-            const loadMoreBtn = document.getElementById('loadMoreBtn');
-            loadMoreBtn.disabled = true;
-            loadMoreBtn.innerHTML = 'Đang tải...';
-            
-            setTimeout(() => {
-                // Add more tournament items here
-                loadMoreBtn.innerHTML = '<svg width="75" height="75" viewBox="0 0 75 75" fill="none"><path d="M37.5 48.125L18.75 29.375L23.125 25L37.5 39.375L51.875 25L56.25 29.375L37.5 48.125Z" fill="#1D1B20"/></svg>';
-                loadMoreBtn.disabled = false;
-                showNotification('Đã tải thêm giải đấu', 'info');
-            }, 1000);
+            // This could be implemented for pagination if needed
+            showNotification('Tất cả giải đấu đã được tải', 'info');
         }
 
         function filterTournaments(searchTerm) {
             const tournamentItems = document.querySelectorAll('.tournament-item');
             const searchLower = searchTerm.toLowerCase();
-            
+
             tournamentItems.forEach(item => {
                 const tournamentName = item.querySelector('.tournament-name h3').textContent.toLowerCase();
-                const shouldShow = tournamentName.includes(searchLower);
-                
+                const gameName = item.querySelector('.tournament-name p').textContent.toLowerCase();
+                const shouldShow = tournamentName.includes(searchLower) || gameName.includes(searchLower);
+
                 item.style.display = shouldShow ? 'flex' : 'none';
             });
         }
@@ -388,7 +361,7 @@
             const notification = document.createElement('div');
             notification.className = `notification ${type}`;
             notification.textContent = message;
-            
+
             // Style the notification
             notification.style.cssText = `
                 position: fixed;
@@ -401,15 +374,17 @@
                 z-index: 1000;
                 animation: slideIn 0.3s ease;
             `;
-            
+
             // Add to document
             document.body.appendChild(notification);
-            
+
             // Remove after 3 seconds
             setTimeout(() => {
                 notification.style.animation = 'slideOut 0.3s ease';
                 setTimeout(() => {
-                    document.body.removeChild(notification);
+                    if (document.body.contains(notification)) {
+                        document.body.removeChild(notification);
+                    }
                 }, 300);
             }, 3000);
         }
@@ -429,10 +404,83 @@
                 from { transform: translateX(100%); opacity: 0; }
                 to { transform: translateX(0); opacity: 1; }
             }
-            
+
             @keyframes slideOut {
                 from { transform: translateX(0); opacity: 1; }
                 to { transform: translateX(100%); opacity: 0; }
+            }
+
+            .tournament-item {
+                display: flex;
+                align-items: center;
+                padding: 1rem;
+                border: 1px solid #e2e8f0;
+                border-radius: 8px;
+                margin-bottom: 1rem;
+                background: white;
+                transition: all 0.3s ease;
+            }
+
+            .tournament-item:hover {
+                box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+                transform: translateY(-1px);
+            }
+
+            .tournament-name {
+                flex: 1;
+                margin-left: 1rem;
+            }
+
+            .tournament-name h3 {
+                margin: 0 0 0.5rem 0;
+                color: #2d3748;
+            }
+
+            .tournament-name p {
+                margin: 0.25rem 0;
+                color: #718096;
+                font-size: 0.9rem;
+            }
+
+            .tournament-actions {
+                display: flex;
+                gap: 0.5rem;
+            }
+
+            .tournament-actions button {
+                padding: 0.5rem 1rem;
+                border: none;
+                border-radius: 6px;
+                cursor: pointer;
+                font-weight: 500;
+                transition: all 0.2s ease;
+            }
+
+            .manage-participants-btn {
+                background: #667eea;
+                color: white;
+            }
+
+            .edit-btn {
+                background: #f59e0b;
+                color: white;
+            }
+
+            .delete-btn {
+                background: #ef4444;
+                color: white;
+            }
+
+            .tournament-actions button:hover {
+                opacity: 0.8;
+                transform: translateY(-1px);
+            }
+
+            .loading-message {
+                text-align: center;
+                padding: 2rem;
+                color: #666;
+                font-size: 1.1rem;
             }
         `;
         document.head.appendChild(style);
