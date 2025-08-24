@@ -11,14 +11,12 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@400;500;600;700&family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
 
   <!-- CSS Styles -->
-   
   <link rel="stylesheet" href="./src/assets/styles/base.css" />
   <link rel="stylesheet" href="./src/assets/styles/theme.css" />
   <link rel="stylesheet" href="./src/assets/styles/components.css" />
   <link rel="stylesheet" href="./src/assets/styles/layout.css" />
   <link rel="stylesheet" href="./src/assets/styles/guest-new.css" />
   <link rel="stylesheet" href="./src/assets/styles/carousel.css" />
-  <!-- Use dashboard styles so sections match dashboard.html exactly -->
   <link rel="stylesheet" href="./src/assets/styles/dashboard.css" />
   
   <style>
@@ -70,32 +68,10 @@
       opacity: 0.8;
     }
     
-    .error-message {
-      background: rgba(230, 226, 225, 0.9);
-      padding: 1rem;
-      border-radius: 8px;
-      margin-top: 1rem;
-      max-width: 500px;
-      text-align: center;
-    }
-    
-    .error-actions {
-      margin-top: 1rem;
-    }
-    
-    .error-actions button {
-      background: white;
-      color: #e74c3c;
-      border: none;
-      padding: 8px 16px;
-      border-radius: 4px;
-      cursor: pointer;
-      margin: 0 5px;
-      font-weight: 600;
-    }
-    
-    .error-actions button:hover {
-      background: #f8f9fa;
+    .success-icon {
+      color: #28a745;
+      font-size: 2rem;
+      margin-bottom: 1rem;
     }
   </style>
 </head>
@@ -105,7 +81,7 @@
     <div class="loading-logo">Tournament Manager</div>
     <div class="loading-text">Đang khởi động hệ thống...</div>
     <div class="loading-spinner"></div>
-    <div id="statusMessage" class="status-message">Kiểm tra kết nối backend...</div>
+    <div id="statusMessage" class="status-message">Khởi tạo cơ sở dữ liệu localStorage...</div>
   </div>
 
   <!-- Main Content -->
@@ -113,120 +89,97 @@
 
   <!-- Initialize Application -->
   <script type="module">
-    import App from './src/frontend/js/app.js';
-    import { renderGuestView } from './src/frontend/js/views/guestView.js';
+    import './src/frontend/js/localStorage-api.js';
+    import { authController } from './src/frontend/js/controllers/auth.js';
     import GuestController from './src/frontend/js/controllers/GuestController.js';
-    import { backendStarter } from './src/frontend/js/backend-starter.js';
 
     // Show loading status
     function updateStatus(message) {
       const statusElement = document.getElementById('statusMessage');
       if (statusElement) {
         statusElement.textContent = message;
+      } else {
+        console.log('📊 Status:', message);
       }
     }
 
-    // Show error screen
-    function showError(message, showRetry = true) {
-      const loadingScreen = document.getElementById('loadingScreen');
-      const statusMessage = document.getElementById('statusMessage');
-      
-      statusMessage.innerHTML = `
-        <div class="error-message">
-          <strong>❌ Lỗi kết nối!</strong><br>
-          ${message}
-          ${showRetry ? `
-            <div class="error-actions">
-              <button onclick="window.location.reload()">Thử lại</button>
-              <button onclick="showManualInstructions()">Hướng dẫn</button>
-            </div>
-          ` : ''}
-        </div>
-      `;
-    }
-
-    // Show manual start instructions
-    window.showManualInstructions = function() {
-      const instructions = `
-        <div class="error-message">
-          <strong>📋 Hướng dẫn khởi động thủ công:</strong><br>
-          1. Mở Terminal/Command Prompt<br>
-          2. Chạy lệnh: <code>cd src/backend</code><br>
-          3. Chạy lệnh: <code>node server.js</code><br>
-          4. Sau khi server chạy, reload trang này<br>
-          <div class="error-actions">
-            <button onclick="window.location.reload()">Reload trang</button>
-          </div>
-        </div>
-      `;
-      document.getElementById('statusMessage').innerHTML = instructions;
-    };
-
     // Hide loading screen and show content
     function hideLoadingScreen() {
-      document.getElementById('loadingScreen').style.display = 'none';
-      document.getElementById('content').style.display = 'block';
+      const loadingScreen = document.getElementById('loadingScreen');
+      const content = document.getElementById('content');
+
+      if (loadingScreen) {
+        loadingScreen.style.display = 'none';
+      }
+      if (content) {
+        content.style.display = 'block';
+      }
+    }
+
+    // Show success
+    function showSuccess() {
+      const loadingScreen = document.getElementById('loadingScreen');
+      if (!loadingScreen) {
+        console.log('✅ System ready - loading screen not found');
+        hideLoadingScreen();
+        return;
+      }
+
+      loadingScreen.innerHTML = `
+        <div class="success-icon">✅</div>
+        <div class="loading-logo">Tournament Manager</div>
+        <div class="loading-text">Hệ thống đã sẵn sàng!</div>
+        <div class="status-message">Chạy hoàn toàn với localStorage - không cần backend server</div>
+      `;
+
+      setTimeout(hideLoadingScreen, 2000);
     }
 
     // Main initialization
     async function initializeApp() {
       try {
-        updateStatus('Khởi động backend server...');
+        updateStatus('Đang khởi tạo localStorage database...');
         
-        // Listen for backend events
-        window.addEventListener('backendReady', () => {
-          updateStatus('✅ Backend server đã sẵn sàng!');
-          setTimeout(startApp, 1000);
-        });
-
-        window.addEventListener('backendUnavailable', () => {
-          showError('Không thể kết nối đến backend server. Vui lòng khởi động thủ công:<br><br>1. Mở Terminal<br>2. Chạy: <code>cd src/backend</code><br>3. Chạy: <code>node server.js</code><br>4. Reload trang này');
-        });
-
-        // Wait for backend initialization to complete
-        await new Promise(resolve => setTimeout(resolve, 3000));
-
-        // Check if backend is running
-        if (backendStarter.getStatus().isRunning) {
-          updateStatus('✅ Backend server đã sẵn sàng!');
-          setTimeout(startApp, 1000);
-        } else {
-          // If no backend event fired, show error after timeout
-          setTimeout(() => {
-            if (!backendStarter.getStatus().isRunning) {
-              showError('Backend server chưa chạy. Vui lòng khởi động thủ công:<br><br>1. Mở Terminal<br>2. Chạy: <code>cd src/backend</code><br>3. Chạy: <code>node server.js</code><br>4. Reload trang này');
-            }
-          }, 5000);
+        // Wait for localStorage API to be initialized
+        let attempts = 0;
+        while (!window.localStorageAPI && attempts < 50) {
+          await new Promise(resolve => setTimeout(resolve, 100));
+          attempts++;
+          updateStatus(`Đang khởi tạo API... (${attempts}/50)`);
         }
 
-      } catch (error) {
-        console.error('Initialization error:', error);
-        showError('Có lỗi xảy ra khi khởi động ứng dụng: ' + error.message);
-      }
-    }
-
-    // Start the main application
-    async function startApp() {
-      try {
-        updateStatus('Đang tải giao diện...');
+        if (!window.localStorageAPI) {
+          throw new Error('Failed to initialize localStorage API after 50 attempts');
+        }
         
-        // Initialize both systems
+        updateStatus('Đang tải dữ liệu ban đầu...');
+        
+        // Wait a bit for data initialization
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        
+        updateStatus('Đang khởi tạo controllers...');
+        
+        // Initialize controllers
         const guestController = new GuestController();
         window.guestController = guestController;
+        window.authController = authController;
         
-        // Load guest view as fallback (có nút Đăng nhập/Đăng ký và carousel nhiều mục)
+        updateStatus('Đang tải giao diện...');
+        
+        // Load guest view
         await guestController.renderGuestView();
         
-        updateStatus('✅ Hệ thống đã sẵn sàng!');
+        updateStatus('✅ Hoàn thành!');
         
-        // Hide loading screen after a short delay
-        setTimeout(hideLoadingScreen, 1000);
+        // Show success and hide loading
+        showSuccess();
         
-        console.log('🎉 Tournament Management System started successfully!');
+        console.log('🎉 Tournament Management System initialized with localStorage!');
+        console.log('🚀 No backend server required - works with VS Code Live Server');
         
       } catch (error) {
-        console.error('App startup error:', error);
-        showError('Có lỗi khi tải giao diện: ' + error.message);
+        console.error('App initialization error:', error);
+        updateStatus('❌ Lỗi khởi tạo: ' + error.message);
       }
     }
 

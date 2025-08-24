@@ -15,6 +15,7 @@ const matchRoutes = require('./routes/matchRoutes');
 const highlightRoutes = require('./routes/highlightRoutes');
 const adminRoutes = require('./routes/adminRoutes');
 const userRoutes = require('./routes/userRoutes');
+const competitorRoutes = require('./routes/competitorRoutes');
 
 const app = express();
 const port = config.port;
@@ -60,6 +61,7 @@ app.use('/api/matches', matchRoutes);
 app.use('/api/highlights', highlightRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/users', userRoutes);
+app.use('/api/competitors', competitorRoutes);
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {

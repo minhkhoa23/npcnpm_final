@@ -1,6 +1,7 @@
 const Tournament = require('../models/Tournament');
 const fs = require('fs');
 const path = require('path');
+const { v4: uuidv4 } = require('uuid');
 
 class TournamentController {
     // Get mock tournaments data
@@ -65,6 +66,17 @@ class TournamentController {
         }
     }
 
+    // Save tournaments to JSON file
+    static saveMockTournaments(tournaments) {
+        try {
+            const mockDataPath = path.join(__dirname, '../data/tournaments.json');
+            fs.writeFileSync(mockDataPath, JSON.stringify(tournaments, null, 4), 'utf8');
+            console.log('Tournaments data saved to JSON file');
+        } catch (error) {
+            console.error('Error saving tournaments data:', error);
+        }
+    }
+
     // Create new tournament
     static async createTournament(req, res) {
         try {
@@ -101,30 +113,66 @@ class TournamentController {
                 });
             }
 
-            const tournament = new Tournament({
-                name: name.trim(),
-                format: format ? format.trim() : undefined,
-                description: description ? description.trim() : undefined,
-                gameName: gameName ? gameName.trim() : undefined,
-                organizerId: req.user._id,
-                startDate: startDate ? new Date(startDate) : undefined,
-                endDate: endDate ? new Date(endDate) : undefined,
-                maxPlayers: maxPlayers || undefined,
-                avatarUrl: avatarUrl ? avatarUrl.trim() : undefined,
-                numberOfPlayers: 0,
-                status: 'upcoming'
-            });
+            if (global.mockMode) {
+                // Create tournament in JSON file
+                const newTournamentId = uuidv4().replace(/-/g, '').substring(0, 24);
+                const newTournament = {
+                    _id: newTournamentId,
+                    name: name.trim(),
+                    format: format ? format.trim() : undefined,
+                    description: description ? description.trim() : undefined,
+                    gameName: gameName ? gameName.trim() : undefined,
+                    organizerId: req.user._id,
+                    startDate: startDate ? new Date(startDate).toISOString() : undefined,
+                    endDate: endDate ? new Date(endDate).toISOString() : undefined,
+                    maxPlayers: maxPlayers || undefined,
+                    avatarUrl: avatarUrl ? avatarUrl.trim() : `https://images.unsplash.com/photo-${Math.floor(Math.random() * 1000000)}?w=400&h=300&fit=crop`,
+                    numberOfPlayers: 0,
+                    status: 'upcoming',
+                    createdAt: new Date().toISOString(),
+                    updatedAt: new Date().toISOString(),
+                    participants: []
+                };
 
-            await tournament.save();
+                // Add to JSON file
+                const tournaments = TournamentController.getMockTournaments();
+                tournaments.push(newTournament);
+                TournamentController.saveMockTournaments(tournaments);
 
-            const populatedTournament = await Tournament.findById(tournament._id)
-                .populate('organizerId', 'fullName email');
+                console.log('Tournament created in JSON file:', { name: newTournament.name, id: newTournamentId });
 
-            res.status(201).json({
-                success: true,
-                message: 'Tournament created successfully',
-                data: { tournament: populatedTournament }
-            });
+                res.status(201).json({
+                    success: true,
+                    message: 'Tournament created successfully',
+                    data: { tournament: newTournament }
+                });
+            } else {
+                // Create tournament in database
+                const tournament = new Tournament({
+                    name: name.trim(),
+                    format: format ? format.trim() : undefined,
+                    description: description ? description.trim() : undefined,
+                    gameName: gameName ? gameName.trim() : undefined,
+                    organizerId: req.user._id,
+                    startDate: startDate ? new Date(startDate) : undefined,
+                    endDate: endDate ? new Date(endDate) : undefined,
+                    maxPlayers: maxPlayers || undefined,
+                    avatarUrl: avatarUrl ? avatarUrl.trim() : undefined,
+                    numberOfPlayers: 0,
+                    status: 'upcoming'
+                });
+
+                await tournament.save();
+
+                const populatedTournament = await Tournament.findById(tournament._id)
+                    .populate('organizerId', 'fullName email');
+
+                res.status(201).json({
+                    success: true,
+                    message: 'Tournament created successfully',
+                    data: { tournament: populatedTournament }
+                });
+            }
         } catch (error) {
             console.error('Create tournament error:', error);
 
@@ -662,6 +710,24 @@ class TournamentController {
     // Get upcoming tournaments
     static async getUpcomingTournaments(req, res) {
         try {
+            if (global.mockMode) {
+                console.log('Getting upcoming tournaments from mock data...');
+                const allTournaments = TournamentController.getMockTournaments();
+                const now = new Date();
+
+                const upcomingTournaments = allTournaments.filter(tournament => {
+                    const tournamentStatus = tournament.status || 'upcoming';
+                    const startDate = tournament.startDate ? new Date(tournament.startDate) : new Date(Date.now() + 24 * 60 * 60 * 1000);
+
+                    return tournamentStatus === 'upcoming' && startDate >= now;
+                }).slice(0, 10); // Limit to 10
+
+                return res.json({
+                    success: true,
+                    data: { tournaments: upcomingTournaments }
+                });
+            }
+
             const now = new Date();
             const tournaments = await Tournament.find({ status: 'upcoming', startDate: { $gte: now } })
                 .populate('organizerId', 'fullName email')
@@ -683,6 +749,24 @@ class TournamentController {
     // Get ongoing tournaments
     static async getOngoingTournaments(req, res) {
         try {
+            if (global.mockMode) {
+                console.log('Getting ongoing tournaments from mock data...');
+                const allTournaments = TournamentController.getMockTournaments();
+                const now = new Date();
+
+                const ongoingTournaments = allTournaments.filter(tournament => {
+                    const tournamentStatus = tournament.status || 'upcoming';
+                    const startDate = tournament.startDate ? new Date(tournament.startDate) : new Date(Date.now() - 24 * 60 * 60 * 1000);
+
+                    return tournamentStatus === 'ongoing' && startDate <= now;
+                });
+
+                return res.json({
+                    success: true,
+                    data: { tournaments: ongoingTournaments }
+                });
+            }
+
             const now = new Date();
             const tournaments = await Tournament.find({ status: 'ongoing', startDate: { $lte: now } })
                 .populate('organizerId', 'fullName email');

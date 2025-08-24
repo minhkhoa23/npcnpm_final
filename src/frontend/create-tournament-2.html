@@ -3,443 +3,565 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Khởi tạo giải đấu mới của bạn</title>
+    <title>Chọn đội tham gia giải đấu</title>
     <link rel="stylesheet" href="../assets/styles/base.css">
     <link rel="stylesheet" href="../assets/styles/components.css">
     <link rel="stylesheet" href="../assets/styles/layout.css">
     <link rel="stylesheet" href="../assets/styles/create-tournament.css">
+    <style>
+        .team-selection-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .step-indicator {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 3rem;
+        }
+
+        .step {
+            display: flex;
+            align-items: center;
+            margin: 0 1rem;
+        }
+
+        .step-number {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 0.5rem;
+        }
+
+        .step.completed .step-number {
+            background: #28a745;
+            color: white;
+        }
+
+        .step.active .step-number {
+            background: #667eea;
+            color: white;
+        }
+
+        .step.inactive .step-number {
+            background: #e9ecef;
+            color: #6c757d;
+        }
+
+        .tournament-info {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+        }
+
+        .tournament-info h2 {
+            margin: 0 0 0.5rem 0;
+            font-size: 1.5rem;
+        }
+
+        .tournament-info p {
+            margin: 0.25rem 0;
+            opacity: 0.9;
+        }
+
+        .team-search {
+            margin-bottom: 2rem;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .teams-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .team-card {
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            padding: 1rem;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .team-card:hover {
+            border-color: #667eea;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
+        }
+
+        .team-card.selected {
+            border-color: #28a745;
+            background: rgba(40, 167, 69, 0.05);
+        }
+
+        .team-card.selected::after {
+            content: '✓';
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            width: 24px;
+            height: 24px;
+            background: #28a745;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.8rem;
+        }
+
+        .team-logo {
+            width: 60px;
+            height: 60px;
+            border-radius: 8px;
+            object-fit: cover;
+            margin-bottom: 0.75rem;
+        }
+
+        .team-name {
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            color: #2d3748;
+        }
+
+        .team-description {
+            font-size: 0.9rem;
+            color: #718096;
+            line-height: 1.4;
+            margin-bottom: 0.5rem;
+        }
+
+        .team-games {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.25rem;
+        }
+
+        .game-tag {
+            background: rgba(102, 126, 234, 0.1);
+            color: #667eea;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .selection-summary {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .selection-count {
+            font-weight: 600;
+            color: #495057;
+            margin-bottom: 0.5rem;
+        }
+
+        .selected-teams {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .selected-team-chip {
+            background: #667eea;
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .remove-team {
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            font-size: 1rem;
+            padding: 0;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #5a67d8;
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            color: #6c757d;
+        }
+
+        .error-message {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+    </style>
 </head>
 <body>
-  <!-- Header Navigation -->
-  <header class="main-header">
-    <div class="header-container">
-      <div class="header-left">
-        <div class="nav-item" onclick="window.location.href='../../index.html'">
-          <svg class="nav-icon" width="40" height="40" viewBox="0 0 40 40" fill="none">
-            <path d="M15 36.6667V20H25V36.6667M5 15L20 3.33334L35 15V33.3333C35 34.2174 34.6488 35.0652 34.0237 35.6904C33.3986 36.3155 32.5507 36.6667 31.6667 36.6667H8.33333C7.44928 36.6667 6.60143 36.3155 5.97631 35.6904C5.35119 35.0652 5 34.2174 5 33.3333V15Z" stroke="#F5F5F5" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-          <span class="nav-text">Trang chủ</span>
+    <!-- Header Navigation -->
+    <header class="main-header">
+        <div class="header-container">
+            <div class="header-left">
+                <div class="nav-item" onclick="window.location.href='../../index.html'">
+                    <svg class="nav-icon" width="40" height="40" viewBox="0 0 40 40" fill="none">
+                        <path d="M15 36.6667V20H25V36.6667M5 15L20 3.33334L35 15V33.3333C35 34.2174 34.6488 35.0652 34.0237 35.6904C33.3986 36.3155 32.5507 36.6667 31.6667 36.6667H8.33333C7.44928 36.6667 6.60143 36.3155 5.97631 35.6904C5.35119 35.0652 5 34.2174 5 33.3333V15Z" stroke="#F5F5F5" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <span class="nav-text">Trang chủ</span>
+                </div>
+            </div>
+            <div class="header-center">
+                <h1 style="color: white; margin: 0;">Chọn đội tham gia</h1>
+            </div>
+            <div class="header-right">
+                <div class="user-avatar">
+                    <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/2791d338714d3870b4bb42ac5a5390446faac948?width=80" alt="User Avatar" class="avatar-image" />
+                </div>
+            </div>
         </div>
-        <div class="search-container">
-          <input type="text" id="searchBar" placeholder="Tìm kiếm" class="search-input">
-          <svg class="search-close" width="16" height="16" viewBox="0 0 16 16" fill="none">
-            <path d="M12 4L4 12M4 4L12 12" stroke="#1E1E1E" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </div>
-      </div>
-      <div class="header-center">
-        <div class="nav-item">
-          <svg class="nav-icon" width="40" height="40" viewBox="0 0 40 40" fill="none">
-            <path d="M15.15 15C15.5419 13.8861 16.3153 12.9469 17.3333 12.3486C18.3513 11.7503 19.5482 11.5316 20.712 11.7312C21.8758 11.9308 22.9314 12.5359 23.6918 13.4392C24.4522 14.3426 24.8684 15.4859 24.8667 16.6667C24.8667 20 19.8667 21.6667 19.8667 21.6667M20 28.3333H20.0167M36.6667 20C36.6667 29.2048 29.2048 36.6667 20 36.6667C10.7953 36.6667 3.33334 29.2048 3.33334 20C3.33334 10.7953 10.7953 3.33334 20 3.33334C29.2048 3.33334 36.6667 10.7953 36.6667 20Z" stroke="#F3F3F3" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-          <span class="nav-text">Hỗ trợ</span>
-        </div>
-        <div class="nav-item">
-          <svg class="nav-icon" width="40" height="40" viewBox="0 0 40 40" fill="none">
-            <path d="M20 26.6667V20M20 13.3333H20.0167M36.6667 20C36.6667 29.2048 29.2047 36.6667 20 36.6667C10.7952 36.6667 3.33333 29.2048 3.33333 20C3.33333 10.7953 10.7952 3.33334 20 3.33334C29.2047 3.33334 36.6667 10.7953 36.6667 20Z" stroke="#F3F3F3" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-          <span class="nav-text">Thông tin</span>
-        </div>
-      </div>
-      <div class="header-right">
-        <button class="notification-btn">
-          <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
-            <path d="M27.46 42C27.1084 42.6062 26.6037 43.1093 25.9965 43.4591C25.3892 43.8088 24.7008 43.9929 24 43.9929C23.2992 43.9929 22.6108 43.8088 22.0035 43.4591C21.3963 43.1093 20.8916 42.6062 20.54 42M36 16C36 12.8174 34.7357 9.76516 32.4853 7.51472C30.2348 5.26428 27.1826 4 24 4C20.8174 4 17.7652 5.26428 15.5147 7.51472C13.2643 9.76516 12 12.8174 12 16C12 30 6 34 6 34H42C42 34 36 30 36 16Z" stroke="#F3F3F3" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </button>
-        <div class="user-avatar">
-          <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/2791d338714d3870b4bb42ac5a5390446faac948?width=80" alt="User Avatar" class="avatar-image" />
-        </div>
-      </div>
-    </div>
-  </header>
+    </header>
 
     <!-- Main Content -->
     <main class="main-content">
-        <div class="page-title">
-            <h1>Khởi tạo giải đấu mới của bạn</h1>
-            <h2 class="step-title">Thêm thông tin giải đấu:</h2>
-        </div>
-
-        <div class="create-tournament-container">
-            <form id="createTournamentForm2" class="tournament-form">
-                <!-- Tournament Info Input -->
-                <div class="form-group">
-                    <label for="tournamentInfo">Nh���p thông tin giải đấu của bạn:</label>
-                    <textarea id="tournamentInfo" class="form-textarea" placeholder="Mô tả chi tiết về giải đấu..." rows="4" required></textarea>
+        <div class="team-selection-container">
+            <!-- Step Indicator -->
+            <div class="step-indicator">
+                <div class="step completed">
+                    <div class="step-number">1</div>
+                    <span>Thông tin cơ bản</span>
                 </div>
-
-                <!-- Tournament Format Selection -->
-                <div class="selection-section">
-                    <h3>Lựa chọn thể thức thi đấu:</h3>
-                    <div class="radio-group">
-                        <label class="radio-option">
-                            <input type="radio" name="tournamentFormat" value="elimination" required>
-                            <span class="radio-custom"></span>
-                            Đấu loại trực tiếp
-                        </label>
-                        <label class="radio-option">
-                            <input type="radio" name="tournamentFormat" value="round-robin" required>
-                            <span class="radio-custom"></span>
-                            Vòng bảng xoay lượt
-                        </label>
-                    </div>
+                <div class="step active">
+                    <div class="step-number">2</div>
+                    <span>Chọn đội tham gia</span>
                 </div>
-
-                <!-- Tournament Arrangement Selection -->
-                <div class="selection-section">
-                    <h3>Lựa chọn thể loại sắp xếp thi đấu:</h3>
-                    <div class="radio-group">
-                        <label class="radio-option">
-                            <input type="radio" name="arrangementType" value="auto" required>
-                            <span class="radio-custom"></span>
-                            Tự động sắp
-                        </label>
-                        <label class="radio-option">
-                            <input type="radio" name="arrangementType" value="manual" required>
-                            <span class="radio-custom"></span>
-                            Tự sắp xếp
-                        </label>
-                    </div>
+                <div class="step inactive">
+                    <div class="step-number">3</div>
+                    <span>Xác nhận</span>
                 </div>
+            </div>
 
-                <!-- Tournament Status Selection -->
-                <div class="selection-section">
-                    <h3>Trạng thái tổ chức:</h3>
-                    <div class="radio-group">
-                        <label class="radio-option status-option">
-                            <input type="radio" name="tournamentStatus" value="not-started" required>
-                            <span class="radio-custom"></span>
-                            Chưa bắt đầu
-                        </label>
-                        <label class="radio-option status-option">
-                            <input type="radio" name="tournamentStatus" value="ongoing" required>
-                            <span class="radio-custom"></span>
-                            Đang diễn ra
-                        </label>
-                    </div>
-                </div>
+            <!-- Tournament Info -->
+            <div class="tournament-info">
+                <h2 id="tournamentTitle">Tên giải đấu</h2>
+                <p><strong>Game:</strong> <span id="gameName">-</span></p>
+                <p><strong>Số người chơi:</strong> <span id="playerCount">-</span></p>
+            </div>
 
-                <!-- Logo Upload Section -->
-                <div class="upload-section">
-                    <h3>Thêm logo giải đấu:</h3>
-                    <div class="upload-area" id="logoUploadArea">
-                        <div class="upload-placeholder">
-                            <svg width="30" height="30" viewBox="0 0 30 30" fill="none">
-                                <path d="M26.25 18.75V23.75C26.25 24.413 25.9866 25.0489 25.5178 25.5178C25.0489 25.9866 24.413 26.25 23.75 26.25H6.25C5.58696 26.25 4.95107 25.9866 4.48223 25.5178C4.01339 25.0489 3.75 24.413 3.75 23.75V18.75M21.25 10L15 3.75M15 3.75L8.75 10M15 3.75V18.75" stroke="#1E1E1E" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                            <span>Nhấp để tải lên logo</span>
-                        </div>
-                        <input type="file" id="logoInput" accept="image/*" style="display: none;">
-                        <div class="uploaded-image" id="uploadedLogo" style="display: none;">
-                            <img src="" alt="Tournament Logo">
-                            <button type="button" class="remove-image" onclick="removeLogo()">×</button>
-                        </div>
-                    </div>
-                </div>
+            <!-- Team Search -->
+            <div class="team-search">
+                <input type="text" id="teamSearchInput" class="search-input" placeholder="Tìm kiếm đội...">
+            </div>
 
-                <!-- Continue Button -->
-                <div class="form-actions">
-                    <button type="submit" class="continue-btn">Tiếp tục</button>
-                </div>
-            </form>
+            <!-- Selection Summary -->
+            <div class="selection-summary">
+                <div class="selection-count" id="selectionCount">Chưa chọn đội nào</div>
+                <div class="selected-teams" id="selectedTeamsList"></div>
+            </div>
+
+            <!-- Error Message -->
+            <div id="errorMessage" class="error-message" style="display: none;"></div>
+
+            <!-- Teams Grid -->
+            <div id="teamsContainer" class="loading">
+                <p>Đang tải danh sách đội...</p>
+            </div>
+
+            <!-- Form Actions -->
+            <div class="form-actions">
+                <a href="create-tournament-1.html" class="btn btn-secondary">
+                    ← Quay lại
+                </a>
+                <button id="continueBtn" class="btn btn-primary" disabled>
+                    Tiếp tục →
+                </button>
+            </div>
         </div>
     </main>
 
-  <!-- Footer -->
-  <footer class="main-footer">
-    <div class="footer-container">
-      <div class="footer-content">
-        <div class="footer-section contact">
-          <h3>Liên hệ với chúng tôi:</h3>
-          <div class="social-links">
-            <a href="#" class="social-link">
-              <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
-                <g clip-path="url(#clip0_14_1455)">
-                  <path d="M45.08 12.84C44.8424 11.8908 44.3586 11.0211 43.6773 10.3188C42.996 9.61648 42.1415 9.10637 41.2 8.84C37.76 8 24 8 24 8C24 8 10.24 8 6.79998 8.92C5.85848 9.18637 5.00394 9.69648 4.32268 10.3988C3.64142 11.1011 3.15756 11.9708 2.91998 12.92C2.29041 16.4111 1.98246 19.9526 1.99998 23.5C1.97754 27.0741 2.28552 30.6426 2.91998 34.16C3.1819 35.0797 3.6766 35.9163 4.35627 36.589C5.03595 37.2616 5.87762 37.7476 6.79998 38C10.24 38.92 24 38.92 24 38.92C24 38.92 37.76 38.92 41.2 38C42.1415 37.7336 42.996 37.2235 43.6773 36.5212C44.3586 35.8189 44.8424 34.9492 45.08 34C45.7047 30.5352 46.0126 27.0207 46 23.5C46.0224 19.9259 45.7145 16.3574 45.08 12.84Z" stroke="#F5F5F5" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-                  <path d="M19.5 30.04L31 23.5L19.5 16.96V30.04Z" stroke="#F5F5F5" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-                </g>
-              </svg>
-            </a>
-            <a href="#" class="social-link">
-              <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
-                <path d="M35 13H35.02M14 4H34C39.5228 4 44 8.47715 44 14V34C44 39.5228 39.5228 44 34 44H14C8.47715 44 4 39.5228 4 34V14C4 8.47715 8.47715 4 14 4ZM32 22.74C32.2468 24.4045 31.9625 26.1044 31.1875 27.598C30.4125 29.0916 29.1863 30.3028 27.6833 31.0593C26.1802 31.8159 24.4769 32.0792 22.8156 31.8119C21.1543 31.5445 19.6195 30.7602 18.4297 29.5703C17.2398 28.3805 16.4555 26.8457 16.1881 25.1844C15.9208 23.5231 16.1841 21.8198 16.9407 20.3167C17.6972 18.8137 18.9084 17.5875 20.402 16.8125C21.8956 16.0375 23.5955 15.7532 25.26 16C26.9578 16.2518 28.5297 17.0429 29.7434 18.2566C30.9571 19.4703 31.7482 21.0422 32 22.74Z" stroke="#F3F3F3" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </a>
-            <a href="#" class="social-link">
-              <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
-                <path d="M36 4H30C27.3478 4 24.8043 5.05357 22.9289 6.92893C21.0536 8.8043 20 11.3478 20 14V20H14V28H20V44H28V28H34L36 20H28V14C28 13.4696 28.2107 12.9609 28.5858 12.5858C28.9609 12.2107 29.4696 12 30 12H36V4Z" stroke="#F5F5F5" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </a>
-            <a href="#" class="social-link">
-              <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
-                <path d="M22 22V14M32 22V14M42 4H6V36H16V44L24 36H34L42 28V4Z" stroke="#F3F3F3" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </a>
-          </div>
-          <p class="contact-email">xxxxx@gmail.com</p>
-        </div>
-        <div class="footer-section info">
-          <div class="info-item">
-            <svg class="info-icon" width="40" height="40" viewBox="0 0 40 40" fill="none">
-              <path d="M20 26.6667V20M20 13.3334H20.0167M36.6667 20C36.6667 29.2048 29.2047 36.6667 20 36.6667C10.7952 36.6667 3.33333 29.2048 3.33333 20C3.33333 10.7953 10.7952 3.33337 20 3.33337C29.2047 3.33337 36.6667 10.7953 36.6667 20Z" stroke="#F3F3F3" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-            <span>Thông tin sử dụng</span>
-          </div>
-          <div class="info-item">
-            <svg class="info-icon" width="40" height="40" viewBox="0 0 40 40" fill="none">
-              <path d="M20 26.6667V20M20 13.3334H20.0167M36.6667 20C36.6667 29.2048 29.2047 36.6667 20 36.6667C10.7952 36.6667 3.33333 29.2048 3.33333 20C3.33333 10.7953 10.7952 3.33337 20 3.33337C29.2047 3.33337 36.6667 10.7953 36.6667 20Z" stroke="#F3F3F3" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-            <span>Chính sách bảo mật</span>
-          </div>
-          <div class="info-item">
-            <svg class="info-icon" width="40" height="40" viewBox="0 0 40 40" fill="none">
-              <path d="M20 26.6667V20M20 13.3334H20.0167M36.6667 20C36.6667 29.2048 29.2047 36.6667 20 36.6667C10.7952 36.6667 3.33333 29.2048 3.33333 20C3.33333 10.7953 10.7952 3.33337 20 3.33337C29.2047 3.33337 36.6667 10.7953 36.6667 20Z" stroke="#F3F3F3" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-            <span>Điều khoản sử dụng</span>
-          </div>
-        </div>
-        <div class="footer-section preview">
-          <div class="footer-thumbnail">
-            <div class="footer-logo-placeholder"></div>
-          </div>
-          <div class="footer-controls">
-            <button class="footer-control-btn">
-              <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
-                <path d="M42 42L33.3 33.3M22 16V28M16 22H28M38 22C38 30.8366 30.8366 38 22 38C13.1634 38 6 30.8366 6 22C6 13.1634 13.1634 6 22 6C30.8366 6 38 13.1634 38 22Z" stroke="#F3F3F3" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </button>
-            <button class="footer-control-btn">
-              <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
-                <path d="M42 42L33.3 33.3M16 22H28M38 22C38 30.8366 30.8366 38 22 38C13.1634 38 6 30.8366 6 22C6 13.1634 13.1634 6 22 6C30.8366 6 38 13.1634 38 22Z" stroke="#F3F3F3" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </button>
-          </div>
-        </div>
-      </div>
-      <div class="footer-bottom">
-        <p class="copyright">2025 All rights reserved</p>
-      </div>
-    </div>
-  </footer>
-
-    <script src="../frontend/js/api.js"></script>
     <script>
-        let uploadedLogo = null;
+        let tournamentData = {};
+        let availableTeams = [];
+        let selectedTeams = [];
+        let filteredTeams = [];
 
         // Initialize page
         document.addEventListener('DOMContentLoaded', function() {
-            initializeForm();
-            initializeUpload();
-            loadSavedData();
+            loadTournamentData();
+            initializeSearch();
+            initializeContinueButton();
         });
 
-        function initializeForm() {
-            const form = document.getElementById('createTournamentForm2');
-            form.addEventListener('submit', function(e) {
-                e.preventDefault();
-                
-                if (validateForm()) {
-                    saveFormData();
-                    window.location.href = 'create-tournament-3.html';
-                }
-            });
-        }
-
-        function initializeUpload() {
-            const uploadArea = document.getElementById('logoUploadArea');
-            const logoInput = document.getElementById('logoInput');
-
-            uploadArea.addEventListener('click', function() {
-                logoInput.click();
-            });
-
-            logoInput.addEventListener('change', function(e) {
-                const file = e.target.files[0];
-                if (file) {
-                    handleFileUpload(file);
-                }
-            });
-
-            // Drag and drop functionality
-            uploadArea.addEventListener('dragover', function(e) {
-                e.preventDefault();
-                uploadArea.classList.add('dragover');
-            });
-
-            uploadArea.addEventListener('dragleave', function(e) {
-                e.preventDefault();
-                uploadArea.classList.remove('dragover');
-            });
-
-            uploadArea.addEventListener('drop', function(e) {
-                e.preventDefault();
-                uploadArea.classList.remove('dragover');
-                
-                const files = e.dataTransfer.files;
-                if (files.length > 0) {
-                    handleFileUpload(files[0]);
-                }
-            });
-        }
-
-        function handleFileUpload(file) {
-            if (!file.type.startsWith('image/')) {
-                showError('Vui lòng chọn file hình ảnh');
-                return;
-            }
-
-            if (file.size > 5 * 1024 * 1024) { // 5MB limit
-                showError('File quá lớn. Vui lòng chọn file nhỏ hơn 5MB');
-                return;
-            }
-
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                uploadedLogo = e.target.result;
-                showUploadedImage(e.target.result);
-            };
-            reader.readAsDataURL(file);
-        }
-
-        function showUploadedImage(imageSrc) {
-            const placeholder = document.querySelector('.upload-placeholder');
-            const uploadedDiv = document.getElementById('uploadedLogo');
-            const img = uploadedDiv.querySelector('img');
-
-            placeholder.style.display = 'none';
-            img.src = imageSrc;
-            uploadedDiv.style.display = 'block';
-        }
-
-        function removeLogo() {
-            const placeholder = document.querySelector('.upload-placeholder');
-            const uploadedDiv = document.getElementById('uploadedLogo');
-            const logoInput = document.getElementById('logoInput');
-
-            uploadedLogo = null;
-            logoInput.value = '';
-            placeholder.style.display = 'block';
-            uploadedDiv.style.display = 'none';
-        }
-
-        function validateForm() {
-            const tournamentInfo = document.getElementById('tournamentInfo').value.trim();
-            const tournamentFormat = document.querySelector('input[name="tournamentFormat"]:checked');
-            const arrangementType = document.querySelector('input[name="arrangementType"]:checked');
-            const tournamentStatus = document.querySelector('input[name="tournamentStatus"]:checked');
-
-            if (!tournamentInfo) {
-                showError('Vui lòng nhập thông tin giải đấu');
-                return false;
-            }
-
-            if (!tournamentFormat) {
-                showError('Vui lòng chọn thể thức thi đấu');
-                return false;
-            }
-
-            if (!arrangementType) {
-                showError('Vui lòng chọn thể loại sắp xếp');
-                return false;
-            }
-
-            if (!tournamentStatus) {
-                showError('Vui lòng chọn trạng thái tổ chức');
-                return false;
-            }
-
-            return true;
-        }
-
-        function saveFormData() {
-            const existingData = JSON.parse(localStorage.getItem('tournamentCreationData') || '{}');
-            
-            const formData = {
-                ...existingData,
-                tournamentInfo: document.getElementById('tournamentInfo').value.trim(),
-                tournamentFormat: document.querySelector('input[name="tournamentFormat"]:checked').value,
-                arrangementType: document.querySelector('input[name="arrangementType"]:checked').value,
-                tournamentStatus: document.querySelector('input[name="tournamentStatus"]:checked').value,
-                logo: uploadedLogo,
-                step: 2
-            };
-
-            localStorage.setItem('tournamentCreationData', JSON.stringify(formData));
-        }
-
-        function loadSavedData() {
+        function loadTournamentData() {
             const savedData = localStorage.getItem('tournamentCreationData');
             if (savedData) {
-                const data = JSON.parse(savedData);
+                tournamentData = JSON.parse(savedData);
+                displayTournamentInfo();
+                loadTeamsForGame();
+            } else {
+                showError('Không tìm thấy thông tin giải đấu. Vui lòng quay lại bước 1.');
+                document.getElementById('continueBtn').disabled = true;
+            }
+        }
+
+        function displayTournamentInfo() {
+            document.getElementById('tournamentTitle').textContent = tournamentData.tournamentName || 'Tên giải đấu';
+            document.getElementById('gameName').textContent = tournamentData.gameName || '-';
+            document.getElementById('playerCount').textContent = tournamentData.playerCount || '-';
+        }
+
+        async function loadTeamsForGame() {
+            try {
+                // Import the static API
+                const { apiCall } = await import('../frontend/js/static-api.js');
+                const result = await apiCall(`/competitors/by-game/${encodeURIComponent(tournamentData.gameName)}`);
                 
-                if (data.tournamentInfo) {
-                    document.getElementById('tournamentInfo').value = data.tournamentInfo;
+                if (result.success) {
+                    availableTeams = result.data.competitors;
+                    filteredTeams = [...availableTeams];
+                    displayTeams();
+                } else {
+                    showError('Không thể tải danh sách đội cho game này.');
+                    document.getElementById('teamsContainer').innerHTML = '<p>Không có đội nào cho game này.</p>';
                 }
-                
-                if (data.tournamentFormat) {
-                    const formatRadio = document.querySelector(`input[name="tournamentFormat"][value="${data.tournamentFormat}"]`);
-                    if (formatRadio) formatRadio.checked = true;
-                }
-                
-                if (data.arrangementType) {
-                    const arrangementRadio = document.querySelector(`input[name="arrangementType"][value="${data.arrangementType}"]`);
-                    if (arrangementRadio) arrangementRadio.checked = true;
-                }
-                
-                if (data.tournamentStatus) {
-                    const statusRadio = document.querySelector(`input[name="tournamentStatus"][value="${data.tournamentStatus}"]`);
-                    if (statusRadio) statusRadio.checked = true;
-                }
-                
-                if (data.logo) {
-                    uploadedLogo = data.logo;
-                    showUploadedImage(data.logo);
+            } catch (error) {
+                console.error('Error loading teams:', error);
+                showError('Lỗi kết nối khi tải danh sách đội.');
+                document.getElementById('teamsContainer').innerHTML = '<p>Lỗi kết nối.</p>';
+            }
+        }
+
+        function displayTeams() {
+            const container = document.getElementById('teamsContainer');
+            
+            if (filteredTeams.length === 0) {
+                container.innerHTML = '<p>Không tìm thấy đội nào.</p>';
+                return;
+            }
+
+            const teamsHTML = filteredTeams.map(team => `
+                <div class="team-card" data-team-id="${team._id}" onclick="toggleTeamSelection('${team._id}')">
+                    <img src="${team.logoUrl}" alt="${team.name}" class="team-logo">
+                    <div class="team-name">${team.name}</div>
+                    <div class="team-description">${team.description}</div>
+                    <div class="team-games">
+                        ${team.games.map(game => `<span class="game-tag">${game}</span>`).join('')}
+                    </div>
+                </div>
+            `).join('');
+
+            container.innerHTML = `<div class="teams-grid">${teamsHTML}</div>`;
+        }
+
+        function toggleTeamSelection(teamId) {
+            const teamIndex = selectedTeams.findIndex(team => team._id === teamId);
+            const teamCard = document.querySelector(`[data-team-id="${teamId}"]`);
+            
+            if (teamIndex > -1) {
+                // Remove team
+                selectedTeams.splice(teamIndex, 1);
+                teamCard.classList.remove('selected');
+            } else {
+                // Add team
+                const team = availableTeams.find(t => t._id === teamId);
+                if (team) {
+                    selectedTeams.push(team);
+                    teamCard.classList.add('selected');
                 }
             }
+            
+            updateSelectionSummary();
+            updateContinueButton();
+        }
+
+        function removeTeam(teamId) {
+            const teamIndex = selectedTeams.findIndex(team => team._id === teamId);
+            if (teamIndex > -1) {
+                selectedTeams.splice(teamIndex, 1);
+                const teamCard = document.querySelector(`[data-team-id="${teamId}"]`);
+                if (teamCard) {
+                    teamCard.classList.remove('selected');
+                }
+                updateSelectionSummary();
+                updateContinueButton();
+            }
+        }
+
+        function updateSelectionSummary() {
+            const countElement = document.getElementById('selectionCount');
+            const listElement = document.getElementById('selectedTeamsList');
+            
+            if (selectedTeams.length === 0) {
+                countElement.textContent = 'Chưa chọn đội nào';
+                listElement.innerHTML = '';
+            } else {
+                countElement.textContent = `Đã chọn ${selectedTeams.length} đội`;
+                listElement.innerHTML = selectedTeams.map(team => `
+                    <div class="selected-team-chip">
+                        ${team.name}
+                        <button class="remove-team" onclick="removeTeam('${team._id}')" title="Xóa đội">×</button>
+                    </div>
+                `).join('');
+            }
+        }
+
+        function initializeSearch() {
+            const searchInput = document.getElementById('teamSearchInput');
+            searchInput.addEventListener('input', function() {
+                const searchTerm = this.value.toLowerCase().trim();
+                
+                if (searchTerm === '') {
+                    filteredTeams = [...availableTeams];
+                } else {
+                    filteredTeams = availableTeams.filter(team => 
+                        team.name.toLowerCase().includes(searchTerm) ||
+                        team.description.toLowerCase().includes(searchTerm) ||
+                        team.games.some(game => game.toLowerCase().includes(searchTerm))
+                    );
+                }
+                
+                displayTeams();
+                // Restore selection state
+                selectedTeams.forEach(selectedTeam => {
+                    const teamCard = document.querySelector(`[data-team-id="${selectedTeam._id}"]`);
+                    if (teamCard) {
+                        teamCard.classList.add('selected');
+                    }
+                });
+            });
+        }
+
+        function initializeContinueButton() {
+            document.getElementById('continueBtn').addEventListener('click', function() {
+                if (selectedTeams.length >= 2) {
+                    saveTeamSelection();
+                    window.location.href = 'create-tournament-3.html';
+                } else {
+                    showError('Vui lòng chọn ít nhất 2 đội để tiếp tục.');
+                }
+            });
+        }
+
+        function updateContinueButton() {
+            const continueBtn = document.getElementById('continueBtn');
+            continueBtn.disabled = selectedTeams.length < 2;
+        }
+
+        function saveTeamSelection() {
+            tournamentData.selectedTeams = selectedTeams;
+            tournamentData.step = 2;
+            localStorage.setItem('tournamentCreationData', JSON.stringify(tournamentData));
         }
 
         function showError(message) {
-            const notification = document.createElement('div');
-            notification.className = 'error-notification';
-            notification.textContent = message;
-            
-            notification.style.cssText = `
-                position: fixed;
-                top: 20px;
-                right: 20px;
-                background: #dc3545;
-                color: white;
-                padding: 1rem 1.5rem;
-                border-radius: 8px;
-                z-index: 1000;
-                animation: slideIn 0.3s ease;
-            `;
-            
-            document.body.appendChild(notification);
+            const errorElement = document.getElementById('errorMessage');
+            errorElement.textContent = message;
+            errorElement.style.display = 'block';
             
             setTimeout(() => {
-                notification.style.animation = 'slideOut 0.3s ease';
-                setTimeout(() => {
-                    document.body.removeChild(notification);
-                }, 300);
-            }, 3000);
+                errorElement.style.display = 'none';
+            }, 5000);
         }
 
-        // Add CSS for animations
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes slideIn {
-                from { transform: translateX(100%); opacity: 0; }
-                to { transform: translateX(0); opacity: 1; }
+        // Load saved team selection if returning from step 3
+        function loadSavedSelection() {
+            if (tournamentData.selectedTeams) {
+                selectedTeams = [...tournamentData.selectedTeams];
+                updateSelectionSummary();
+                updateContinueButton();
+                
+                // Mark teams as selected in UI
+                setTimeout(() => {
+                    selectedTeams.forEach(team => {
+                        const teamCard = document.querySelector(`[data-team-id="${team._id}"]`);
+                        if (teamCard) {
+                            teamCard.classList.add('selected');
+                        }
+                    });
+                }, 100);
             }
-            
-            @keyframes slideOut {
-                from { transform: translateX(0); opacity: 1; }
-                to { transform: translateX(100%); opacity: 0; }
-            }
-        `;
-        document.head.appendChild(style);
+        }
+
+        // Call loadSavedSelection after teams are loaded
+        window.addEventListener('load', loadSavedSelection);
     </script>
 </body>
 </html>
