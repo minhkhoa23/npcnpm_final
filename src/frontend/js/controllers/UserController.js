@@ -1,6 +1,6 @@
 import User from '../models/User.js';
 import { renderSearch, renderTournamentDetails } from '../views/userView.js';
-import { apiCall, API_ENDPOINTS } from '../api.js';
+import { apiCall, API_ENDPOINTS } from '../hybrid-api.js';
 
 class UserController {
     constructor() {

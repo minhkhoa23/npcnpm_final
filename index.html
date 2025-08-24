@@ -81,7 +81,7 @@
     <div class="loading-logo">Tournament Manager</div>
     <div class="loading-text">Đang khởi động hệ thống...</div>
     <div class="loading-spinner"></div>
-    <div id="statusMessage" class="status-message">Khởi tạo cơ sở dữ liệu localStorage...</div>
+    <div id="statusMessage" class="status-message">Đang khởi tạo hệ thống...</div>
   </div>
 
   <!-- Main Content -->
@@ -89,10 +89,9 @@
 
   <!-- Initialize Application -->
   <script type="module">
-    import './src/frontend/js/localStorage-api.js';
     import { authController } from './src/frontend/js/controllers/auth.js';
     import { guestRouter } from './src/frontend/js/guest-router.js';
-    import { TokenManager } from './src/frontend/js/static-api.js';
+    import { TokenManager } from './src/frontend/js/hybrid-api.js';
 
     // Show loading status
     function updateStatus(message) {
@@ -130,7 +129,7 @@
         <div class="success-icon">✅</div>
         <div class="loading-logo">Tournament Manager</div>
         <div class="loading-text">Hệ thống đã sẵn sàng!</div>
-        <div class="status-message">Chạy hoàn toàn với localStorage - không cần backend server</div>
+        <div class="status-message">Hệ thống API hybrid đã sẵn sàng!</div>
       `;
 
       setTimeout(hideLoadingScreen, 2000);
@@ -139,44 +138,25 @@
     // Main initialization
     async function initializeApp() {
       try {
-        updateStatus('Đang khởi tạo localStorage database...');
+        updateStatus('Đang khởi tạo hệ thống API...');
 
-        // Wait for localStorage API to be initialized
-        let attempts = 0;
-        while (!window.localStorageAPI && attempts < 50) {
-          await new Promise(resolve => setTimeout(resolve, 100));
-          attempts++;
-          updateStatus(`Đang khởi tạo API... (${attempts}/50)`);
-        }
+        // Import hybrid API which will automatically check backend availability
+        await import('./src/frontend/js/hybrid-api.js');
 
-        if (!window.localStorageAPI) {
-          throw new Error('Failed to initialize localStorage API after 50 attempts');
-        }
-
-        updateStatus('Đang tải dữ liệu ban đầu...');
-
-        // Wait a bit for data initialization
-        await new Promise(resolve => setTimeout(resolve, 1000));
+        updateStatus('Hệ thống API đã sẵn sàng!');
 
         updateStatus('Đang khởi tạo hệ thống...');
 
         // Check if user is authenticated and token is valid
+        let isUserAuthenticated = false;
         if (TokenManager.isAuthenticated()) {
           try {
             // Verify token is still valid
             const user = TokenManager.getCurrentUser();
             if (user && user._id) {
-              // If authenticated, redirect to appropriate dashboard
-              updateStatus('Người dùng đã đăng nhập, chuyển hướng...');
-
-              if (user.role === 'admin') {
-                window.location.href = './src/frontend/dashboard.html';
-              } else if (user.role === 'organizer') {
-                window.location.href = './src/frontend/organizer-dashboard.html';
-              } else {
-                window.location.href = './src/frontend/dashboard.html';
-              }
-              return;
+              // User is authenticated, but don't redirect - let them stay on index
+              updateStatus('Người dùng đã đăng nhập, tải trang chủ...');
+              isUserAuthenticated = true;
             }
           } catch (error) {
             // Token is invalid, clear it and continue as guest
@@ -185,9 +165,13 @@
           }
         }
 
-        updateStatus('Đang tải giao diện guest...');
+        if (isUserAuthenticated) {
+          updateStatus('Đang tải giao diện cho người dùng đã đăng nhập...');
+        } else {
+          updateStatus('Đang tải giao diện guest...');
+        }
 
-        // Initialize guest router and render guest view
+        // Initialize guest router and render appropriate view
         await guestRouter.ensureGuestView();
 
         updateStatus('✅ Hoàn thành!');
@@ -195,8 +179,8 @@
         // Show success and hide loading
         showSuccess();
 
-        console.log('🎉 Tournament Management System initialized with localStorage!');
-        console.log('🚀 No backend server required - works with VS Code Live Server');
+        console.log('🎉 Tournament Management System initialized with hybrid API!');
+        console.log('🚀 Hybrid API system ready (backend + localStorage fallback)');
 
       } catch (error) {
         console.error('App initialization error:', error);

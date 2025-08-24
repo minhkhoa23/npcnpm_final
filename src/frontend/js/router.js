@@ -1,5 +1,5 @@
 // Router for Single Page Application
-import { apiCall, API_ENDPOINTS, TokenManager } from './api.js';
+import { apiCall, API_ENDPOINTS, TokenManager } from './hybrid-api.js';
 import { renderGuestView } from './views/guestView.js';
 import { authController } from './controllers/auth.js';
 import { tournamentController } from './controllers/tournaments.js';

@@ -234,8 +234,8 @@
 
         async function showTeamPreview(gameName) {
             try {
-                // Import the static API
-                const { apiCall } = await import('../frontend/js/static-api.js');
+                // Import the hybrid API
+                const { apiCall } = await import('./js/hybrid-api.js');
                 const result = await apiCall(`/competitors/by-game/${encodeURIComponent(gameName)}`);
 
                 if (result.success) {

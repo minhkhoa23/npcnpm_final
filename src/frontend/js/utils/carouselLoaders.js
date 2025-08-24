@@ -1,4 +1,4 @@
-import { apiCall, API_ENDPOINTS } from '../static-api.js';
+import { apiCall, API_ENDPOINTS } from '../hybrid-api.js';
 import { createCarousel } from '../carousel.js';
 
 /**
@@ -76,17 +76,6 @@ export async function loadHighlightsCarousel(containerId, itemsPerPage = 1) {
   console.log('🎬 Loading highlights carousel...');
 
   try {
-    // Wait for localStorage API to be ready
-    let attempts = 0;
-    while (!window.localStorageAPI && attempts < 20) {
-      await new Promise(resolve => setTimeout(resolve, 100));
-      attempts++;
-    }
-
-    if (!window.localStorageAPI) {
-      throw new Error('localStorage API not ready after 2 seconds');
-    }
-
     const res = await apiCall(API_ENDPOINTS.HIGHLIGHTS.PUBLISHED, {}, 'GET');
     console.log('🎬 Highlights API response:', res);
 
