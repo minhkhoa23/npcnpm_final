@@ -3,6 +3,7 @@
 
 class LocalStorageAPI {
     constructor() {
+        this.isInitialized = false;
         this.initializeData();
     }
 
