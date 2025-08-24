@@ -178,9 +178,13 @@
           }
         }
 
-        updateStatus('Đang tải giao diện guest...');
+        if (isUserAuthenticated) {
+          updateStatus('Đang tải giao diện cho người dùng đã đăng nhập...');
+        } else {
+          updateStatus('Đang tải giao diện guest...');
+        }
 
-        // Initialize guest router and render guest view
+        // Initialize guest router and render appropriate view
         await guestRouter.ensureGuestView();
 
         updateStatus('✅ Hoàn thành!');
@@ -188,7 +192,7 @@
         // Show success and hide loading
         showSuccess();
 
-        console.log('🎉 Tournament Management System initialized with localStorage!');
+        console.log('��� Tournament Management System initialized with localStorage!');
         console.log('🚀 No backend server required - works with VS Code Live Server');
 
       } catch (error) {
