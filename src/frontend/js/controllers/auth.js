@@ -1,4 +1,4 @@
-import { apiCall, API_ENDPOINTS, TokenManager } from '../api.js';
+import { apiCall, API_ENDPOINTS, TokenManager } from '../static-api.js';
 
 class AuthController {
     constructor() {
@@ -101,7 +101,7 @@ class AuthController {
             }
         } catch (error) {
             console.error('🔐 Login error:', error);
-            this.showError('Đăng nhập thất b���i: ' + (error.message || error));
+            this.showError('Đăng nhập thất bại: ' + (error.message || error));
             throw error;
         }
     }

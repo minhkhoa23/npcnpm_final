@@ -1,5 +1,5 @@
 import { loadTranslations } from '../lang.js';
-import { apiCall, API_ENDPOINTS, TokenManager } from '../api.js';
+import { apiCall, API_ENDPOINTS, TokenManager } from '../static-api.js';
 import { createCarousel } from '../carousel.js';
 import { loadTournamentsCarousel, loadNewsCarousel, loadHighlightsCarousel } from '../utils/carouselLoaders.js';
 
