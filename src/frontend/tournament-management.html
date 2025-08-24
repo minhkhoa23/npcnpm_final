@@ -161,6 +161,7 @@
 
     <script type="module">
         import { apiCall, API_ENDPOINTS, TokenManager } from './js/api.js';
+        import { NavigationManager } from './js/navigation.js';
 
         let tournaments = [];
         let currentDeleteId = null;
@@ -244,7 +245,7 @@
             const tournamentList = document.getElementById('tournamentList');
             tournamentList.innerHTML = `
                 <div class="empty-state" style="text-align: center; padding: 3rem; color: #666;">
-                    <h3>Bạn chưa có giải đấu nào</h3>
+                    <h3>Bạn chưa có giải đ���u nào</h3>
                     <p>Hãy tạo giải đấu đầu tiên của bạn!</p>
                     <button onclick="window.location.href='create-tournament-1.html'"
                             style="margin-top: 1rem; padding: 0.75rem 1.5rem; background: #667eea; color: white; border: none; border-radius: 8px; cursor: pointer;">
