@@ -24,6 +24,7 @@ router.delete('/:id/withdraw', TournamentController.withdrawFromTournament);
 
 // Organizer/Admin routes (require organizer role or tournament ownership)
 router.post('/', authorize('organizer', 'admin'), TournamentController.createTournament);
+router.post('/generate-matches', authorize('organizer', 'admin'), TournamentController.generateMatchesAPI);
 
 // Routes that require tournament ownership or admin role
 router.put('/:id', checkTournamentOwnership, TournamentController.updateTournament);
