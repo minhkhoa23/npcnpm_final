@@ -242,9 +242,31 @@ const callLocalStorageAPI = async (endpoint, data = {}, method = 'GET', requireA
 
 // Main hybrid API call function
 export async function apiCall(endpoint, data = {}, method = 'GET', requireAuth = false) {
-    console.log(`📡 Hybrid API call: ${method} ${endpoint}`);
+    console.log(`📡 Hybrid API call: ${method} ${endpoint} (Environment: ${isCloudEnvironment ? 'Cloud' : isLocalEnvironment ? 'Local' : 'Unknown'})`);
 
-    // First, try backend API (only if we haven't already determined it's unavailable)
+    // In cloud environments, skip backend and go directly to localStorage
+    if (isCloudEnvironment) {
+        console.log(`☁️ Cloud environment detected, using localStorage directly for: ${method} ${endpoint}`);
+        try {
+            const result = await callLocalStorageAPI(endpoint, data, method, requireAuth);
+            console.log(`✅ Cloud localStorage API success: ${method} ${endpoint}`);
+            return result;
+        } catch (error) {
+            console.error(`❌ Cloud localStorage API failed for: ${method} ${endpoint}`, error.message);
+            return {
+                success: false,
+                data: {
+                    tournaments: [],
+                    news: [],
+                    highlights: [],
+                    users: []
+                },
+                message: `Cloud API temporarily unavailable: ${error.message}`
+            };
+        }
+    }
+
+    // For local environment, try backend first then fallback to localStorage
     if (backendAvailable !== false) {
         try {
             console.log(`🌐 Trying backend API for: ${method} ${endpoint}`);
