@@ -721,54 +721,6 @@ class LocalStorageAPI {
 // Create global instance
 window.localStorageAPI = new LocalStorageAPI();
 
-// Global debug functions for development
-window.debugTournamentSystem = {
-    // Check users data
-    checkUsers: () => {
-        if (window.localStorageAPI) {
-            return window.localStorageAPI.debugUsers();
-        } else {
-            console.error('LocalStorageAPI not initialized');
-        }
-    },
-
-    // Reset all data
-    resetData: () => {
-        console.log('🗑️ Clearing all tournament data from localStorage...');
-        localStorage.removeItem('tournament_users');
-        localStorage.removeItem('tournament_tournaments');
-        localStorage.removeItem('tournament_news');
-        localStorage.removeItem('tournament_highlights');
-        localStorage.removeItem('tournament_competitors');
-        console.log('✅ Data cleared. Refresh page to reload.');
-    },
-
-    // Test login
-    testLogin: async (email = 'admin@esport.com', password = 'admin123') => {
-        if (window.localStorageAPI) {
-            try {
-                console.log(`🧪 Testing login: ${email} / ${password}`);
-                const result = await window.localStorageAPI.login({ email, password });
-                console.log('✅ Login test successful:', result);
-                return result;
-            } catch (error) {
-                console.error('❌ Login test failed:', error.message);
-                return error;
-            }
-        } else {
-            console.error('LocalStorageAPI not initialized');
-        }
-    },
-
-    // Get test credentials
-    getTestCredentials: () => {
-        return {
-            admin: { email: 'admin@esport.com', password: 'admin123' },
-            organizer: { email: 'organizer@esport.com', password: 'organizer123' },
-            player: { email: 'player1@esport.com', password: 'player123' },
-            demo: { email: 'demo@esport.com', password: 'demo123' }
-        };
-    }
-};
+// System ready for production use
 
 export default LocalStorageAPI;
