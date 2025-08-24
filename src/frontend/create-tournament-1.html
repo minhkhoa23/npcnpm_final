@@ -214,19 +214,80 @@
         function initializeGameSelection() {
             const gameOptions = document.querySelectorAll('.game-option');
             gameOptions.forEach(option => {
-                option.addEventListener('click', function() {
+                option.addEventListener('click', async function() {
                     // Remove previous selection
                     gameOptions.forEach(opt => opt.classList.remove('selected'));
-                    
+
                     // Add selection to clicked option
                     this.classList.add('selected');
                     selectedGame = this.dataset.game;
-                    
+
                     // Update game name input
                     const gameName = this.querySelector('.game-overlay span').textContent;
                     document.getElementById('gameName').value = gameName;
+
+                    // Preview available teams for selected game
+                    await showTeamPreview(gameName);
                 });
             });
+        }
+
+        async function showTeamPreview(gameName) {
+            try {
+                const response = await fetch(`/api/competitors/by-game/${encodeURIComponent(gameName)}`);
+                const result = await response.json();
+
+                if (result.success) {
+                    const teams = result.data.competitors;
+                    showTeamCount(teams.length, gameName);
+                } else {
+                    showTeamCount(0, gameName);
+                }
+            } catch (error) {
+                console.error('Error fetching teams:', error);
+                showTeamCount(0, gameName);
+            }
+        }
+
+        function showTeamCount(count, gameName) {
+            // Create or update team count display
+            let teamCountDisplay = document.getElementById('teamCount');
+            if (!teamCountDisplay) {
+                teamCountDisplay = document.createElement('div');
+                teamCountDisplay.id = 'teamCount';
+                teamCountDisplay.style.cssText = `
+                    margin-top: 1rem;
+                    padding: 0.75rem 1rem;
+                    background: rgba(102, 126, 234, 0.1);
+                    border: 1px solid rgba(102, 126, 234, 0.2);
+                    border-radius: 8px;
+                    color: #667eea;
+                    font-weight: 500;
+                    text-align: center;
+                `;
+
+                const gameSelectionSection = document.querySelector('.game-selection-section');
+                gameSelectionSection.appendChild(teamCountDisplay);
+            }
+
+            if (count > 0) {
+                teamCountDisplay.innerHTML = `
+                    <svg style="display: inline; margin-right: 8px;" width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+                        <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                    Có ${count} đội tham gia game <strong>${gameName}</strong>
+                `;
+            } else {
+                teamCountDisplay.innerHTML = `
+                    <svg style="display: inline; margin-right: 8px;" width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+                        <path d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                    Chưa có đội nào cho game <strong>${gameName}</strong>
+                `;
+                teamCountDisplay.style.borderColor = 'rgba(220, 53, 69, 0.2)';
+                teamCountDisplay.style.backgroundColor = 'rgba(220, 53, 69, 0.1)';
+                teamCountDisplay.style.color = '#dc3545';
+            }
         }
 
         function initializeForm() {
