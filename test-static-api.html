@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Static API Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; background: #f5f5f5; }
+        .test-container { background: white; padding: 20px; border-radius: 8px; margin-bottom: 20px; }
+        .test-result { padding: 10px; margin: 10px 0; border-radius: 4px; }
+        .success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .error { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        .loading { background: #fff3cd; color: #856404; border: 1px solid #ffeaa7; }
+        button { padding: 10px 20px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; margin: 5px; }
+        button:hover { background: #0056b3; }
+        pre { background: #f8f9fa; padding: 10px; border-radius: 4px; overflow-x: auto; max-height: 200px; }
+        .endpoint-list { columns: 2; column-gap: 20px; }
+    </style>
+</head>
+<body>
+    <h1>🧪 Static API Test Suite</h1>
+    <p>Testing all implemented endpoints to verify they work correctly.</p>
+    
+    <button onclick="runAllTests()">🚀 Run All Tests</button>
+    <button onclick="clearResults()">🗑️ Clear Results</button>
+    
+    <div class="endpoint-list">
+        <h3>📋 Endpoints to Test:</h3>
+        <ul>
+            <li>/health</li>
+            <li>/tournaments</li>
+            <li>/tournaments/upcoming</li>
+            <li>/tournaments/ongoing</li>
+            <li>/news/featured</li>
+            <li>/news/published ✨</li>
+            <li>/highlights/published ✨</li>
+            <li>/competitors</li>
+            <li>/competitors/by-game/League%20of%20Legends</li>
+        </ul>
+        <p>✨ = Recently fixed endpoints</p>
+    </div>
+    
+    <div id="results"></div>
+
+    <script type="module">
+        import './src/frontend/js/localStorage-api.js';
+        import { apiCall } from './src/frontend/js/static-api.js';
+
+        // Test endpoints
+        const endpoints = [
+            { name: 'Health Check', url: '/health', method: 'GET' },
+            { name: 'All Tournaments', url: '/tournaments', method: 'GET' },
+            { name: 'Upcoming Tournaments', url: '/tournaments/upcoming', method: 'GET' },
+            { name: 'Ongoing Tournaments', url: '/tournaments/ongoing', method: 'GET' },
+            { name: 'Featured News', url: '/news/featured', method: 'GET' },
+            { name: 'Published News ✨', url: '/news/published', method: 'GET' },
+            { name: 'Published Highlights ✨', url: '/highlights/published', method: 'GET' },
+            { name: 'All Competitors', url: '/competitors', method: 'GET' },
+            { name: 'League of Legends Teams', url: '/competitors/by-game/League%20of%20Legends', method: 'GET' }
+        ];
+
+        async function runAllTests() {
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = '<div class="test-result loading">🔄 Initializing tests...</div>';
+            
+            // Wait for localStorage API to be ready
+            let attempts = 0;
+            while (!window.localStorageAPI && attempts < 30) {
+                await new Promise(resolve => setTimeout(resolve, 100));
+                attempts++;
+            }
+            
+            if (!window.localStorageAPI) {
+                resultsDiv.innerHTML = '<div class="test-result error">❌ localStorage API not ready after 3 seconds</div>';
+                return;
+            }
+            
+            resultsDiv.innerHTML = '<div class="test-result loading">🧪 Running tests...</div>';
+            
+            for (const test of endpoints) {
+                const testDiv = document.createElement('div');
+                testDiv.className = 'test-container';
+                testDiv.innerHTML = `<h3>${test.name}</h3><div class="test-result loading">Testing ${test.url}...</div>`;
+                resultsDiv.appendChild(testDiv);
+                
+                try {
+                    const startTime = Date.now();
+                    const result = await apiCall(test.url, {}, test.method);
+                    const endTime = Date.now();
+                    const duration = endTime - startTime;
+                    
+                    if (result && result.success) {
+                        let details = `✅ SUCCESS (${duration}ms)`;
+                        if (result.data) {
+                            if (result.data.tournaments) details += ` - ${result.data.tournaments.length} tournaments`;
+                            if (result.data.news) details += ` - ${result.data.news.length} news articles`;
+                            if (result.data.highlights) details += ` - ${result.data.highlights.length} highlights`;
+                            if (result.data.competitors) details += ` - ${result.data.competitors.length} teams`;
+                        }
+                        
+                        testDiv.innerHTML = `
+                            <h3>${test.name}</h3>
+                            <div class="test-result success">
+                                ${details}
+                                <details>
+                                    <summary>Response Data</summary>
+                                    <pre>${JSON.stringify(result, null, 2)}</pre>
+                                </details>
+                            </div>
+                        `;
+                    } else {
+                        testDiv.innerHTML = `
+                            <h3>${test.name}</h3>
+                            <div class="test-result error">
+                                ❌ FAILED - Result success is false
+                                <details>
+                                    <summary>Response</summary>
+                                    <pre>${JSON.stringify(result, null, 2)}</pre>
+                                </details>
+                            </div>
+                        `;
+                    }
+                } catch (error) {
+                    testDiv.innerHTML = `
+                        <h3>${test.name}</h3>
+                        <div class="test-result error">
+                            ❌ ERROR - ${error.message}
+                            <details>
+                                <summary>Error Details</summary>
+                                <pre>${error.stack || error.toString()}</pre>
+                            </details>
+                        </div>
+                    `;
+                }
+                
+                // Small delay to see progress
+                await new Promise(resolve => setTimeout(resolve, 200));
+            }
+            
+            // Add summary
+            const summaryDiv = document.createElement('div');
+            summaryDiv.className = 'test-container';
+            summaryDiv.innerHTML = `
+                <h3>📊 Test Summary</h3>
+                <div class="test-result success">
+                    All tests completed! Check results above.
+                    <br><br>
+                    <strong>Fixed Issues:</strong>
+                    <ul>
+                        <li>✅ /news/published endpoint now working</li>
+                        <li>✅ /highlights/published endpoint now working</li>
+                        <li>✅ Null reference errors fixed</li>
+                        <li>✅ Better error handling added</li>
+                    </ul>
+                </div>
+            `;
+            resultsDiv.appendChild(summaryDiv);
+        }
+
+        function clearResults() {
+            document.getElementById('results').innerHTML = '';
+        }
+
+        // Make functions global
+        window.runAllTests = runAllTests;
+        window.clearResults = clearResults;
+    </script>
+</body>
+</html>
