@@ -370,10 +370,51 @@ class LocalStorageAPI {
         };
     }
 
+    // Tournament methods
+    async updateTournament(id, updateData) {
+        const tournaments = this.getData('tournaments');
+        const index = tournaments.findIndex(t => t._id === id);
+
+        if (index === -1) {
+            throw new Error('Tournament not found');
+        }
+
+        tournaments[index] = {
+            ...tournaments[index],
+            ...updateData,
+            updatedAt: new Date().toISOString()
+        };
+
+        this.saveData('tournaments', tournaments);
+
+        return {
+            success: true,
+            message: 'Tournament updated successfully',
+            data: { tournament: tournaments[index] }
+        };
+    }
+
+    async deleteTournament(id) {
+        const tournaments = this.getData('tournaments');
+        const index = tournaments.findIndex(t => t._id === id);
+
+        if (index === -1) {
+            throw new Error('Tournament not found');
+        }
+
+        tournaments.splice(index, 1);
+        this.saveData('tournaments', tournaments);
+
+        return {
+            success: true,
+            message: 'Tournament deleted successfully'
+        };
+    }
+
     // News endpoints
     async createNews(newsData) {
         const news = this.getData('news');
-        
+
         const newNews = {
             _id: this.generateId(),
             ...newsData,
@@ -393,6 +434,46 @@ class LocalStorageAPI {
             success: true,
             message: 'News article created successfully',
             data: { news: newNews }
+        };
+    }
+
+    async updateNews(id, updateData) {
+        const news = this.getData('news');
+        const index = news.findIndex(n => n._id === id);
+
+        if (index === -1) {
+            throw new Error('News article not found');
+        }
+
+        news[index] = {
+            ...news[index],
+            ...updateData,
+            updatedAt: new Date().toISOString()
+        };
+
+        this.saveData('news', news);
+
+        return {
+            success: true,
+            message: 'News article updated successfully',
+            data: { news: news[index] }
+        };
+    }
+
+    async deleteNews(id) {
+        const news = this.getData('news');
+        const index = news.findIndex(n => n._id === id);
+
+        if (index === -1) {
+            throw new Error('News article not found');
+        }
+
+        news.splice(index, 1);
+        this.saveData('news', news);
+
+        return {
+            success: true,
+            message: 'News article deleted successfully'
         };
     }
 
