@@ -99,7 +99,7 @@
       if (statusElement) {
         statusElement.textContent = message;
       } else {
-        console.log('📊 Status:', message);
+        console.log('���� Status:', message);
       }
     }
 
@@ -138,23 +138,12 @@
     // Main initialization
     async function initializeApp() {
       try {
-        updateStatus('Đang kết nối với backend server...');
+        updateStatus('Đang khởi tạo hệ thống API...');
 
-        // Test backend connection
-        try {
-          const response = await fetch('/api/health');
-          if (response.ok) {
-            updateStatus('Backend server đã kết nối thành công!');
-          } else {
-            updateStatus('Backend server phản hồi nhưng có lỗi...');
-          }
-        } catch (error) {
-          updateStatus('Không thể kết nối backend, tiếp tục với localStorage...');
-          // Fallback to localStorage if backend is not available
-          const { default: LocalStorageAPI } = await import('./src/frontend/js/localStorage-api.js');
-        }
+        // Import hybrid API which will automatically check backend availability
+        await import('./src/frontend/js/hybrid-api.js');
 
-        updateStatus('Đang tải dữ liệu...');
+        updateStatus('Hệ thống API đã sẵn sàng!');
 
         updateStatus('Đang khởi tạo hệ thống...');
 
