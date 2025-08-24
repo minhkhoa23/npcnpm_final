@@ -110,6 +110,46 @@
                     <input type="text" id="gameName" class="form-input" placeholder="Tên game" required>
                 </div>
 
+                <!-- Tournament Format Selection -->
+                <div class="form-group">
+                    <label>Chọn thể thức giải đấu:</label>
+                    <div class="format-selection">
+                        <div class="format-option" data-format="single-elimination">
+                            <div class="format-icon">
+                                <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+                                    <path d="M5 8L15 18L5 28M20 8L30 18L20 28M35 18H5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </div>
+                            <div class="format-info">
+                                <h4>Đấu loại trực tiếp</h4>
+                                <p>Thắng 1 trận - tiến, thua 1 trận - loại</p>
+                            </div>
+                        </div>
+                        <div class="format-option" data-format="double-elimination">
+                            <div class="format-icon">
+                                <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+                                    <path d="M8 10L20 22L32 10M8 18L20 30L32 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </div>
+                            <div class="format-info">
+                                <h4>Vòng tròn kép</h4>
+                                <p>Có cơ hội thứ 2 - thua 2 lần mới bị loại</p>
+                            </div>
+                        </div>
+                        <div class="format-option" data-format="group-stage">
+                            <div class="format-icon">
+                                <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+                                    <path d="M20 5L25 15H35L27.5 22.5L30 32.5L20 27.5L10 32.5L12.5 22.5L5 15H15L20 5Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </div>
+                            <div class="format-info">
+                                <h4>Đấu tổ hợp</h4>
+                                <p>Vòng bảng + playoff (kết hợp 2 thể thức)</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Player Count Input -->
                 <div class="form-group">
                     <label for="playerCount">Nhập số lượng người chơi:</label>
