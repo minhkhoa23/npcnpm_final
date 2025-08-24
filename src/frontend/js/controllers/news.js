@@ -1,4 +1,4 @@
-import { apiCall, API_ENDPOINTS, TokenManager } from '../api.js';
+import { apiCall, API_ENDPOINTS, TokenManager } from '../static-api.js';
 import { authController } from './auth.js';
 
 class NewsController {
@@ -93,7 +93,7 @@ class NewsController {
             }
 
             if (!authController.isAdmin() && !authController.isOrganizer()) {
-                throw new Error('Chỉ admin và organizer mới c�� thể tạo tin tức');
+                throw new Error('Chỉ admin và organizer mới có thể tạo tin tức');
             }
 
             this.setLoading(true);

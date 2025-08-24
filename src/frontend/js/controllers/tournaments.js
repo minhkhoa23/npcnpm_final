@@ -1,4 +1,4 @@
-import { apiCall, API_ENDPOINTS, TokenManager } from '../api.js';
+import { apiCall, API_ENDPOINTS, TokenManager } from '../static-api.js';
 import { authController } from './auth.js';
 
 class TournamentController {
