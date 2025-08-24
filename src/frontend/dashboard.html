@@ -311,18 +311,7 @@
 
     async function loadTournaments() {
       try {
-        // Wait for localStorage API to be ready
-        let attempts = 0;
-        while (!window.localStorageAPI && attempts < 50) {
-          await new Promise(resolve => setTimeout(resolve, 100));
-          attempts++;
-        }
-
-        if (!window.localStorageAPI) {
-          throw new Error('localStorage API not ready after 5 seconds');
-        }
-
-        // Thử lấy giải đang diễn ra trước
+        // Try to get ongoing tournaments first
         let res = await apiCall(API_ENDPOINTS.TOURNAMENTS.ONGOING, {}, 'GET');
         let tournaments = res?.data?.tournaments || [];
         
@@ -361,17 +350,6 @@
 
     async function loadNews() {
       try {
-        // Wait for localStorage API to be ready
-        let attempts = 0;
-        while (!window.localStorageAPI && attempts < 50) {
-          await new Promise(resolve => setTimeout(resolve, 100));
-          attempts++;
-        }
-
-        if (!window.localStorageAPI) {
-          throw new Error('localStorage API not ready after 5 seconds');
-        }
-
         const res = await apiCall(API_ENDPOINTS.NEWS.PUBLISHED, {}, 'GET');
         let news = res?.data?.news || [];
         
@@ -400,17 +378,6 @@
 
     async function loadHighlights() {
       try {
-        // Wait for localStorage API to be ready
-        let attempts = 0;
-        while (!window.localStorageAPI && attempts < 50) {
-          await new Promise(resolve => setTimeout(resolve, 100));
-          attempts++;
-        }
-
-        if (!window.localStorageAPI) {
-          throw new Error('localStorage API not ready after 5 seconds');
-        }
-
         const res = await apiCall(API_ENDPOINTS.HIGHLIGHTS.PUBLISHED, {}, 'GET');
         let highlights = res?.data?.highlights || [];
         
