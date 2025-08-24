@@ -98,25 +98,40 @@
       const statusElement = document.getElementById('statusMessage');
       if (statusElement) {
         statusElement.textContent = message;
+      } else {
+        console.log('📊 Status:', message);
       }
     }
 
     // Hide loading screen and show content
     function hideLoadingScreen() {
-      document.getElementById('loadingScreen').style.display = 'none';
-      document.getElementById('content').style.display = 'block';
+      const loadingScreen = document.getElementById('loadingScreen');
+      const content = document.getElementById('content');
+
+      if (loadingScreen) {
+        loadingScreen.style.display = 'none';
+      }
+      if (content) {
+        content.style.display = 'block';
+      }
     }
 
     // Show success
     function showSuccess() {
       const loadingScreen = document.getElementById('loadingScreen');
+      if (!loadingScreen) {
+        console.log('✅ System ready - loading screen not found');
+        hideLoadingScreen();
+        return;
+      }
+
       loadingScreen.innerHTML = `
         <div class="success-icon">✅</div>
         <div class="loading-logo">Tournament Manager</div>
         <div class="loading-text">Hệ thống đã sẵn sàng!</div>
         <div class="status-message">Chạy hoàn toàn với localStorage - không cần backend server</div>
       `;
-      
+
       setTimeout(hideLoadingScreen, 2000);
     }
 
