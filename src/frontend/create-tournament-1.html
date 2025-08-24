@@ -462,17 +462,53 @@
         // Load saved data on page load
         window.addEventListener('load', loadSavedData);
 
-        // Add CSS for animations
+        // Add CSS for animations and selection states
         const style = document.createElement('style');
         style.textContent = `
             @keyframes slideIn {
                 from { transform: translateX(100%); opacity: 0; }
                 to { transform: translateX(0); opacity: 1; }
             }
-            
+
             @keyframes slideOut {
                 from { transform: translateX(0); opacity: 1; }
                 to { transform: translateX(100%); opacity: 0; }
+            }
+
+            .format-option.selected {
+                border: 2px solid #28a745;
+                background: rgba(40, 167, 69, 0.05);
+                transform: translateY(-2px);
+                box-shadow: 0 4px 12px rgba(40, 167, 69, 0.2);
+            }
+
+            .format-option.selected::after {
+                content: '✓';
+                position: absolute;
+                top: 8px;
+                right: 8px;
+                width: 24px;
+                height: 24px;
+                background: #28a745;
+                color: white;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-weight: bold;
+                font-size: 14px;
+            }
+
+            .format-option {
+                position: relative;
+                cursor: pointer;
+                transition: all 0.3s ease;
+            }
+
+            .format-option:hover {
+                border-color: #667eea;
+                transform: translateY(-1px);
+                box-shadow: 0 2px 8px rgba(102, 126, 234, 0.1);
             }
         `;
         document.head.appendChild(style);
