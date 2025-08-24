@@ -119,6 +119,7 @@ class LocalStorageAPI {
         }
 
         console.log('✅ LocalStorage database initialized');
+        this.isInitialized = true;
     }
 
     // Generate unique ID
