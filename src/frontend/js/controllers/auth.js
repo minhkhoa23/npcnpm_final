@@ -63,7 +63,21 @@ class AuthController {
     // User login
     async login(credentials) {
         try {
+            // Wait for localStorage API to be ready
+            let attempts = 0;
+            while (!window.localStorageAPI && attempts < 50) {
+                await new Promise(resolve => setTimeout(resolve, 100));
+                attempts++;
+            }
+
+            if (!window.localStorageAPI) {
+                throw new Error('Hệ thống chưa sẵn sàng. Vui lòng thử lại sau.');
+            }
+
+            console.log('🔐 Attempting login with email:', credentials.email);
+
             const result = await apiCall(API_ENDPOINTS.AUTH.LOGIN, credentials, 'POST');
+            console.log('🔐 Login result:', result);
 
             if (result.success) {
                 if (result.data && result.data.token) {
@@ -75,12 +89,18 @@ class AuthController {
                 }
 
                 this.showSuccess('Đăng nhập thành công!');
-                this.redirectAfterAuth();
+
+                // Small delay before redirect to let user see success message
+                setTimeout(() => {
+                    this.redirectAfterAuth();
+                }, 1000);
+
                 return result;
             } else {
                 throw new Error(result.message || 'Login failed');
             }
         } catch (error) {
+            console.error('🔐 Login error:', error);
             this.showError('Đăng nhập thất bại: ' + (error.message || error));
             throw error;
         }
