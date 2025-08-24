@@ -221,31 +221,33 @@ const callLocalStorageAPI = async (endpoint, data = {}, method = 'GET', requireA
 // Main hybrid API call function
 export async function apiCall(endpoint, data = {}, method = 'GET', requireAuth = false) {
     console.log(`📡 Hybrid API call: ${method} ${endpoint}`);
-    
-    // First, try backend API
-    try {
-        const isBackendAvailable = await checkBackendAvailability();
-        
-        if (isBackendAvailable) {
-            console.log(`🌐 Using backend API for: ${method} ${endpoint}`);
+
+    // First, try backend API (only if we haven't already determined it's unavailable)
+    if (backendAvailable !== false) {
+        try {
+            console.log(`🌐 Trying backend API for: ${method} ${endpoint}`);
             const result = await callBackendAPI(endpoint, data, method, requireAuth);
             console.log(`✅ Backend API success: ${method} ${endpoint}`);
+            backendAvailable = true; // Mark as available since this call succeeded
             return result;
+        } catch (error) {
+            console.log(`❌ Backend API failed: ${method} ${endpoint}`, error.message);
+            backendAvailable = false; // Mark as unavailable for future calls
+            // Continue to localStorage fallback
         }
-    } catch (error) {
-        console.log(`❌ Backend API failed: ${method} ${endpoint}`, error.message);
-        backendAvailable = false; // Mark as unavailable for future calls
+    } else {
+        console.log(`⚠️ Backend marked as unavailable, skipping to localStorage for: ${method} ${endpoint}`);
     }
-    
+
     // Fallback to localStorage API
     try {
-        console.log(`💾 Falling back to localStorage API for: ${method} ${endpoint}`);
+        console.log(`💾 Using localStorage API for: ${method} ${endpoint}`);
         const result = await callLocalStorageAPI(endpoint, data, method, requireAuth);
         console.log(`✅ localStorage API success: ${method} ${endpoint}`);
         return result;
     } catch (error) {
         console.error(`❌ Both backend and localStorage APIs failed for: ${method} ${endpoint}`, error.message);
-        
+
         // Return empty data structure to prevent crashes
         return {
             success: false,
