@@ -89,10 +89,9 @@
 
   <!-- Initialize Application -->
   <script type="module">
-    import './src/frontend/js/localStorage-api.js';
     import { authController } from './src/frontend/js/controllers/auth.js';
     import { guestRouter } from './src/frontend/js/guest-router.js';
-    import { TokenManager } from './src/frontend/js/static-api.js';
+    import { TokenManager } from './src/frontend/js/api.js';
 
     // Show loading status
     function updateStatus(message) {
@@ -157,7 +156,7 @@
 
         updateStatus('Đang tải dữ liệu...');
 
-        updateStatus('Đang khởi tạo hệ thống...');
+        updateStatus('Đang khởi t���o hệ thống...');
 
         // Check if user is authenticated and token is valid
         let isUserAuthenticated = false;
@@ -192,7 +191,7 @@
         showSuccess();
 
         console.log('🎉 Tournament Management System initialized with backend API!');
-        console.log('🚀 Backend server connected successfully');
+        console.log('��� Backend server connected successfully');
 
       } catch (error) {
         console.error('App initialization error:', error);
