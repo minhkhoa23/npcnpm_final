@@ -988,6 +988,55 @@ class TournamentController {
             });
         }
     }
+
+    // API endpoint for generating matches
+    static async generateMatchesAPI(req, res) {
+        try {
+            const { tournamentId, format, competitorIds } = req.body;
+
+            if (!tournamentId || !format || !competitorIds || competitorIds.length < 2) {
+                return res.status(400).json({
+                    success: false,
+                    message: 'Tournament ID, format, and at least 2 competitors are required'
+                });
+            }
+
+            // Verify tournament exists and user has permission
+            const tournament = await Tournament.findById(tournamentId);
+            if (!tournament) {
+                return res.status(404).json({
+                    success: false,
+                    message: 'Tournament not found'
+                });
+            }
+
+            // Check if user is organizer of this tournament or admin
+            if (tournament.organizerId.toString() !== req.user._id.toString() && req.user.role !== 'admin') {
+                return res.status(403).json({
+                    success: false,
+                    message: 'You can only generate matches for your own tournaments'
+                });
+            }
+
+            const matches = await TournamentController.generateMatches(tournamentId, format, competitorIds);
+
+            res.json({
+                success: true,
+                message: 'Matches generated successfully',
+                data: {
+                    matches,
+                    count: matches.length
+                }
+            });
+        } catch (error) {
+            console.error('Generate matches API error:', error);
+            res.status(500).json({
+                success: false,
+                message: 'Server error while generating matches',
+                error: process.env.NODE_ENV === 'development' ? error.message : undefined
+            });
+        }
+    }
 }
 
 module.exports = TournamentController;
