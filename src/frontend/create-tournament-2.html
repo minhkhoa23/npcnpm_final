@@ -307,7 +307,7 @@
             <div class="step-indicator">
                 <div class="step completed">
                     <div class="step-number">1</div>
-                    <span>Thông tin cơ bản</span>
+                    <span>Th��ng tin cơ bản</span>
                 </div>
                 <div class="step active">
                     <div class="step-number">2</div>
@@ -390,8 +390,8 @@
 
         async function loadTeamsForGame() {
             try {
-                // Import the static API
-                const { apiCall } = await import('../frontend/js/static-api.js');
+                // Import the hybrid API
+                const { apiCall } = await import('./js/hybrid-api.js');
                 const result = await apiCall(`/competitors/by-game/${encodeURIComponent(tournamentData.gameName)}`);
                 
                 if (result.success) {
