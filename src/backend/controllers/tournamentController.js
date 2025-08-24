@@ -167,6 +167,16 @@ class TournamentController {
                 const populatedTournament = await Tournament.findById(tournament._id)
                     .populate('organizerId', 'fullName email');
 
+                // Generate matches automatically if competitors are provided
+                if (req.body.selectedTeams && req.body.selectedTeams.length >= 2) {
+                    try {
+                        await TournamentController.generateMatches(tournament._id, tournament.format, req.body.selectedTeams);
+                    } catch (error) {
+                        console.error('Error generating matches:', error);
+                        // Don't fail tournament creation if match generation fails
+                    }
+                }
+
                 res.status(201).json({
                     success: true,
                     message: 'Tournament created successfully',
@@ -822,7 +832,7 @@ class TournamentController {
     static async getTournamentsByGame(req, res) {
         try {
             const { game } = req.params;
-            
+
             res.json({
                 success: true,
                 message: `Tournaments for game '${game}'`,
@@ -852,6 +862,103 @@ class TournamentController {
         }
     }
 
+    // Generate matches for tournament based on format
+    static async generateMatches(tournamentId, format, competitorIds) {
+        try {
+            if (!competitorIds || competitorIds.length < 2) {
+                throw new Error('Need at least 2 competitors to generate matches');
+            }
+
+            // Import Match model
+            const Match = require('../models/Match');
+            const Competitor = require('../models/Competitor');
+
+            // Get competitor objects
+            const competitors = await Competitor.find({ _id: { $in: competitorIds } });
+            if (competitors.length < 2) {
+                throw new Error('Invalid competitor IDs provided');
+            }
+
+            const matches = [];
+
+            switch (format) {
+                case 'single-elimination':
+                    matches.push(...TournamentController.generateSingleEliminationMatches(tournamentId, competitors));
+                    break;
+                case 'double-elimination':
+                    matches.push(...TournamentController.generateDoubleEliminationMatches(tournamentId, competitors));
+                    break;
+                case 'group-stage':
+                    matches.push(...TournamentController.generateGroupStageMatches(tournamentId, competitors));
+                    break;
+                default:
+                    matches.push(...TournamentController.generateSingleEliminationMatches(tournamentId, competitors));
+            }
+
+            // Create matches in database
+            if (matches.length > 0) {
+                await Match.insertMany(matches);
+                console.log(`Generated ${matches.length} matches for tournament ${tournamentId}`);
+            }
+
+            return matches;
+        } catch (error) {
+            console.error('Error generating matches:', error);
+            throw error;
+        }
+    }
+
+    // Generate single elimination bracket matches
+    static generateSingleEliminationMatches(tournamentId, competitors) {
+        const matches = [];
+
+        // First round - pair competitors randomly
+        const shuffledCompetitors = [...competitors].sort(() => Math.random() - 0.5);
+
+        for (let i = 0; i < shuffledCompetitors.length; i += 2) {
+            if (i + 1 < shuffledCompetitors.length) {
+                matches.push({
+                    tournamentId,
+                    teamA: shuffledCompetitors[i]._id,
+                    teamB: shuffledCompetitors[i + 1]._id,
+                    status: 'pending'
+                });
+            }
+        }
+
+        return matches;
+    }
+
+    // Generate double elimination bracket matches
+    static generateDoubleEliminationMatches(tournamentId, competitors) {
+        // For simplicity, start with single elimination and add losers bracket later
+        const matches = TournamentController.generateSingleEliminationMatches(tournamentId, competitors);
+
+        // Additional losers bracket matches would be generated here
+        // This is a complex algorithm that depends on the specific implementation
+
+        return matches;
+    }
+
+    // Generate group stage matches (round robin)
+    static generateGroupStageMatches(tournamentId, competitors) {
+        const matches = [];
+
+        // Round robin - every team plays every other team
+        for (let i = 0; i < competitors.length; i++) {
+            for (let j = i + 1; j < competitors.length; j++) {
+                matches.push({
+                    tournamentId,
+                    teamA: competitors[i]._id,
+                    teamB: competitors[j]._id,
+                    status: 'pending'
+                });
+            }
+        }
+
+        return matches;
+    }
+
     // Get tournament statistics
     static async getTournamentStats(req, res) {
         try {
@@ -878,6 +985,55 @@ class TournamentController {
                 success: false,
                 message: 'Error getting tournament statistics',
                 error: error.message
+            });
+        }
+    }
+
+    // API endpoint for generating matches
+    static async generateMatchesAPI(req, res) {
+        try {
+            const { tournamentId, format, competitorIds } = req.body;
+
+            if (!tournamentId || !format || !competitorIds || competitorIds.length < 2) {
+                return res.status(400).json({
+                    success: false,
+                    message: 'Tournament ID, format, and at least 2 competitors are required'
+                });
+            }
+
+            // Verify tournament exists and user has permission
+            const tournament = await Tournament.findById(tournamentId);
+            if (!tournament) {
+                return res.status(404).json({
+                    success: false,
+                    message: 'Tournament not found'
+                });
+            }
+
+            // Check if user is organizer of this tournament or admin
+            if (tournament.organizerId.toString() !== req.user._id.toString() && req.user.role !== 'admin') {
+                return res.status(403).json({
+                    success: false,
+                    message: 'You can only generate matches for your own tournaments'
+                });
+            }
+
+            const matches = await TournamentController.generateMatches(tournamentId, format, competitorIds);
+
+            res.json({
+                success: true,
+                message: 'Matches generated successfully',
+                data: {
+                    matches,
+                    count: matches.length
+                }
+            });
+        } catch (error) {
+            console.error('Generate matches API error:', error);
+            res.status(500).json({
+                success: false,
+                message: 'Server error while generating matches',
+                error: process.env.NODE_ENV === 'development' ? error.message : undefined
             });
         }
     }

@@ -14,8 +14,12 @@ const tournamentSchema = new mongoose.Schema({
     },
     format: {
         type: String,
-        trim: true,
-        maxlength: [50, 'Format cannot exceed 50 characters']
+        enum: {
+            values: ['single-elimination', 'double-elimination', 'group-stage'],
+            message: 'Format must be one of: single-elimination, double-elimination, group-stage'
+        },
+        default: 'single-elimination',
+        trim: true
     },
     description: {
         type: String,
