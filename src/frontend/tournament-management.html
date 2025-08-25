@@ -14,23 +14,23 @@
     <header class="header">
         <div class="header-container">
             <div class="header-left">
-                <button class="menu-button">
+                <button class="menu-button" style="background: none; border: none; cursor: pointer; padding: 0.5rem; border-radius: 8px; transition: all 0.3s ease;" onclick="showNotification('Menu clicked', 'info');">
                     <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
                         <path d="M5 20H35M5 10H35M5 30H35" stroke="#F3F3F3" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
                     </svg>
                 </button>
-                <button class="home-button">
+                <button class="home-button" style="background: none; border: none; cursor: pointer; padding: 0.5rem; border-radius: 8px; transition: all 0.3s ease;" onclick="window.location.href='dashboard.html';">
                     <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
                         <path d="M15 36.6667V20H25V36.6667M5 15L20 3.33333L35 15V33.3333C35 34.2174 34.6488 35.0652 34.0237 35.6904C33.3986 36.3155 32.5507 36.6667 31.6667 36.6667H8.33333C7.44928 36.6667 6.60143 36.3155 5.97631 35.6904C5.35119 35.0652 5 34.2174 5 33.3333V15Z" stroke="#F5F5F5" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
                     </svg>
                 </button>
-                <span class="nav-text">Trang chủ</span>
+                <span class="nav-text" style="color: #f5f5f5; font-size: 0.9rem; margin-left: 0.5rem; font-weight: 500;">Trang chủ</span>
             </div>
             
             <div class="header-center">
                 <div class="search-container">
-                    <input type="text" placeholder="Tìm kiếm" class="search-input">
-                    <button class="search-clear">
+                    <input type="text" placeholder="Tìm kiếm" class="search-input" style="padding: 0.5rem 1rem; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 0.9rem; width: 300px; outline: none;">
+                    <button class="search-clear" style="position: absolute; right: 0.5rem; background: none; border: none; cursor: pointer; display: none; padding: 0.25rem; border-radius: 4px;" onclick="clearSearch();">
                         <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
                             <path d="M12 4L4 12M4 4L12 12" stroke="#1E1E1E" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
                         </svg>
@@ -39,28 +39,28 @@
             </div>
             
             <div class="header-right">
-                <button class="support-button">
+                <button class="support-button" style="background: none; border: none; cursor: pointer; padding: 0.5rem; border-radius: 8px; transition: all 0.3s ease;" onclick="window.location.href='support.html';">
                     <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
                         <path d="M15.1502 15C15.542 13.8863 16.3154 12.947 17.3334 12.3487C18.3514 11.7504 19.5483 11.5317 20.7121 11.7313C21.8759 11.931 22.9315 12.536 23.692 13.4394C24.4524 14.3427 24.8686 15.486 24.8668 16.6668C24.8668 20.0002 19.8668 21.6668 19.8668 21.6668M20.0002 28.3335H20.0168M36.6668 20.0002C36.6668 29.2049 29.2049 36.6668 20.0002 36.6668C10.7954 36.6668 3.3335 29.2049 3.3335 20.0002C3.3335 10.7954 10.7954 3.3335 20.0002 3.3335C29.2049 3.3335 36.6668 10.7954 36.6668 20.0002Z" stroke="#F3F3F3" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
                     </svg>
                 </button>
-                <span class="nav-text">Hỗ trợ</span>
+                <span class="nav-text" style="color: #f5f5f5; font-size: 0.9rem; margin-left: 0.5rem; font-weight: 500;">Hỗ trợ</span>
                 
-                <button class="info-button">
+                <button class="info-button" style="background: none; border: none; cursor: pointer; padding: 0.5rem; border-radius: 8px; transition: all 0.3s ease;" onclick="window.location.href='usage-information.html';">
                     <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
                         <path d="M20.0002 26.6668V20.0002M20.0002 13.3335H20.0168M36.6668 20.0002C36.6668 29.2049 29.2049 36.6668 20.0002 36.6668C10.7954 36.6668 3.3335 29.2049 3.3335 20.0002C3.3335 10.7954 10.7954 3.3335 20.0002 3.3335C29.2049 3.3335 36.6668 10.7954 36.6668 20.0002Z" stroke="#F3F3F3" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
                     </svg>
                 </button>
-                <span class="nav-text">Thông tin</span>
+                <span class="nav-text" style="color: #f5f5f5; font-size: 0.9rem; margin-left: 0.5rem; font-weight: 500;">Thông tin</span>
                 
-                <button class="notification-button">
+                <button class="notification-button" style="background: none; border: none; cursor: pointer; padding: 0.5rem; border-radius: 8px; transition: all 0.3s ease;" onclick="window.location.href='notifications.html';">
                     <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
                         <path d="M27.46 42C27.1084 42.6062 26.6037 43.1093 25.9965 43.4591C25.3892 43.8088 24.7008 43.9929 24 43.9929C23.2992 43.9929 22.6108 43.8088 22.0035 43.4591C21.3963 43.1093 20.8916 42.6062 20.54 42M36 16C36 12.8174 34.7357 9.76516 32.4853 7.51472C30.2348 5.26428 27.1826 4 24 4C20.8174 4 17.7652 5.26428 15.5147 7.51472C13.2643 9.76516 12 12.8174 12 16C12 30 6 34 6 34H42C42 34 36 30 36 16Z" stroke="#F3F3F3" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
                     </svg>
                 </button>
                 
-                <div class="user-avatar">
-                    <img src="https://api.builder.io/api/v1/image/assets/TEMP/2791d338714d3870b4bb42ac5a5390446faac948?width=80" alt="User Avatar">
+                <div class="user-avatar" style="width: 40px; height: 40px; border-radius: 50%; overflow: hidden; cursor: pointer;" onclick="showNotification('User profile clicked', 'info');">
+                    <img src="https://api.builder.io/api/v1/image/assets/TEMP/2791d338714d3870b4bb42ac5a5390446faac948?width=80" alt="User Avatar" style="width: 100%; height: 100%; object-fit: cover;">
                 </div>
             </div>
         </div>
@@ -81,8 +81,235 @@
             </div>
 
             <!-- Tournament List -->
-            <div class="tournament-list" id="tournamentList">
-                <div class="loading-message">Đang tải giải đấu...</div>
+            <div class="tournament-list" id="tournamentList" style="max-width: 1000px; margin: 0 auto;">
+                <!-- Sample Tournament Items -->
+                <div class="tournament-item" data-tournament-id="1" style="display: flex; align-items: center; padding: 1rem; border: 1px solid #e2e8f0; border-radius: 8px; margin-bottom: 1rem; background: white; min-height: 80px;">
+                    <div class="tournament-avatar" style="width: 60px; height: 60px; margin-right: 1rem; flex-shrink: 0;">
+                        <div class="avatar-3d">
+                            <img src="https://api.builder.io/api/v1/image/assets/TEMP/9fee9f9fde03e83fbbcbedb7a213bfd8ffdb3b57?width=120" alt="Giải đấu A" style="width: 60px; height: 60px; border-radius: 50%; object-fit: cover;">
+                        </div>
+                    </div>
+                    <div class="tournament-name" style="flex: 1; min-width: 0;">
+                        <h3 style="margin: 0; color: #2d3748; font-size: 1.1rem; font-weight: 600;">Giải đấu A</h3>
+                    </div>
+                    <div class="tournament-actions" style="display: flex; gap: 0.5rem; flex-shrink: 0; align-items: center;">
+                        <button class="manage-participants-btn" onclick="manageTournamentParticipants('1')" style="padding: 0.5rem 1rem; border: none; border-radius: 6px; cursor: pointer; font-weight: 500; font-size: 0.9rem; background: #667eea; color: white;">
+                            Quản lý người tham gia
+                        </button>
+                        <button class="delete-btn" onclick="showDeleteModal('1')" style="padding: 0.5rem 1rem; border: none; border-radius: 6px; cursor: pointer; font-weight: 500; font-size: 0.9rem; background: #ef4444; color: white;">
+                            Xóa
+                        </button>
+                    </div>
+                </div>
+
+                <div class="tournament-item" data-tournament-id="2" style="display: flex; align-items: center; padding: 1rem; border: 1px solid #e2e8f0; border-radius: 8px; margin-bottom: 1rem; background: white; min-height: 80px;">
+                    <div class="tournament-avatar" style="width: 60px; height: 60px; margin-right: 1rem; flex-shrink: 0;">
+                        <div class="avatar-3d">
+                            <img src="https://api.builder.io/api/v1/image/assets/TEMP/d1676e9f112f18260a647c8d8be4395044b8263e?width=120" alt="Giải đấu A" style="width: 60px; height: 60px; border-radius: 50%; object-fit: cover;">
+                        </div>
+                    </div>
+                    <div class="tournament-name" style="flex: 1; min-width: 0;">
+                        <h3 style="margin: 0; color: #2d3748; font-size: 1.1rem; font-weight: 600;">Giải đấu A</h3>
+                    </div>
+                    <div class="tournament-actions" style="display: flex; gap: 0.5rem; flex-shrink: 0; align-items: center;">
+                        <button class="manage-participants-btn" onclick="manageTournamentParticipants('2')" style="padding: 0.5rem 1rem; border: none; border-radius: 6px; cursor: pointer; font-weight: 500; font-size: 0.9rem; background: #667eea; color: white;">
+                            Quản lý người tham gia
+                        </button>
+                        <button class="delete-btn" onclick="showDeleteModal('2')" style="padding: 0.5rem 1rem; border: none; border-radius: 6px; cursor: pointer; font-weight: 500; font-size: 0.9rem; background: #ef4444; color: white;">
+                            Xóa
+                        </button>
+                    </div>
+                </div>
+
+                <div class="tournament-item" data-tournament-id="3" style="display: flex; align-items: center; padding: 1rem; border: 1px solid #e2e8f0; border-radius: 8px; margin-bottom: 1rem; background: white; min-height: 80px;">
+                    <div class="tournament-avatar" style="width: 60px; height: 60px; margin-right: 1rem; flex-shrink: 0;">
+                        <div class="avatar-3d">
+                            <img src="https://api.builder.io/api/v1/image/assets/TEMP/6e07a2ff4990da9dcd77ed2d48c8f56e09d628b5?width=120" alt="Giải đấu A" style="width: 60px; height: 60px; border-radius: 50%; object-fit: cover;">
+                        </div>
+                    </div>
+                    <div class="tournament-name" style="flex: 1; min-width: 0;">
+                        <h3 style="margin: 0; color: #2d3748; font-size: 1.1rem; font-weight: 600;">Giải đấu A</h3>
+                    </div>
+                    <div class="tournament-actions" style="display: flex; gap: 0.5rem; flex-shrink: 0; align-items: center;">
+                        <button class="manage-participants-btn" onclick="manageTournamentParticipants('3')" style="padding: 0.5rem 1rem; border: none; border-radius: 6px; cursor: pointer; font-weight: 500; font-size: 0.9rem; background: #667eea; color: white;">
+                            Quản lý người tham gia
+                        </button>
+                        <button class="delete-btn" onclick="showDeleteModal('3')" style="padding: 0.5rem 1rem; border: none; border-radius: 6px; cursor: pointer; font-weight: 500; font-size: 0.9rem; background: #ef4444; color: white;">
+                            Xóa
+                        </button>
+                    </div>
+                </div>
+
+                <div class="tournament-item" data-tournament-id="4" style="display: flex; align-items: center; padding: 1rem; border: 1px solid #e2e8f0; border-radius: 8px; margin-bottom: 1rem; background: white; min-height: 80px;">
+                    <div class="tournament-avatar" style="width: 60px; height: 60px; margin-right: 1rem; flex-shrink: 0;">
+                        <div class="avatar-3d">
+                            <img src="https://api.builder.io/api/v1/image/assets/TEMP/3898faad8b7651a7488bbfc19b759f6574e5cde9?width=120" alt="Giải đấu A" style="width: 60px; height: 60px; border-radius: 50%; object-fit: cover;">
+                        </div>
+                    </div>
+                    <div class="tournament-name" style="flex: 1; min-width: 0;">
+                        <h3 style="margin: 0; color: #2d3748; font-size: 1.1rem; font-weight: 600;">Giải đấu A</h3>
+                    </div>
+                    <div class="tournament-actions" style="display: flex; gap: 0.5rem; flex-shrink: 0; align-items: center;">
+                        <button class="manage-participants-btn" onclick="manageTournamentParticipants('4')" style="padding: 0.5rem 1rem; border: none; border-radius: 6px; cursor: pointer; font-weight: 500; font-size: 0.9rem; background: #667eea; color: white;">
+                            Quản lý người tham gia
+                        </button>
+                        <button class="delete-btn" onclick="showDeleteModal('4')" style="padding: 0.5rem 1rem; border: none; border-radius: 6px; cursor: pointer; font-weight: 500; font-size: 0.9rem; background: #ef4444; color: white;">
+                            Xóa
+                        </button>
+                    </div>
+                </div>
+
+                <div class="tournament-item" data-tournament-id="5" style="display: flex; align-items: center; padding: 1rem; border: 1px solid #e2e8f0; border-radius: 8px; margin-bottom: 1rem; background: white; min-height: 80px;">
+                    <div class="tournament-avatar" style="width: 60px; height: 60px; margin-right: 1rem; flex-shrink: 0;">
+                        <div class="avatar-3d">
+                            <img src="https://api.builder.io/api/v1/image/assets/TEMP/55f08ec67ddca863cfc6ac15202fb58d462a4f05?width=120" alt="Giải đấu A" style="width: 60px; height: 60px; border-radius: 50%; object-fit: cover;">
+                        </div>
+                    </div>
+                    <div class="tournament-name" style="flex: 1; min-width: 0;">
+                        <h3 style="margin: 0; color: #2d3748; font-size: 1.1rem; font-weight: 600;">Giải đấu A</h3>
+                    </div>
+                    <div class="tournament-actions" style="display: flex; gap: 0.5rem; flex-shrink: 0; align-items: center;">
+                        <button class="manage-participants-btn" onclick="manageTournamentParticipants('5')" style="padding: 0.5rem 1rem; border: none; border-radius: 6px; cursor: pointer; font-weight: 500; font-size: 0.9rem; background: #667eea; color: white;">
+                            Quản lý người tham gia
+                        </button>
+                        <button class="delete-btn" onclick="showDeleteModal('5')" style="padding: 0.5rem 1rem; border: none; border-radius: 6px; cursor: pointer; font-weight: 500; font-size: 0.9rem; background: #ef4444; color: white;">
+                            Xóa
+                        </button>
+                    </div>
+                </div>
+
+                <div class="tournament-item" data-tournament-id="6" style="display: flex; align-items: center; padding: 1rem; border: 1px solid #e2e8f0; border-radius: 8px; margin-bottom: 1rem; background: white; min-height: 80px;">
+                    <div class="tournament-avatar" style="width: 60px; height: 60px; margin-right: 1rem; flex-shrink: 0;">
+                        <div class="avatar-3d">
+                            <img src="https://api.builder.io/api/v1/image/assets/TEMP/cee997788db5a1526d727508eed77fdf72bd3e74?width=120" alt="Giải đấu A" style="width: 60px; height: 60px; border-radius: 50%; object-fit: cover;">
+                        </div>
+                    </div>
+                    <div class="tournament-name" style="flex: 1; min-width: 0;">
+                        <h3 style="margin: 0; color: #2d3748; font-size: 1.1rem; font-weight: 600;">Giải đấu A</h3>
+                    </div>
+                    <div class="tournament-actions" style="display: flex; gap: 0.5rem; flex-shrink: 0; align-items: center;">
+                        <button class="manage-participants-btn" onclick="manageTournamentParticipants('6')" style="padding: 0.5rem 1rem; border: none; border-radius: 6px; cursor: pointer; font-weight: 500; font-size: 0.9rem; background: #667eea; color: white;">
+                            Quản lý người tham gia
+                        </button>
+                        <button class="delete-btn" onclick="showDeleteModal('6')" style="padding: 0.5rem 1rem; border: none; border-radius: 6px; cursor: pointer; font-weight: 500; font-size: 0.9rem; background: #ef4444; color: white;">
+                            Xóa
+                        </button>
+                    </div>
+                </div>
+
+                <div class="tournament-item" data-tournament-id="7" style="display: flex; align-items: center; padding: 1rem; border: 1px solid #e2e8f0; border-radius: 8px; margin-bottom: 1rem; background: white; min-height: 80px;">
+                    <div class="tournament-avatar" style="width: 60px; height: 60px; margin-right: 1rem; flex-shrink: 0;">
+                        <div class="avatar-3d">
+                            <img src="https://api.builder.io/api/v1/image/assets/TEMP/1ef7f87a402a15b0cd0780955deb0f4d686a08ee?width=120" alt="Giải đấu A" style="width: 60px; height: 60px; border-radius: 50%; object-fit: cover;">
+                        </div>
+                    </div>
+                    <div class="tournament-name" style="flex: 1; min-width: 0;">
+                        <h3 style="margin: 0; color: #2d3748; font-size: 1.1rem; font-weight: 600;">Giải đấu A</h3>
+                    </div>
+                    <div class="tournament-actions" style="display: flex; gap: 0.5rem; flex-shrink: 0; align-items: center;">
+                        <button class="manage-participants-btn" onclick="manageTournamentParticipants('7')" style="padding: 0.5rem 1rem; border: none; border-radius: 6px; cursor: pointer; font-weight: 500; font-size: 0.9rem; background: #667eea; color: white;">
+                            Quản lý người tham gia
+                        </button>
+                        <button class="delete-btn" onclick="showDeleteModal('7')" style="padding: 0.5rem 1rem; border: none; border-radius: 6px; cursor: pointer; font-weight: 500; font-size: 0.9rem; background: #ef4444; color: white;">
+                            Xóa
+                        </button>
+                    </div>
+                </div>
+
+                <div class="tournament-item" data-tournament-id="8" style="display: flex; align-items: center; padding: 1rem; border: 1px solid #e2e8f0; border-radius: 8px; margin-bottom: 1rem; background: white; min-height: 80px;">
+                    <div class="tournament-avatar" style="width: 60px; height: 60px; margin-right: 1rem; flex-shrink: 0;">
+                        <div class="avatar-3d">
+                            <img src="https://api.builder.io/api/v1/image/assets/TEMP/4be8a0eee78af89b1e7ce270b040c22cde5bc21c?width=120" alt="Giải đấu A" style="width: 60px; height: 60px; border-radius: 50%; object-fit: cover;">
+                        </div>
+                    </div>
+                    <div class="tournament-name" style="flex: 1; min-width: 0;">
+                        <h3 style="margin: 0; color: #2d3748; font-size: 1.1rem; font-weight: 600;">Giải đấu A</h3>
+                    </div>
+                    <div class="tournament-actions" style="display: flex; gap: 0.5rem; flex-shrink: 0; align-items: center;">
+                        <button class="manage-participants-btn" onclick="manageTournamentParticipants('8')" style="padding: 0.5rem 1rem; border: none; border-radius: 6px; cursor: pointer; font-weight: 500; font-size: 0.9rem; background: #667eea; color: white;">
+                            Quản lý người tham gia
+                        </button>
+                        <button class="delete-btn" onclick="showDeleteModal('8')" style="padding: 0.5rem 1rem; border: none; border-radius: 6px; cursor: pointer; font-weight: 500; font-size: 0.9rem; background: #ef4444; color: white;">
+                            Xóa
+                        </button>
+                    </div>
+                </div>
+
+                <div class="tournament-item" data-tournament-id="9" style="display: flex; align-items: center; padding: 1rem; border: 1px solid #e2e8f0; border-radius: 8px; margin-bottom: 1rem; background: white; min-height: 80px;">
+                    <div class="tournament-avatar" style="width: 60px; height: 60px; margin-right: 1rem; flex-shrink: 0;">
+                        <div class="avatar-3d">
+                            <img src="https://api.builder.io/api/v1/image/assets/TEMP/9fee9f9fde03e83fbbcbedb7a213bfd8ffdb3b57?width=120" alt="Giải đấu A" style="width: 60px; height: 60px; border-radius: 50%; object-fit: cover;">
+                        </div>
+                    </div>
+                    <div class="tournament-name" style="flex: 1; min-width: 0;">
+                        <h3 style="margin: 0; color: #2d3748; font-size: 1.1rem; font-weight: 600;">Giải đấu A</h3>
+                    </div>
+                    <div class="tournament-actions" style="display: flex; gap: 0.5rem; flex-shrink: 0; align-items: center;">
+                        <button class="manage-participants-btn" onclick="manageTournamentParticipants('9')" style="padding: 0.5rem 1rem; border: none; border-radius: 6px; cursor: pointer; font-weight: 500; font-size: 0.9rem; background: #667eea; color: white;">
+                            Quản lý người tham gia
+                        </button>
+                        <button class="delete-btn" onclick="showDeleteModal('9')" style="padding: 0.5rem 1rem; border: none; border-radius: 6px; cursor: pointer; font-weight: 500; font-size: 0.9rem; background: #ef4444; color: white;">
+                            Xóa
+                        </button>
+                    </div>
+                </div>
+
+                <div class="tournament-item" data-tournament-id="10" style="display: flex; align-items: center; padding: 1rem; border: 1px solid #e2e8f0; border-radius: 8px; margin-bottom: 1rem; background: white; min-height: 80px;">
+                    <div class="tournament-avatar" style="width: 60px; height: 60px; margin-right: 1rem; flex-shrink: 0;">
+                        <div class="avatar-3d">
+                            <img src="https://api.builder.io/api/v1/image/assets/TEMP/d1676e9f112f18260a647c8d8be4395044b8263e?width=120" alt="Giải đấu A" style="width: 60px; height: 60px; border-radius: 50%; object-fit: cover;">
+                        </div>
+                    </div>
+                    <div class="tournament-name" style="flex: 1; min-width: 0;">
+                        <h3 style="margin: 0; color: #2d3748; font-size: 1.1rem; font-weight: 600;">Giải đấu A</h3>
+                    </div>
+                    <div class="tournament-actions" style="display: flex; gap: 0.5rem; flex-shrink: 0; align-items: center;">
+                        <button class="manage-participants-btn" onclick="manageTournamentParticipants('10')" style="padding: 0.5rem 1rem; border: none; border-radius: 6px; cursor: pointer; font-weight: 500; font-size: 0.9rem; background: #667eea; color: white;">
+                            Quản lý người tham gia
+                        </button>
+                        <button class="delete-btn" onclick="showDeleteModal('10')" style="padding: 0.5rem 1rem; border: none; border-radius: 6px; cursor: pointer; font-weight: 500; font-size: 0.9rem; background: #ef4444; color: white;">
+                            Xóa
+                        </button>
+                    </div>
+                </div>
+
+                <div class="tournament-item" data-tournament-id="11" style="display: flex; align-items: center; padding: 1rem; border: 1px solid #e2e8f0; border-radius: 8px; margin-bottom: 1rem; background: white; min-height: 80px;">
+                    <div class="tournament-avatar" style="width: 60px; height: 60px; margin-right: 1rem; flex-shrink: 0;">
+                        <div class="avatar-3d">
+                            <img src="https://api.builder.io/api/v1/image/assets/TEMP/6e07a2ff4990da9dcd77ed2d48c8f56e09d628b5?width=120" alt="Giải đấu A" style="width: 60px; height: 60px; border-radius: 50%; object-fit: cover;">
+                        </div>
+                    </div>
+                    <div class="tournament-name" style="flex: 1; min-width: 0;">
+                        <h3 style="margin: 0; color: #2d3748; font-size: 1.1rem; font-weight: 600;">Giải đấu A</h3>
+                    </div>
+                    <div class="tournament-actions" style="display: flex; gap: 0.5rem; flex-shrink: 0; align-items: center;">
+                        <button class="manage-participants-btn" onclick="manageTournamentParticipants('11')" style="padding: 0.5rem 1rem; border: none; border-radius: 6px; cursor: pointer; font-weight: 500; font-size: 0.9rem; background: #667eea; color: white;">
+                            Quản lý người tham gia
+                        </button>
+                        <button class="delete-btn" onclick="showDeleteModal('11')" style="padding: 0.5rem 1rem; border: none; border-radius: 6px; cursor: pointer; font-weight: 500; font-size: 0.9rem; background: #ef4444; color: white;">
+                            Xóa
+                        </button>
+                    </div>
+                </div>
+
+                <div class="tournament-item" data-tournament-id="12" style="display: flex; align-items: center; padding: 1rem; border: 1px solid #e2e8f0; border-radius: 8px; margin-bottom: 1rem; background: white; min-height: 80px;">
+                    <div class="tournament-avatar" style="width: 60px; height: 60px; margin-right: 1rem; flex-shrink: 0;">
+                        <div class="avatar-3d">
+                            <img src="https://api.builder.io/api/v1/image/assets/TEMP/3898faad8b7651a7488bbfc19b759f6574e5cde9?width=120" alt="Giải đấu A" style="width: 60px; height: 60px; border-radius: 50%; object-fit: cover;">
+                        </div>
+                    </div>
+                    <div class="tournament-name" style="flex: 1; min-width: 0;">
+                        <h3 style="margin: 0; color: #2d3748; font-size: 1.1rem; font-weight: 600;">Giải đấu A</h3>
+                    </div>
+                    <div class="tournament-actions" style="display: flex; gap: 0.5rem; flex-shrink: 0; align-items: center;">
+                        <button class="manage-participants-btn" onclick="manageTournamentParticipants('12')" style="padding: 0.5rem 1rem; border: none; border-radius: 6px; cursor: pointer; font-weight: 500; font-size: 0.9rem; background: #667eea; color: white;">
+                            Quản lý người tham gia
+                        </button>
+                        <button class="delete-btn" onclick="showDeleteModal('12')" style="padding: 0.5rem 1rem; border: none; border-radius: 6px; cursor: pointer; font-weight: 500; font-size: 0.9rem; background: #ef4444; color: white;">
+                            Xóa
+                        </button>
+                    </div>
+                </div>
             </div>
 
             <!-- Load More Button -->
@@ -97,53 +324,78 @@
     </main>
 
     <!-- Footer -->
-    <footer class="footer">
-        <div class="footer-container">
-            <div class="footer-section">
-                <h4>Liên hệ với chúng tôi:</h4>
-                <div class="social-icons">
-                    <a href="#" class="social-icon">
-                        <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
-                            <path d="M45.0802 12.84C44.8426 11.8908 44.3587 11.0211 43.6775 10.3188C42.9962 9.61648 42.1417 9.10637 41.2002 8.84C37.7602 8 24.0002 8 24.0002 8C24.0002 8 10.2402 8 6.80017 8.92C5.85866 9.18637 5.00412 9.69648 4.32286 10.3988C3.6416 11.1011 3.15774 11.9708 2.92017 12.92C2.2906 16.4111 1.98264 19.9526 2.00017 23.5C1.97773 27.0741 2.2857 30.6426 2.92017 34.16C3.18209 35.0797 3.67678 35.9163 4.35645 36.589C5.03613 37.2616 5.87781 37.7476 6.80017 38C10.2402 38.92 24.0002 38.92 24.0002 38.92C24.0002 38.92 37.7602 38.92 41.2002 38C42.1417 37.7336 42.9962 37.2235 43.6775 36.5212C44.3587 35.8189 44.8426 34.9492 45.0802 34C45.7049 30.5352 46.0128 27.0207 46.0002 23.5C46.0226 19.9259 45.7146 16.3574 45.0802 12.84Z" stroke="#F5F5F5" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-                            <path d="M19.5002 30.04L31.0002 23.5L19.5002 16.96V30.04Z" stroke="#F5F5F5" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                    </a>
-                    <a href="#" class="social-icon">
-                        <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
-                            <path d="M35 13H35.02M14 4H34C39.5228 4 44 8.47715 44 14V34C44 39.5228 39.5228 44 34 44H14C8.47715 44 4 39.5228 4 34V14C4 8.47715 8.47715 4 14 4ZM32 22.74C32.2468 24.4045 31.9625 26.1044 31.1875 27.598C30.4125 29.0916 29.1863 30.3028 27.6833 31.0593C26.1802 31.8159 24.4769 32.0792 22.8156 31.8119C21.1543 31.5445 19.6195 30.7602 18.4297 29.5703C17.2398 28.3805 16.4555 26.8457 16.1881 25.1844C15.9208 23.5231 16.1841 21.8198 16.9407 20.3167C17.6972 18.8137 18.9084 17.5875 20.402 16.8125C21.8956 16.0375 23.5955 15.7532 25.26 16C26.9578 16.2518 28.5297 17.0429 29.7434 18.2566C30.9571 19.4703 31.7482 21.0422 32 22.74Z" stroke="#F3F3F3" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                    </a>
-                    <a href="#" class="social-icon">
-                        <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
-                            <path d="M36 4H30C27.3478 4 24.8043 5.05357 22.9289 6.92893C21.0536 8.8043 20 11.3478 20 14V20H14V28H20V44H28V28H34L36 20H28V14C28 13.4696 28.2107 12.9609 28.5858 12.5858C28.9609 12.2107 29.4696 12 30 12H36V4Z" stroke="#F5F5F5" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                    </a>
-                    <a href="#" class="social-icon">
-                        <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
-                            <path d="M22 22V14M32 22V14M42 4H6V36H16V44L24 36H34L42 28V4Z" stroke="#F3F3F3" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                    </a>
+    <footer class="footer" style="background: #2d3748; color: white; padding: 2rem 0; margin-top: 3rem;">
+        <div class="footer-container" style="max-width: 1200px; margin: 0 auto; padding: 0 2rem;">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 2rem;">
+                <!-- Contact Section -->
+                <div class="footer-section" style="flex: 1; min-width: 250px;">
+                    <h4 style="margin: 0 0 1rem 0; font-size: 1rem; font-weight: 600;">Liên hệ với chúng tôi:</h4>
+                    <div class="social-icons" style="display: flex; gap: 1rem; margin-bottom: 1rem;">
+                        <a href="#" class="social-icon" style="color: #f5f5f5; text-decoration: none; transition: opacity 0.3s;">
+                            <svg width="24" height="24" viewBox="0 0 48 48" fill="none">
+                                <path d="M45.0802 12.84C44.8426 11.8908 44.3587 11.0211 43.6775 10.3188C42.9962 9.61648 42.1417 9.10637 41.2002 8.84C37.7602 8 24.0002 8 24.0002 8C24.0002 8 10.2402 8 6.80017 8.92C5.85866 9.18637 5.00412 9.69648 4.32286 10.3988C3.6416 11.1011 3.15774 11.9708 2.92017 12.92C2.2906 16.4111 1.98264 19.9526 2.00017 23.5C1.97773 27.0741 2.2857 30.6426 2.92017 34.16C3.18209 35.0797 3.67678 35.9163 4.35645 36.589C5.03613 37.2616 5.87781 37.7476 6.80017 38C10.2402 38.92 24.0002 38.92 24.0002 38.92C24.0002 38.92 37.7602 38.92 41.2002 38C42.1417 37.7336 42.9962 37.2235 43.6775 36.5212C44.3587 35.8189 44.8426 34.9492 45.0802 34C45.7049 30.5352 46.0128 27.0207 46.0002 23.5C46.0226 19.9259 45.7146 16.3574 45.0802 12.84Z" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M19.5002 30.04L31.0002 23.5L19.5002 16.96V30.04Z" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </a>
+                        <a href="#" class="social-icon" style="color: #f5f5f5; text-decoration: none; transition: opacity 0.3s;">
+                            <svg width="24" height="24" viewBox="0 0 48 48" fill="none">
+                                <path d="M35 13H35.02M14 4H34C39.5228 4 44 8.47715 44 14V34C44 39.5228 39.5228 44 34 44H14C8.47715 44 4 39.5228 4 34V14C4 8.47715 8.47715 4 14 4ZM32 22.74C32.2468 24.4045 31.9625 26.1044 31.1875 27.598C30.4125 29.0916 29.1863 30.3028 27.6833 31.0593C26.1802 31.8159 24.4769 32.0792 22.8156 31.8119C21.1543 31.5445 19.6195 30.7602 18.4297 29.5703C17.2398 28.3805 16.4555 26.8457 16.1881 25.1844C15.9208 23.5231 16.1841 21.8198 16.9407 20.3167C17.6972 18.8137 18.9084 17.5875 20.402 16.8125C21.8956 16.0375 23.5955 15.7532 25.26 16C26.9578 16.2518 28.5297 17.0429 29.7434 18.2566C30.9571 19.4703 31.7482 21.0422 32 22.74Z" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </a>
+                        <a href="#" class="social-icon" style="color: #f5f5f5; text-decoration: none; transition: opacity 0.3s;">
+                            <svg width="24" height="24" viewBox="0 0 48 48" fill="none">
+                                <path d="M36 4H30C27.3478 4 24.8043 5.05357 22.9289 6.92893C21.0536 8.8043 20 11.3478 20 14V20H14V28H20V44H28V28H34L36 20H28V14C28 13.4696 28.2107 12.9609 28.5858 12.5858C28.9609 12.2107 29.4696 12 30 12H36V4Z" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </a>
+                        <a href="#" class="social-icon" style="color: #f5f5f5; text-decoration: none; transition: opacity 0.3s;">
+                            <svg width="24" height="24" viewBox="0 0 48 48" fill="none">
+                                <path d="M22 22V14M32 22V14M42 4H6V36H16V44L24 36H34L42 28V4Z" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </a>
+                    </div>
+                    <p style="margin: 0; font-size: 0.9rem; color: #cbd5e0;">xxxxx@gmail.com</p>
                 </div>
-                <p>xxxxx@gmail.com</p>
+                
+                <!-- Links Section -->
+                <div class="footer-section" style="flex: 1; min-width: 200px;">
+                    <div class="footer-links" style="display: flex; flex-direction: column; gap: 0.5rem;">
+                        <a href="#" style="color: #f5f5f5; text-decoration: none; font-size: 0.9rem; transition: color 0.3s; display: flex; align-items: center; gap: 0.5rem;">
+                            <span class="icon" style="font-size: 1rem;">ℹ️</span> 
+                            <span>Thông tin ứng dụng</span>
+                        </a>
+                        <a href="#" style="color: #f5f5f5; text-decoration: none; font-size: 0.9rem; transition: color 0.3s; display: flex; align-items: center; gap: 0.5rem;">
+                            <span class="icon" style="font-size: 1rem;">🔒</span> 
+                            <span>Chính sách bảo mật</span>
+                        </a>
+                        <a href="#" style="color: #f5f5f5; text-decoration: none; font-size: 0.9rem; transition: color 0.3s; display: flex; align-items: center; gap: 0.5rem;">
+                            <span class="icon" style="font-size: 1rem;">📋</span> 
+                            <span>Điều khoản sử dụng</span>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Image Section -->
+                <div class="footer-section" style="flex: 1; min-width: 200px; text-align: center;">
+                    <div class="footer-image" style="display: flex; flex-direction: column; align-items: center; gap: 1rem;">
+                        <div style="width: 80px; height: 80px; background: rgba(255,255,255,0.1); border-radius: 8px; display: flex; align-items: center; justify-content: center;">
+                            <span style="font-size: 2rem;">🎮</span>
+                        </div>
+                        <div style="display: flex; gap: 1rem;">
+                            <button style="background: rgba(255,255,255,0.1); border: none; border-radius: 50%; width: 40px; height: 40px; color: white; cursor: pointer; display: flex; align-items: center; justify-content: center;">
+                                <span style="font-size: 1.2rem;">🔍</span>
+                            </button>
+                            <button style="background: rgba(255,255,255,0.1); border: none; border-radius: 50%; width: 40px; height: 40px; color: white; cursor: pointer; display: flex; align-items: center; justify-content: center;">
+                                <span style="font-size: 1.2rem;">➖</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </div>
             
-            <div class="footer-section">
-                <div class="footer-links">
-                    <a href="#"><span class="icon">ℹ</span> Thông tin ứng dụng</a>
-                    <a href="#"><span class="icon">🔒</span> Chính sách bảo mật</a>
-                    <a href="#"><span class="icon">📋</span> Điều khoản sử dụng</a>
-                </div>
+            <!-- Footer Bottom -->
+            <div class="footer-bottom" style="border-top: 1px solid #4a5568; margin-top: 2rem; padding-top: 1rem; text-align: center;">
+                <p style="margin: 0; font-size: 0.8rem; color: #a0aec0;">2025 All rights reserved</p>
             </div>
-            
-            <div class="footer-section">
-                <div class="footer-image">
-                    <img src="https://api.builder.io/api/v1/image/assets/TEMP/96f039df3e0ce9f4672f91e5a2c6829e29770051?width=560" alt="Footer Image">
-                </div>
-            </div>
-        </div>
-        
-        <div class="footer-bottom">
-            <p>2025 All rights reserved</p>
         </div>
     </footer>
 
@@ -159,119 +411,105 @@
         </div>
     </div>
 
-    <script type="module">
-        import { apiCall, API_ENDPOINTS, TokenManager } from './js/api.js';
-        import { NavigationManager } from './js/navigation.js';
-
-        let tournaments = [];
+    <script>
+        // Simple functions without API dependency for demonstration
         let currentDeleteId = null;
 
         // Initialize page
         document.addEventListener('DOMContentLoaded', function() {
-            // Check authentication
-            if (!TokenManager.isAuthenticated()) {
-                window.location.href = 'login.html';
-                return;
-            }
-
-            const currentUser = TokenManager.getCurrentUser();
-            if (!currentUser || currentUser.role !== 'organizer') {
-                alert('Access denied. Organizer role required.');
-                window.location.href = 'dashboard.html';
-                return;
-            }
-
-            loadTournaments(currentUser._id);
             initializeEventListeners();
+            initializeHeaderNavigation();
         });
 
-        async function loadTournaments(organizerId) {
-            try {
-                const response = await apiCall(`${API_ENDPOINTS.TOURNAMENTS.BY_ORGANIZER(organizerId)}`, {}, 'GET', true);
+        function initializeHeaderNavigation() {
+            // Home button navigation
+            const homeButton = document.querySelector('.home-button');
+            if (homeButton) {
+                homeButton.addEventListener('click', function() {
+                    window.location.href = 'dashboard.html';
+                });
+            }
 
-                if (response.success) {
-                    tournaments = response.data.tournaments || [];
-                    renderTournaments();
-                } else {
-                    console.error('Failed to load tournaments:', response.message);
-                    showEmptyState();
-                }
-            } catch (error) {
-                console.error('Error loading tournaments:', error);
-                showEmptyState();
+            // Support button navigation  
+            const supportButton = document.querySelector('.support-button');
+            if (supportButton) {
+                supportButton.addEventListener('click', function() {
+                    window.location.href = 'support.html';
+                });
+            }
+
+            // Info button navigation
+            const infoButton = document.querySelector('.info-button');
+            if (infoButton) {
+                infoButton.addEventListener('click', function() {
+                    window.location.href = 'usage-information.html';
+                });
+            }
+
+            // Notification button
+            const notificationButton = document.querySelector('.notification-button');
+            if (notificationButton) {
+                notificationButton.addEventListener('click', function() {
+                    window.location.href = 'notifications.html';
+                });
+            }
+
+            // Menu button functionality
+            const menuButton = document.querySelector('.menu-button');
+            if (menuButton) {
+                menuButton.addEventListener('click', function() {
+                    toggleMobileMenu();
+                });
+            }
+
+            // Search functionality
+            const searchInput = document.querySelector('.search-input');
+            const searchClear = document.querySelector('.search-clear');
+            
+            if (searchInput) {
+                searchInput.addEventListener('input', function(e) {
+                    filterTournaments(e.target.value);
+                    // Show/hide clear button
+                    if (searchClear) {
+                        searchClear.style.display = e.target.value ? 'block' : 'none';
+                    }
+                });
+            }
+
+            if (searchClear) {
+                searchClear.addEventListener('click', function() {
+                    if (searchInput) {
+                        searchInput.value = '';
+                        searchInput.dispatchEvent(new Event('input'));
+                        this.style.display = 'none';
+                    }
+                });
             }
         }
 
-        function renderTournaments() {
-            const tournamentList = document.getElementById('tournamentList');
+        function toggleMobileMenu() {
+            // Simple mobile menu toggle
+            const header = document.querySelector('.header');
+            if (header) {
+                header.classList.toggle('menu-open');
+                showNotification('Menu toggle', 'info');
+            }
+        }
 
-            if (tournaments.length === 0) {
-                showEmptyState();
-                return;
+        function initializeEventListeners() {
+            // Search functionality
+            const searchInput = document.querySelector('.search-input');
+            if (searchInput) {
+                searchInput.addEventListener('input', function(e) {
+                    filterTournaments(e.target.value);
+                });
             }
 
-            const tournamentsHTML = tournaments.map(tournament => `
-                <div class="tournament-item" data-tournament-id="${tournament._id}">
-                    <div class="tournament-avatar">
-                        <div class="avatar-3d">
-                            <img src="${tournament.avatarUrl || 'https://via.placeholder.com/120x120'}" alt="${tournament.name}">
-                        </div>
-                    </div>
-                    <div class="tournament-name">
-                        <h3>${tournament.name}</h3>
-                        <p><strong>Game:</strong> ${tournament.gameName || 'N/A'}</p>
-                        <p><strong>Status:</strong> ${getStatusText(tournament.status)}</p>
-                        <p><strong>Format:</strong> ${getFormatText(tournament.format)}</p>
-                        <p><strong>Participants:</strong> ${tournament.numberOfPlayers || 0}/${tournament.maxPlayers || 'N/A'}</p>
-                    </div>
-                    <div class="tournament-actions">
-                        <button class="manage-participants-btn" onclick="manageTournamentParticipants('${tournament._id}')">
-                            Quản lý người tham gia
-                        </button>
-                        <button class="edit-btn" onclick="editTournament('${tournament._id}')">
-                            Chỉnh sửa
-                        </button>
-                        <button class="delete-btn" onclick="showDeleteModal('${tournament._id}')">
-                            Xóa
-                        </button>
-                    </div>
-                </div>
-            `).join('');
-
-            tournamentList.innerHTML = tournamentsHTML;
-        }
-
-        function showEmptyState() {
-            const tournamentList = document.getElementById('tournamentList');
-            tournamentList.innerHTML = `
-                <div class="empty-state" style="text-align: center; padding: 3rem; color: #666;">
-                    <h3>Bạn chưa có giải đ���u nào</h3>
-                    <p>Hãy tạo giải đấu đầu tiên của bạn!</p>
-                    <button onclick="window.location.href='create-tournament-1.html'"
-                            style="margin-top: 1rem; padding: 0.75rem 1.5rem; background: #667eea; color: white; border: none; border-radius: 8px; cursor: pointer;">
-                        Tạo giải đấu mới
-                    </button>
-                </div>
-            `;
-        }
-
-        function getStatusText(status) {
-            const statusMap = {
-                'upcoming': 'Sắp diễn ra',
-                'ongoing': 'Đang diễn ra',
-                'completed': 'Đã kết thúc',
-                'cancelled': 'Đã hủy'
-            };
-            return statusMap[status] || status;
-        }
-
-        function getFormatText(format) {
-            const formatMap = {
-                'single-elimination': 'Đấu loại trực tiếp',
-                'double-elimination': 'Vòng tròn kép',
-                'group-stage': 'Đấu tổ hợp'
-            };
-            return formatMap[format] || format;
+            // Load more button
+            const loadMoreBtn = document.getElementById('loadMoreBtn');
+            if (loadMoreBtn) {
+                loadMoreBtn.addEventListener('click', loadMoreTournaments);
+            }
         }
 
         // Make functions global for onclick handlers
@@ -289,58 +527,32 @@
             modal.style.display = 'block';
         };
 
-        function initializeEventListeners() {
-            // Load more button (if exists)
-            const loadMoreBtn = document.getElementById('loadMoreBtn');
-            if (loadMoreBtn) {
-                loadMoreBtn.addEventListener('click', loadMoreTournaments);
-            }
-
-            // Search functionality
-            const searchInput = document.querySelector('.search-input');
-            if (searchInput) {
-                searchInput.addEventListener('input', function(e) {
-                    filterTournaments(e.target.value);
-                });
-            }
-        }
-
         window.closeDeleteModal = function() {
             const modal = document.getElementById('deleteModal');
             modal.style.display = 'none';
             currentDeleteId = null;
         };
 
-        window.confirmDelete = async function() {
+        window.confirmDelete = function() {
             if (currentDeleteId) {
-                await deleteTournament(currentDeleteId);
+                deleteTournament(currentDeleteId);
                 closeDeleteModal();
             }
         };
 
-        async function deleteTournament(tournamentId) {
-            try {
-                const response = await apiCall(`${API_ENDPOINTS.TOURNAMENTS.BY_ID(tournamentId)}`, {}, 'DELETE', true);
-
-                if (response.success) {
-                    // Remove from local array
-                    tournaments = tournaments.filter(t => t._id !== tournamentId);
-
-                    // Re-render tournaments
-                    renderTournaments();
-
+        function deleteTournament(tournamentId) {
+            // Find and remove tournament item
+            const tournamentItem = document.querySelector(`[data-tournament-id="${tournamentId}"]`);
+            if (tournamentItem) {
+                tournamentItem.style.animation = 'fadeOut 0.3s ease';
+                setTimeout(() => {
+                    tournamentItem.remove();
                     showNotification('Giải đấu đã được xóa thành công', 'success');
-                } else {
-                    showNotification('Lỗi khi xóa giải đấu: ' + response.message, 'error');
-                }
-            } catch (error) {
-                console.error('Error deleting tournament:', error);
-                showNotification('Có lỗi xảy ra khi xóa giải đấu', 'error');
+                }, 300);
             }
         }
 
         function loadMoreTournaments() {
-            // This could be implemented for pagination if needed
             showNotification('Tất cả giải đấu đã được tải', 'info');
         }
 
@@ -350,9 +562,7 @@
 
             tournamentItems.forEach(item => {
                 const tournamentName = item.querySelector('.tournament-name h3').textContent.toLowerCase();
-                const gameName = item.querySelector('.tournament-name p').textContent.toLowerCase();
-                const shouldShow = tournamentName.includes(searchLower) || gameName.includes(searchLower);
-
+                const shouldShow = tournamentName.includes(searchLower);
                 item.style.display = shouldShow ? 'flex' : 'none';
             });
         }
@@ -411,78 +621,295 @@
                 to { transform: translateX(100%); opacity: 0; }
             }
 
-            .tournament-item {
-                display: flex;
-                align-items: center;
-                padding: 1rem;
-                border: 1px solid #e2e8f0;
-                border-radius: 8px;
-                margin-bottom: 1rem;
-                background: white;
-                transition: all 0.3s ease;
+            @keyframes fadeOut {
+                from { opacity: 1; transform: scale(1); }
+                to { opacity: 0; transform: scale(0.8); }
             }
 
-            .tournament-item:hover {
-                box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-                transform: translateY(-1px);
+            /* Header button styles */
+            .header .home-button,
+            .header .support-button, 
+            .header .info-button,
+            .header .notification-button,
+            .header .menu-button {
+                background: none !important;
+                border: none !important;
+                cursor: pointer !important;
+                transition: all 0.3s ease !important;
+                padding: 0.5rem !important;
+                border-radius: 8px !important;
+                display: flex !important;
+                align-items: center !important;
+                justify-content: center !important;
             }
 
-            .tournament-name {
-                flex: 1;
-                margin-left: 1rem;
+            .header .home-button:hover,
+            .header .support-button:hover, 
+            .header .info-button:hover,
+            .header .notification-button:hover,
+            .header .menu-button:hover {
+                background: rgba(255, 255, 255, 0.1) !important;
+                transform: translateY(-2px) !important;
             }
 
-            .tournament-name h3 {
-                margin: 0 0 0.5rem 0;
-                color: #2d3748;
+            .header .home-button:active,
+            .header .support-button:active, 
+            .header .info-button:active,
+            .header .notification-button:active,
+            .header .menu-button:active {
+                transform: translateY(0) !important;
             }
 
-            .tournament-name p {
-                margin: 0.25rem 0;
-                color: #718096;
-                font-size: 0.9rem;
+            /* Navigation text styles */
+            .header .nav-text {
+                color: #f5f5f5 !important;
+                font-size: 0.9rem !important;
+                margin-left: 0.5rem !important;
+                font-weight: 500 !important;
             }
 
-            .tournament-actions {
-                display: flex;
-                gap: 0.5rem;
+            /* Search container styles */
+            .header .search-container {
+                position: relative !important;
+                display: flex !important;
+                align-items: center !important;
             }
 
-            .tournament-actions button {
-                padding: 0.5rem 1rem;
-                border: none;
-                border-radius: 6px;
-                cursor: pointer;
-                font-weight: 500;
-                transition: all 0.2s ease;
+            .header .search-input {
+                padding: 0.5rem 1rem !important;
+                border: 1px solid #e2e8f0 !important;
+                border-radius: 6px !important;
+                font-size: 0.9rem !important;
+                width: 300px !important;
+                outline: none !important;
             }
 
-            .manage-participants-btn {
-                background: #667eea;
-                color: white;
+            .header .search-input:focus {
+                border-color: #667eea !important;
+                box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.2) !important;
             }
 
-            .edit-btn {
-                background: #f59e0b;
-                color: white;
+            .header .search-clear {
+                position: absolute !important;
+                right: 0.5rem !important;
+                background: none !important;
+                border: none !important;
+                cursor: pointer !important;
+                display: none !important;
+                padding: 0.25rem !important;
+                border-radius: 4px !important;
             }
 
-            .delete-btn {
-                background: #ef4444;
-                color: white;
+            .header .search-clear:hover {
+                background: #f3f4f6 !important;
             }
 
-            .tournament-actions button:hover {
-                opacity: 0.8;
-                transform: translateY(-1px);
+            /* User avatar styles */
+            .header .user-avatar {
+                width: 40px !important;
+                height: 40px !important;
+                border-radius: 50% !important;
+                overflow: hidden !important;
+                cursor: pointer !important;
+                transition: transform 0.3s ease !important;
             }
 
-            .loading-message {
-                text-align: center;
-                padding: 2rem;
-                color: #666;
-                font-size: 1.1rem;
+            .header .user-avatar:hover {
+                transform: scale(1.05) !important;
             }
+
+            .header .user-avatar img {
+                width: 100% !important;
+                height: 100% !important;
+                object-fit: cover !important;
+            }
+
+            /* Override any existing styles */
+            .tournament-list .tournament-item {
+                display: flex !important;
+                align-items: center !important;
+                padding: 1rem !important;
+                border: 1px solid #e2e8f0 !important;
+                border-radius: 8px !important;
+                margin-bottom: 1rem !important;
+                background: white !important;
+                transition: all 0.3s ease !important;
+                min-height: 80px !important;
+                width: 100% !important;
+                box-sizing: border-box !important;
+            }
+
+            .tournament-list .tournament-item:hover {
+                box-shadow: 0 2px 8px rgba(0,0,0,0.1) !important;
+                transform: translateY(-1px) !important;
+            }
+
+            .tournament-list .tournament-avatar {
+                width: 60px !important;
+                height: 60px !important;
+                margin-right: 1rem !important;
+                flex-shrink: 0 !important;
+            }
+
+            .tournament-list .tournament-avatar .avatar-3d img {
+                width: 60px !important;
+                height: 60px !important;
+                border-radius: 50% !important;
+                object-fit: cover !important;
+            }
+
+            .tournament-list .tournament-name {
+                flex: 1 !important;
+                margin-left: 0 !important;
+                min-width: 0 !important;
+            }
+
+            .tournament-list .tournament-name h3 {
+                margin: 0 !important;
+                color: #2d3748 !important;
+                font-size: 1.1rem !important;
+                font-weight: 600 !important;
+                white-space: nowrap !important;
+                overflow: hidden !important;
+                text-overflow: ellipsis !important;
+            }
+
+            .tournament-list .tournament-actions {
+                display: flex !important;
+                gap: 0.5rem !important;
+                flex-shrink: 0 !important;
+                align-items: center !important;
+            }
+
+            .tournament-list .tournament-actions button {
+                padding: 0.5rem 1rem !important;
+                border: none !important;
+                border-radius: 6px !important;
+                cursor: pointer !important;
+                font-weight: 500 !important;
+                transition: all 0.2s ease !important;
+                font-size: 0.9rem !important;
+                white-space: nowrap !important;
+                min-width: auto !important;
+            }
+
+            .tournament-list .manage-participants-btn {
+                background: #667eea !important;
+                color: white !important;
+            }
+
+            .tournament-list .edit-btn {
+                background: #f59e0b !important;
+                color: white !important;
+            }
+
+            .tournament-list .delete-btn {
+                background: #ef4444 !important;
+                color: white !important;
+            }
+
+            .tournament-list .tournament-actions button:hover {
+                opacity: 0.8 !important;
+                transform: translateY(-1px) !important;
+            }
+
+            .tournament-management-container {
+                max-width: 1200px !important;
+                margin: 0 auto !important;
+                padding: 2rem !important;
+            }
+
+            .create-tournament-section {
+                margin-bottom: 2rem !important;
+                text-align: center !important;
+            }
+
+            .create-tournament-btn {
+                background: #667eea !important;
+                color: white !important;
+                border: none !important;
+                padding: 1rem 2rem !important;
+                border-radius: 8px !important;
+                font-size: 1.1rem !important;
+                font-weight: 600 !important;
+                cursor: pointer !important;
+                transition: all 0.3s ease !important;
+            }
+
+            .create-tournament-btn:hover {
+                background: #5a6fd8 !important;
+                transform: translateY(-2px) !important;
+            }
+
+            .load-more-section {
+                text-align: center !important;
+                margin-top: 2rem !important;
+            }
+
+            .load-more-btn {
+                background: #f8f9fa !important;
+                border: 1px solid #e2e8f0 !important;
+                border-radius: 50% !important;
+                width: 60px !important;
+                height: 60px !important;
+                cursor: pointer !important;
+                transition: all 0.3s ease !important;
+            }
+
+            .load-more-btn:hover {
+                background: #e2e8f0 !important;
+                transform: translateY(-2px) !important;
+            }
+
+            /* Modal styles */
+            .modal {
+                display: none !important;
+                position: fixed !important;
+                z-index: 1000 !important;
+                left: 0 !important;
+                top: 0 !important;
+                width: 100% !important;
+                height: 100% !important;
+                background-color: rgba(0,0,0,0.5) !important;
+            }
+
+            .modal-content {
+                background-color: white !important;
+                margin: 15% auto !important;
+                padding: 2rem !important;
+                border-radius: 8px !important;
+                width: 400px !important;
+                max-width: 90% !important;
+                text-align: center !important;
+            }
+
+            .modal-actions {
+                margin-top: 1rem !important;
+                display: flex !important;
+                gap: 1rem !important;
+                justify-content: center !important;
+            }
+
+            .cancel-btn, .confirm-delete-btn {
+                padding: 0.5rem 1.5rem !important;
+                border: none !important;
+                border-radius: 6px !important;
+                cursor: pointer !important;
+                font-weight: 500 !important;
+            }
+
+            .cancel-btn {
+                background: #6b7280 !important;
+                color: white !important;
+            }
+
+            .confirm-delete-btn {
+                background: #ef4444 !important;
+                color: white !important;
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
         `;
         document.head.appendChild(style);
     </script>

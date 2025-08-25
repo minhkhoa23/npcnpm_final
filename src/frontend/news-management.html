@@ -79,133 +79,28 @@
 
             <div class="news-list" id="newsList">
                 <div class="loading-placeholder">Đang tải tin tức...</div>
+                
+                <!-- Tin tức có nội dung cụ thể sẽ được giữ lại -->
+                <div class="news-item" onclick="viewNews('lol-championship-2025')">
                     <div class="news-avatar">
-                        <img src="https://api.builder.io/api/v1/image/assets/TEMP/9fee9f9fde03e83fbbcbedb7a213bfd8ffdb3b57?width=120" alt="News Avatar">
+                        <img src="https://api.builder.io/api/v1/image/assets/TEMP/9fee9f9fde03e83fbbcbedb7a213bfd8ffdb3b57?width=120" alt="League of Legends Avatar">
                     </div>
-                    <div class="news-title">tin tức A</div>
+                    <div class="news-title">League of Legends Championship 2025: Team Flash giành chiến thắng ấn tượng</div>
+                    <div class="news-date">15/1/2025</div>
                     <div class="news-actions">
-                        <button class="edit-btn" onclick="event.stopPropagation(); editNews(1)">chỉnh sửa</button>
+                        <button class="edit-btn" onclick="event.stopPropagation(); editNews('lol-championship-2025')">chỉnh sửa</button>
                         <button class="delete-btn" onclick="event.stopPropagation(); deleteNews(this)">Xóa</button>
                     </div>
                 </div>
 
-                <div class="news-item" onclick="viewNews(2)">
+                <div class="news-item" onclick="viewNews('cs2-winter-cup')">
                     <div class="news-avatar">
-                        <img src="https://api.builder.io/api/v1/image/assets/TEMP/d1676e9f112f18260a647c8d8be4395044b8263e?width=120" alt="News Avatar">
+                        <img src="https://api.builder.io/api/v1/image/assets/TEMP/d1676e9f112f18260a647c8d8be4395044b8263e?width=120" alt="CS2 Avatar">
                     </div>
-                    <div class="news-title">tin tức A</div>
+                    <div class="news-title">Counter-Strike 2 Winter Cup: Ice Wolves thống trị bảng xếp hạng</div>
+                    <div class="news-date">14/1/2025</div>
                     <div class="news-actions">
-                        <button class="edit-btn" onclick="event.stopPropagation(); editNews(2)">chỉnh sửa</button>
-                        <button class="delete-btn" onclick="event.stopPropagation(); deleteNews(this)">Xóa</button>
-                    </div>
-                </div>
-
-                <div class="news-item" onclick="viewNews(3)">
-                    <div class="news-avatar">
-                        <img src="https://api.builder.io/api/v1/image/assets/TEMP/6e07a2ff4990da9dcd77ed2d48c8f56e09d628b5?width=120" alt="News Avatar">
-                    </div>
-                    <div class="news-title">Tin tức A</div>
-                    <div class="news-actions">
-                        <button class="edit-btn" onclick="event.stopPropagation(); editNews(3)">chỉnh sửa</button>
-                        <button class="delete-btn" onclick="event.stopPropagation(); deleteNews(this)">Xóa</button>
-                    </div>
-                </div>
-
-                <div class="news-item" onclick="viewNews(4)">
-                    <div class="news-avatar">
-                        <img src="https://api.builder.io/api/v1/image/assets/TEMP/3898faad8b7651a7488bbfc19b759f6574e5cde9?width=120" alt="News Avatar">
-                    </div>
-                    <div class="news-title">Tin tức A</div>
-                    <div class="news-actions">
-                        <button class="edit-btn" onclick="event.stopPropagation(); editNews(4)">chỉnh sửa</button>
-                        <button class="delete-btn" onclick="event.stopPropagation(); deleteNews(this)">Xóa</button>
-                    </div>
-                </div>
-
-                <div class="news-item" onclick="viewNews(5)">
-                    <div class="news-avatar">
-                        <img src="https://api.builder.io/api/v1/image/assets/TEMP/55f08ec67ddca863cfc6ac15202fb58d462a4f05?width=120" alt="News Avatar">
-                    </div>
-                    <div class="news-title">Tin tức A</div>
-                    <div class="news-actions">
-                        <button class="edit-btn" onclick="event.stopPropagation(); editNews(5)">chỉnh sửa</button>
-                        <button class="delete-btn" onclick="event.stopPropagation(); deleteNews(this)">Xóa</button>
-                    </div>
-                </div>
-
-                <div class="news-item" onclick="viewNews(6)">
-                    <div class="news-avatar">
-                        <img src="https://api.builder.io/api/v1/image/assets/TEMP/cee997788db5a1526d727508eed77fdf72bd3e74?width=120" alt="News Avatar">
-                    </div>
-                    <div class="news-title">Tin tức A</div>
-                    <div class="news-actions">
-                        <button class="edit-btn" onclick="event.stopPropagation(); editNews(6)">chỉnh sửa</button>
-                        <button class="delete-btn" onclick="event.stopPropagation(); deleteNews(this)">Xóa</button>
-                    </div>
-                </div>
-
-                <div class="news-item" onclick="viewNews(7)">
-                    <div class="news-avatar">
-                        <img src="https://api.builder.io/api/v1/image/assets/TEMP/1ef7f87a402a15b0cd0780955deb0f4d686a08ee?width=120" alt="News Avatar">
-                    </div>
-                    <div class="news-title">Tin tức A</div>
-                    <div class="news-actions">
-                        <button class="edit-btn" onclick="event.stopPropagation(); editNews(7)">chỉnh sửa</button>
-                        <button class="delete-btn" onclick="event.stopPropagation(); deleteNews(this)">Xóa</button>
-                    </div>
-                </div>
-
-                <div class="news-item" onclick="viewNews(8)">
-                    <div class="news-avatar">
-                        <img src="https://api.builder.io/api/v1/image/assets/TEMP/4be8a0eee78af89b1e7ce270b040c22cde5bc21c?width=120" alt="News Avatar">
-                    </div>
-                    <div class="news-title">Tin tức A</div>
-                    <div class="news-actions">
-                        <button class="edit-btn" onclick="event.stopPropagation(); editNews(8)">chỉnh sửa</button>
-                        <button class="delete-btn" onclick="event.stopPropagation(); deleteNews(this)">Xóa</button>
-                    </div>
-                </div>
-
-                <div class="news-item" onclick="viewNews(9)">
-                    <div class="news-avatar">
-                        <img src="https://api.builder.io/api/v1/image/assets/TEMP/9fee9f9fde03e83fbbcbedb7a213bfd8ffdb3b57?width=120" alt="News Avatar">
-                    </div>
-                    <div class="news-title">Tin tức A</div>
-                    <div class="news-actions">
-                        <button class="edit-btn" onclick="event.stopPropagation(); editNews(9)">chỉnh sửa</button>
-                        <button class="delete-btn" onclick="event.stopPropagation(); deleteNews(this)">Xóa</button>
-                    </div>
-                </div>
-
-                <div class="news-item" onclick="viewNews(10)">
-                    <div class="news-avatar">
-                        <img src="https://api.builder.io/api/v1/image/assets/TEMP/d1676e9f112f18260a647c8d8be4395044b8263e?width=120" alt="News Avatar">
-                    </div>
-                    <div class="news-title">Tin tức A</div>
-                    <div class="news-actions">
-                        <button class="edit-btn" onclick="event.stopPropagation(); editNews(10)">chỉnh sửa</button>
-                        <button class="delete-btn" onclick="event.stopPropagation(); deleteNews(this)">Xóa</button>
-                    </div>
-                </div>
-
-                <div class="news-item" onclick="viewNews(11)">
-                    <div class="news-avatar">
-                        <img src="https://api.builder.io/api/v1/image/assets/TEMP/6e07a2ff4990da9dcd77ed2d48c8f56e09d628b5?width=120" alt="News Avatar">
-                    </div>
-                    <div class="news-title">Tin tức A</div>
-                    <div class="news-actions">
-                        <button class="edit-btn" onclick="event.stopPropagation(); editNews(11)">chỉnh sửa</button>
-                        <button class="delete-btn" onclick="event.stopPropagation(); deleteNews(this)">Xóa</button>
-                    </div>
-                </div>
-
-                <div class="news-item" onclick="viewNews(12)">
-                    <div class="news-avatar">
-                        <img src="https://api.builder.io/api/v1/image/assets/TEMP/3898faad8b7651a7488bbfc19b759f6574e5cde9?width=120" alt="News Avatar">
-                    </div>
-                    <div class="news-title">Tin tức A</div>
-                    <div class="news-actions">
-                        <button class="edit-btn" onclick="event.stopPropagation(); editNews(12)">chỉnh sửa</button>
+                        <button class="edit-btn" onclick="event.stopPropagation(); editNews('cs2-winter-cup')">chỉnh sửa</button>
                         <button class="delete-btn" onclick="event.stopPropagation(); deleteNews(this)">Xóa</button>
                     </div>
                 </div>
