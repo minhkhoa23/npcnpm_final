@@ -188,7 +188,7 @@
     <div id="deleteModal" class="modal" style="display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.4);">
         <div class="modal-content" style="background-color: #fefefe; margin: 15% auto; padding: 20px; border-radius: 8px; width: 300px; text-align: center;">
             <h3 style="margin-top: 0;">Xác nhận xóa giải đấu</h3>
-            <p>Bạn có chắc chắn muốn xóa giải đấu này? Hành động này không thể hoàn tác.</p>
+            <p>Bạn có chắc chắn muốn xóa gi��i đấu này? Hành động này không thể hoàn tác.</p>
             <div class="modal-actions" style="display: flex; gap: 1rem; justify-content: center; margin-top: 1.5rem;">
                 <button class="cancel-btn" onclick="closeDeleteModal()" style="padding: 0.5rem 1rem; border: 1px solid #ccc; background: white; color: #333; border-radius: 4px; cursor: pointer;">Hủy</button>
                 <button class="confirm-delete-btn" onclick="confirmDelete()" style="padding: 0.5rem 1rem; border: none; background: #ef4444; color: white; border-radius: 4px; cursor: pointer;">Xóa</button>
@@ -219,30 +219,93 @@
 
         // Load tournaments for the organizer
         async function loadTournaments() {
-            try {
-                const loadingPlaceholder = document.getElementById('loadingPlaceholder');
-                const emptyState = document.getElementById('emptyState');
-                const tournamentList = document.getElementById('tournamentList');
-                
-                // For demo purposes, create a mock organizer ID
-                // In production, this would come from the authenticated user
-                const organizerId = 'demo_organizer'; 
+            const loadingPlaceholder = document.getElementById('loadingPlaceholder');
+            const emptyState = document.getElementById('emptyState');
+            const tournamentList = document.getElementById('tournamentList');
 
-                // Try to load from API
-                const response = await apiCall(`${API_ENDPOINTS.TOURNAMENTS.BY_ORGANIZER(organizerId)}`, {}, 'GET', false);
-                
-                if (response.success && response.data && response.data.tournaments) {
-                    tournaments = response.data.tournaments;
-                } else {
-                    // If API fails, try to load from backend directly
-                    const fallbackResponse = await apiCall('/tournaments', {}, 'GET', false);
-                    if (fallbackResponse.success && fallbackResponse.data && fallbackResponse.data.tournaments) {
-                        tournaments = fallbackResponse.data.tournaments;
-                    } else {
-                        tournaments = [];
+            try {
+                // For demo purposes, create a mock organizer ID
+                const organizerId = 'demo_organizer';
+
+                let loadedTournaments = [];
+
+                // Try multiple approaches to load tournaments
+                try {
+                    // Method 1: Try to load from localStorage first (for persisted data)
+                    const savedTournaments = localStorage.getItem('userTournaments');
+                    if (savedTournaments) {
+                        const parsedTournaments = JSON.parse(savedTournaments);
+                        if (Array.isArray(parsedTournaments) && parsedTournaments.length > 0) {
+                            loadedTournaments = parsedTournaments;
+                            console.log('Loaded tournaments from localStorage:', loadedTournaments);
+                        }
+                    }
+                } catch (storageError) {
+                    console.warn('Failed to load from localStorage:', storageError);
+                }
+
+                // Method 2: Try API if no local data
+                if (loadedTournaments.length === 0) {
+                    try {
+                        const response = await fetch('/api/tournaments', {
+                            method: 'GET',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            }
+                        });
+
+                        if (response.ok) {
+                            const data = await response.json();
+                            if (data.success && data.data && data.data.tournaments) {
+                                loadedTournaments = data.data.tournaments;
+                                console.log('Loaded tournaments from API:', loadedTournaments);
+                            }
+                        }
+                    } catch (apiError) {
+                        console.warn('API call failed:', apiError);
                     }
                 }
 
+                // Method 3: If still no data, try direct backend endpoint
+                if (loadedTournaments.length === 0) {
+                    try {
+                        const response = await fetch('http://localhost:3000/api/tournaments', {
+                            method: 'GET',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            }
+                        });
+
+                        if (response.ok) {
+                            const data = await response.json();
+                            if (data.success && data.data && data.data.tournaments) {
+                                loadedTournaments = data.data.tournaments;
+                                console.log('Loaded tournaments from direct backend:', loadedTournaments);
+                            }
+                        }
+                    } catch (backendError) {
+                        console.warn('Direct backend call failed:', backendError);
+                    }
+                }
+
+                // Method 4: Use mock data if all else fails
+                if (loadedTournaments.length === 0) {
+                    // Check if there are newly created tournaments in sessionStorage
+                    const newTournaments = sessionStorage.getItem('newlyCreatedTournaments');
+                    if (newTournaments) {
+                        try {
+                            const parsed = JSON.parse(newTournaments);
+                            if (Array.isArray(parsed)) {
+                                loadedTournaments = parsed;
+                                console.log('Loaded newly created tournaments from sessionStorage:', loadedTournaments);
+                            }
+                        } catch (e) {
+                            console.warn('Failed to parse newly created tournaments:', e);
+                        }
+                    }
+                }
+
+                tournaments = loadedTournaments;
                 filteredTournaments = [...tournaments];
 
                 // Hide loading placeholder
@@ -253,32 +316,46 @@
                 if (tournaments.length === 0) {
                     // Show empty state
                     if (emptyState) {
+                        emptyState.innerHTML = `
+                            <div style="font-size: 3rem; margin-bottom: 1rem;">🏆</div>
+                            <h3 style="margin-bottom: 1rem; color: #333;">Bạn chưa tạo giải đấu nào</h3>
+                            <p style="margin-bottom: 2rem;">Hãy tạo giải đấu đầu tiên của bạn để bắt đầu!</p>
+                            <button onclick="window.location.href='create-tournament-1.html'" style="padding: 0.75rem 1.5rem; background: #667eea; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 500;">
+                                Tạo giải đấu ngay
+                            </button>
+                        `;
                         emptyState.style.display = 'block';
                     }
                 } else {
-                    // Render tournaments
+                    // Hide empty state and render tournaments
+                    if (emptyState) {
+                        emptyState.style.display = 'none';
+                    }
                     renderTournaments();
                 }
 
             } catch (error) {
                 console.error('Error loading tournaments:', error);
-                
-                // Hide loading and show empty state on error
-                const loadingPlaceholder = document.getElementById('loadingPlaceholder');
-                const emptyState = document.getElementById('emptyState');
-                
+
+                // Hide loading
                 if (loadingPlaceholder) {
                     loadingPlaceholder.style.display = 'none';
                 }
-                
+
+                // Show error state
                 if (emptyState) {
                     emptyState.innerHTML = `
                         <div style="font-size: 3rem; margin-bottom: 1rem;">⚠️</div>
                         <h3 style="margin-bottom: 1rem; color: #333;">Lỗi tải dữ liệu</h3>
-                        <p style="margin-bottom: 2rem;">Không thể tải danh sách giải đấu. Vui lòng thử lại sau.</p>
-                        <button onclick="window.location.reload()" style="padding: 0.5rem 1rem; background: #667eea; color: white; border: none; border-radius: 4px; cursor: pointer;">
-                            Thử lại
-                        </button>
+                        <p style="margin-bottom: 2rem;">Không thể tải danh sách giải đấu. Có thể server chưa khởi động hoặc có lỗi kết nối.</p>
+                        <div style="display: flex; gap: 1rem; justify-content: center;">
+                            <button onclick="loadTournaments()" style="padding: 0.5rem 1rem; background: #667eea; color: white; border: none; border-radius: 4px; cursor: pointer;">
+                                Thử lại
+                            </button>
+                            <button onclick="window.location.href='create-tournament-1.html'" style="padding: 0.5rem 1rem; background: #48bb78; color: white; border: none; border-radius: 4px; cursor: pointer;">
+                                Tạo giải đấu mới
+                            </button>
+                        </div>
                     `;
                     emptyState.style.display = 'block';
                 }
