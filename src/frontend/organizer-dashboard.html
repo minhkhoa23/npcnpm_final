@@ -461,7 +461,7 @@
             if (!grid) return;
 
             if (highlights.length === 0) {
-                renderEmptyState('highlights', 'Không có highlight nào cho giải đ��u của bạn');
+                renderEmptyState('highlights', 'Không có highlight nào cho giải đấu của bạn');
                 return;
             }
 
@@ -531,12 +531,55 @@
         function getStatusText(status) {
             const statusMap = {
                 'upcoming': 'Sắp diễn ra',
-                'ongoing': 'Đang diễn ra', 
+                'ongoing': 'Đang diễn ra',
                 'completed': 'Đã kết thúc',
                 'cancelled': 'Đã hủy'
             };
-            return statusMap[status] || status;
+            return statusMap[status] || status || 'Chưa xác định';
         }
+
+        function getStatusColor(status) {
+            const colorMap = {
+                'upcoming': '#667eea',
+                'ongoing': '#48bb78',
+                'completed': '#999',
+                'cancelled': '#ef4444'
+            };
+            return colorMap[status] || '#667eea';
+        }
+
+        function formatDate(dateString) {
+            if (!dateString) return 'N/A';
+            try {
+                return new Date(dateString).toLocaleDateString('vi-VN', {
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: 'numeric'
+                });
+            } catch (error) {
+                return 'N/A';
+            }
+        }
+
+        // Add CSS animations
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideIn {
+                from { transform: translateX(100%); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+
+            @keyframes slideOut {
+                from { transform: translateX(0); opacity: 1; }
+                to { transform: translateX(100%); opacity: 0; }
+            }
+
+            .tournament-card:hover {
+                transform: translateY(-4px);
+                box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            }
+        `;
+        document.head.appendChild(style);
 
         function setupLogout() {
             const userAvatar = document.getElementById('userAvatar');
