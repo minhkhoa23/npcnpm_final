@@ -25,6 +25,49 @@ class TokenManager {
     static isAuthenticated() {
         return !!this.getToken();
     }
+
+    static getCurrentUser() {
+        try {
+            const token = this.getToken();
+            if (!token) {
+                return null;
+            }
+
+            // Decode JWT token to get user info
+            // JWT tokens have 3 parts separated by dots: header.payload.signature
+            const tokenParts = token.split('.');
+            if (tokenParts.length !== 3) {
+                console.warn('Invalid token format');
+                return null;
+            }
+
+            // Decode the payload (second part)
+            const payload = JSON.parse(atob(tokenParts[1]));
+
+            // Check if token is expired
+            if (payload.exp && Date.now() >= payload.exp * 1000) {
+                console.warn('Token has expired');
+                this.removeToken();
+                return null;
+            }
+
+            return {
+                id: payload.userId || payload.id,
+                email: payload.email,
+                role: payload.role || 'user',
+                username: payload.username,
+                ...payload
+            };
+        } catch (error) {
+            console.error('Error decoding token:', error);
+            return null;
+        }
+    }
+
+    static getUserRole() {
+        const user = this.getCurrentUser();
+        return user ? user.role : null;
+    }
 }
 
 // Enhanced API call function with comprehensive error handling and authentication
