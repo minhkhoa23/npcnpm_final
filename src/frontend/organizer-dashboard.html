@@ -251,14 +251,31 @@
             // Create mock user for testing
             const currentUser = { _id: 'demo_organizer', role: 'organizer', fullName: 'Demo Organizer' };
 
+            // Check if we're returning from tournament creation
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('refresh') === 'tournaments') {
+                // Clear URL parameter
+                window.history.replaceState({}, document.title, window.location.pathname);
+
+                // Show success message
+                showSuccessMessage('Giải đấu đã được tạo thành công!');
+            }
+
             // Load organizer-specific data
             loadOrganizerTournaments(currentUser._id);
             loadOrganizerNews(currentUser._id);
             loadOrganizerHighlights(currentUser._id);
             loadFollowedTournaments(currentUser._id);
-            
+
             // Setup logout functionality
             setupLogout();
+
+            // Setup refresh interval to catch new tournaments
+            setInterval(() => {
+                if (document.visibilityState === 'visible') {
+                    loadOrganizerTournaments(currentUser._id);
+                }
+            }, 30000); // Refresh every 30 seconds
         });
 
         // Load organizer's tournaments
