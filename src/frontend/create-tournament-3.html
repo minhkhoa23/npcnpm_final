@@ -551,9 +551,9 @@
                 // Clear saved data
                 localStorage.removeItem('tournamentCreationData');
 
-                // Redirect after success
+                // Redirect after success with refresh parameter
                 setTimeout(() => {
-                    window.location.href = 'organizer-dashboard.html';
+                    window.location.href = 'organizer-dashboard.html?refresh=tournaments';
                 }, 2000);
 
             } catch (error) {
