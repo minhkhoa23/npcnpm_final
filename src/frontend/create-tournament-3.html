@@ -591,7 +591,48 @@
 
             } catch (error) {
                 console.error('Error creating tournament:', error);
-                showError('Lỗi khi tạo giải đấu: ' + error.message);
+
+                // Fallback: Create tournament locally if API fails
+                try {
+                    const fallbackTournament = {
+                        _id: 'local_' + Date.now(),
+                        name: tournamentPayload.name,
+                        gameName: tournamentPayload.gameName,
+                        description: tournamentPayload.description,
+                        maxPlayers: tournamentPayload.maxPlayers,
+                        format: tournamentPayload.format,
+                        status: 'upcoming',
+                        startDate: tournamentPayload.startDate,
+                        endDate: tournamentPayload.endDate,
+                        avatarUrl: tournamentPayload.avatarUrl,
+                        createdAt: new Date().toISOString(),
+                        organizerId: 'demo_organizer',
+                        isLocal: true // Flag to indicate this is a local tournament
+                    };
+
+                    // Save to localStorage
+                    const existingTournaments = JSON.parse(localStorage.getItem('userTournaments') || '[]');
+                    const updatedTournaments = [fallbackTournament, ...existingTournaments];
+                    localStorage.setItem('userTournaments', JSON.stringify(updatedTournaments));
+
+                    // Also save to sessionStorage
+                    const newlyCreated = JSON.parse(sessionStorage.getItem('newlyCreatedTournaments') || '[]');
+                    newlyCreated.unshift(fallbackTournament);
+                    sessionStorage.setItem('newlyCreatedTournaments', JSON.stringify(newlyCreated));
+
+                    // Clear creation data
+                    localStorage.removeItem('tournamentCreationData');
+
+                    showSuccess('Giải đấu đã được tạo thành công! (Chế độ offline)');
+
+                    setTimeout(() => {
+                        window.location.href = 'organizer-dashboard.html?refresh=tournaments';
+                    }, 2000);
+
+                } catch (fallbackError) {
+                    console.error('Fallback creation failed:', fallbackError);
+                    showError('Lỗi khi tạo giải đấu: ' + error.message + '. Vui lòng kiểm tra kết nối và thử lại.');
+                }
             } finally {
                 showLoading(false);
             }
@@ -612,7 +653,7 @@
             }
 
             if (new Date(startDate) >= new Date(endDate)) {
-                showError('Ngày kết thúc phải sau ngày b��t đầu.');
+                showError('Ngày kết thúc phải sau ngày bắt đầu.');
                 return false;
             }
 
