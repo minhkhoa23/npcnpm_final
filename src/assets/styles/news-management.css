@@ -200,18 +200,19 @@ body {
     color: var(--text-dark);
     border: none;
     border-radius: var(--border-radius-medium);
-    padding: 15px 30px;
+    padding: 15px 25px;
     font-family: var(--font-montserrat);
-    font-size: 32px;
+    font-size: 28px;
     font-weight: 400;
     cursor: pointer;
     transition: all 0.3s ease;
-    min-width: 454px;
+    min-width: 350px;
     height: 81px;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 10px;
+    gap: 12px;
+    white-space: nowrap;
 }
 
 .back-btn:hover {
