@@ -548,17 +548,91 @@
 
                 showSuccess('Giải đấu đã được tạo thành công!');
 
+                // Save the created tournament to localStorage for offline access
+                try {
+                    // Create full tournament object with all data
+                    const fullTournament = {
+                        _id: tournament._id,
+                        name: tournament.name,
+                        gameName: tournament.gameName,
+                        description: tournament.description,
+                        maxPlayers: tournament.maxPlayers,
+                        format: tournament.format,
+                        status: tournament.status || 'upcoming',
+                        startDate: tournament.startDate,
+                        endDate: tournament.endDate,
+                        avatarUrl: tournament.avatarUrl,
+                        createdAt: tournament.createdAt || new Date().toISOString(),
+                        organizerId: tournament.organizerId || 'demo_organizer'
+                    };
+
+                    // Save to localStorage for persistence
+                    const existingTournaments = JSON.parse(localStorage.getItem('userTournaments') || '[]');
+                    const updatedTournaments = [fullTournament, ...existingTournaments.filter(t => t._id !== tournament._id)];
+                    localStorage.setItem('userTournaments', JSON.stringify(updatedTournaments));
+
+                    // Also save to sessionStorage for immediate access
+                    const newlyCreated = JSON.parse(sessionStorage.getItem('newlyCreatedTournaments') || '[]');
+                    newlyCreated.unshift(fullTournament);
+                    sessionStorage.setItem('newlyCreatedTournaments', JSON.stringify(newlyCreated));
+
+                    console.log('Tournament saved to local storage:', fullTournament);
+                } catch (storageError) {
+                    console.warn('Failed to save tournament to storage:', storageError);
+                }
+
                 // Clear saved data
                 localStorage.removeItem('tournamentCreationData');
 
-                // Redirect after success
+                // Redirect after success with refresh parameter
                 setTimeout(() => {
-                    window.location.href = 'organizer-dashboard.html';
+                    window.location.href = 'organizer-dashboard.html?refresh=tournaments';
                 }, 2000);
 
             } catch (error) {
                 console.error('Error creating tournament:', error);
-                showError('Lỗi khi tạo giải đấu: ' + error.message);
+
+                // Fallback: Create tournament locally if API fails
+                try {
+                    const fallbackTournament = {
+                        _id: 'local_' + Date.now(),
+                        name: tournamentPayload.name,
+                        gameName: tournamentPayload.gameName,
+                        description: tournamentPayload.description,
+                        maxPlayers: tournamentPayload.maxPlayers,
+                        format: tournamentPayload.format,
+                        status: 'upcoming',
+                        startDate: tournamentPayload.startDate,
+                        endDate: tournamentPayload.endDate,
+                        avatarUrl: tournamentPayload.avatarUrl,
+                        createdAt: new Date().toISOString(),
+                        organizerId: 'demo_organizer',
+                        isLocal: true // Flag to indicate this is a local tournament
+                    };
+
+                    // Save to localStorage
+                    const existingTournaments = JSON.parse(localStorage.getItem('userTournaments') || '[]');
+                    const updatedTournaments = [fallbackTournament, ...existingTournaments];
+                    localStorage.setItem('userTournaments', JSON.stringify(updatedTournaments));
+
+                    // Also save to sessionStorage
+                    const newlyCreated = JSON.parse(sessionStorage.getItem('newlyCreatedTournaments') || '[]');
+                    newlyCreated.unshift(fallbackTournament);
+                    sessionStorage.setItem('newlyCreatedTournaments', JSON.stringify(newlyCreated));
+
+                    // Clear creation data
+                    localStorage.removeItem('tournamentCreationData');
+
+                    showSuccess('Giải đấu đã được tạo thành công! (Chế độ offline)');
+
+                    setTimeout(() => {
+                        window.location.href = 'organizer-dashboard.html?refresh=tournaments';
+                    }, 2000);
+
+                } catch (fallbackError) {
+                    console.error('Fallback creation failed:', fallbackError);
+                    showError('Lỗi khi tạo giải đấu: ' + error.message + '. Vui lòng kiểm tra kết nối và thử lại.');
+                }
             } finally {
                 showLoading(false);
             }
