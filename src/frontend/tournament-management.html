@@ -188,7 +188,7 @@
     <div id="deleteModal" class="modal" style="display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.4);">
         <div class="modal-content" style="background-color: #fefefe; margin: 15% auto; padding: 20px; border-radius: 8px; width: 300px; text-align: center;">
             <h3 style="margin-top: 0;">Xác nhận xóa giải đấu</h3>
-            <p>Bạn có chắc chắn muốn xóa gi��i đấu này? Hành động này không thể hoàn tác.</p>
+            <p>Bạn có chắc chắn muốn xóa giải đấu này? Hành động này không thể hoàn tác.</p>
             <div class="modal-actions" style="display: flex; gap: 1rem; justify-content: center; margin-top: 1.5rem;">
                 <button class="cancel-btn" onclick="closeDeleteModal()" style="padding: 0.5rem 1rem; border: 1px solid #ccc; background: white; color: #333; border-radius: 4px; cursor: pointer;">Hủy</button>
                 <button class="confirm-delete-btn" onclick="confirmDelete()" style="padding: 0.5rem 1rem; border: none; background: #ef4444; color: white; border-radius: 4px; cursor: pointer;">Xóa</button>
@@ -206,8 +206,24 @@
         // Initialize page
         document.addEventListener('DOMContentLoaded', function() {
             initializeEventListeners();
+            testConnection();
             loadTournaments();
         });
+
+        // Test API connection
+        async function testConnection() {
+            try {
+                const response = await fetch('/api/health');
+                if (response.ok) {
+                    console.log('✅ API connection successful');
+                } else {
+                    console.warn('⚠️ API health check failed:', response.status);
+                }
+            } catch (error) {
+                console.warn('⚠️ API connection failed:', error.message);
+                console.log('ℹ️ Falling back to local storage for tournament data');
+            }
+        }
 
         function initializeEventListeners() {
             // Search functionality
