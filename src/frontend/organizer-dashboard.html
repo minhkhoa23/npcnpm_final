@@ -385,17 +385,53 @@
             }
 
             grid.innerHTML = tournaments.map(tournament => `
-                <div class="tournament-card" onclick="window.location.href='tournament-detail.html?id=${tournament._id}'">
+                <div class="tournament-card" onclick="window.location.href='tournament-detail.html?id=${tournament._id}'" style="cursor: pointer; transition: all 0.3s ease;">
                     <div class="tournament-image">
-                        <img src="${tournament.avatarUrl || 'https://via.placeholder.com/364x200'}" alt="${tournament.name}">
+                        <img src="${tournament.avatarUrl || 'https://via.placeholder.com/364x200'}" alt="${tournament.name}" style="width: 100%; height: 200px; object-fit: cover; border-radius: 8px;">
                     </div>
-                    <div class="tournament-info">
-                        <h3>${tournament.name}</h3>
-                        <p>${getStatusText(tournament.status)}</p>
-                        <small>Game: ${tournament.gameName || 'N/A'}</small>
+                    <div class="tournament-info" style="padding: 1rem;">
+                        <h3 style="margin: 0 0 0.5rem 0; font-size: 1.1rem; color: #333;">${tournament.name}</h3>
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                            <span style="background: ${getStatusColor(tournament.status)}; color: white; padding: 0.25rem 0.5rem; border-radius: 12px; font-size: 0.8rem;">
+                                ${getStatusText(tournament.status)}
+                            </span>
+                            <small style="color: #666;">Số người chơi: ${tournament.maxPlayers || 'N/A'}</small>
+                        </div>
+                        <div style="font-size: 0.9rem; color: #666;">
+                            <div>Game: ${tournament.gameName || 'N/A'}</div>
+                            <div style="margin-top: 0.25rem;">Tạo: ${formatDate(tournament.createdAt)}</div>
+                        </div>
                     </div>
                 </div>
             `).join('');
+        }
+
+        function showSuccessMessage(message) {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: #48bb78;
+                color: white;
+                padding: 1rem 1.5rem;
+                border-radius: 8px;
+                font-weight: 500;
+                z-index: 10000;
+                animation: slideIn 0.3s ease;
+            `;
+            notification.textContent = message;
+
+            document.body.appendChild(notification);
+
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.3s ease';
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        notification.parentNode.removeChild(notification);
+                    }
+                }, 300);
+            }, 5000);
         }
 
         function renderNews(newsItems) {
@@ -425,7 +461,7 @@
             if (!grid) return;
 
             if (highlights.length === 0) {
-                renderEmptyState('highlights', 'Không có highlight nào cho giải đấu của bạn');
+                renderEmptyState('highlights', 'Không có highlight nào cho giải đ��u của bạn');
                 return;
             }
 
