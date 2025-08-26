@@ -144,7 +144,7 @@
                             </div>
                             <div class="format-info">
                                 <h4>Đấu tổ hợp</h4>
-                                <p>Vòng bảng + playoff (kết hợp 2 thể th��c)</p>
+                                <p>Vòng bảng + playoff (kết hợp 2 thể thức)</p>
                             </div>
                         </div>
                     </div>
@@ -462,18 +462,12 @@
         // Load saved data on page load
         window.addEventListener('load', loadSavedData);
 
-        // Initialize navigation
-        import('./js/navigation.js').then(module => {
-            const { NavigationManager } = module;
-            NavigationManager.initializeHomeNavigation();
-        }).catch(error => {
-            console.error('Navigation module not found, using fallback:', error);
-            // Fallback navigation for organizer
-            const homeButtons = document.querySelectorAll('.home-button, .nav-item');
-            homeButtons.forEach(button => {
-                button.addEventListener('click', () => {
-                    window.location.href = 'organizer-dashboard.html';
-                });
+        // Initialize navigation - For organizer pages, always go to organizer dashboard
+        const homeButtons = document.querySelectorAll('.home-button');
+        homeButtons.forEach(button => {
+            // Ensure all home buttons go to organizer dashboard
+            button.addEventListener('click', () => {
+                window.location.href = 'organizer-dashboard.html';
             });
         });
 
