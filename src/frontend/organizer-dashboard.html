@@ -251,26 +251,83 @@
             // Create mock user for testing
             const currentUser = { _id: 'demo_organizer', role: 'organizer', fullName: 'Demo Organizer' };
 
+            // Check if we're returning from tournament creation
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('refresh') === 'tournaments') {
+                // Clear URL parameter
+                window.history.replaceState({}, document.title, window.location.pathname);
+
+                // Show success message
+                showSuccessMessage('Giải đấu đã được tạo thành công!');
+            }
+
             // Load organizer-specific data
             loadOrganizerTournaments(currentUser._id);
             loadOrganizerNews(currentUser._id);
             loadOrganizerHighlights(currentUser._id);
             loadFollowedTournaments(currentUser._id);
-            
+
             // Setup logout functionality
             setupLogout();
+
+            // Setup refresh interval to catch new tournaments
+            setInterval(() => {
+                if (document.visibilityState === 'visible') {
+                    loadOrganizerTournaments(currentUser._id);
+                }
+            }, 30000); // Refresh every 30 seconds
         });
 
         // Load organizer's tournaments
         async function loadOrganizerTournaments(organizerId) {
             try {
-                const response = await apiCall(`${API_ENDPOINTS.TOURNAMENTS.BY_ORGANIZER(organizerId)}`, {}, 'GET', true);
-                if (response.success) {
-                    const tournaments = response.data.tournaments || [];
+                let tournaments = [];
+
+                // Try to load from localStorage first
+                try {
+                    const savedTournaments = localStorage.getItem('userTournaments');
+                    if (savedTournaments) {
+                        const parsed = JSON.parse(savedTournaments);
+                        if (Array.isArray(parsed) && parsed.length > 0) {
+                            tournaments = parsed;
+                            console.log('Loaded tournaments from localStorage:', tournaments);
+                        }
+                    }
+                } catch (storageError) {
+                    console.warn('Failed to load from localStorage:', storageError);
+                }
+
+                // If no local data, try API
+                if (tournaments.length === 0) {
+                    try {
+                        const response = await apiCall(`${API_ENDPOINTS.TOURNAMENTS.BY_ORGANIZER(organizerId)}`, {}, 'GET', false);
+                        if (response.success && response.data && response.data.tournaments) {
+                            tournaments = response.data.tournaments;
+                        }
+                    } catch (apiError) {
+                        console.warn('API call failed:', apiError);
+                    }
+                }
+
+                // Check sessionStorage for newly created tournaments
+                if (tournaments.length === 0) {
+                    try {
+                        const newlyCreated = sessionStorage.getItem('newlyCreatedTournaments');
+                        if (newlyCreated) {
+                            const parsed = JSON.parse(newlyCreated);
+                            if (Array.isArray(parsed)) {
+                                tournaments = parsed;
+                            }
+                        }
+                    } catch (e) {
+                        console.warn('Failed to parse newly created tournaments:', e);
+                    }
+                }
+
+                if (tournaments.length > 0) {
                     renderTournaments(tournaments);
                 } else {
-                    console.error('Failed to load tournaments:', response.message);
-                    renderEmptyState('tournaments', 'Không có giải đấu nào');
+                    renderEmptyState('tournaments', 'Bạn chưa tạo giải đấu nào');
                 }
             } catch (error) {
                 console.error('Error loading organizer tournaments:', error);
@@ -368,17 +425,53 @@
             }
 
             grid.innerHTML = tournaments.map(tournament => `
-                <div class="tournament-card" onclick="window.location.href='tournament-detail.html?id=${tournament._id}'">
+                <div class="tournament-card" onclick="window.location.href='tournament-detail.html?id=${tournament._id}'" style="cursor: pointer; transition: all 0.3s ease;">
                     <div class="tournament-image">
-                        <img src="${tournament.avatarUrl || 'https://via.placeholder.com/364x200'}" alt="${tournament.name}">
+                        <img src="${tournament.avatarUrl || 'https://via.placeholder.com/364x200'}" alt="${tournament.name}" style="width: 100%; height: 200px; object-fit: cover; border-radius: 8px;">
                     </div>
-                    <div class="tournament-info">
-                        <h3>${tournament.name}</h3>
-                        <p>${getStatusText(tournament.status)}</p>
-                        <small>Game: ${tournament.gameName || 'N/A'}</small>
+                    <div class="tournament-info" style="padding: 1rem;">
+                        <h3 style="margin: 0 0 0.5rem 0; font-size: 1.1rem; color: #333;">${tournament.name}</h3>
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                            <span style="background: ${getStatusColor(tournament.status)}; color: white; padding: 0.25rem 0.5rem; border-radius: 12px; font-size: 0.8rem;">
+                                ${getStatusText(tournament.status)}
+                            </span>
+                            <small style="color: #666;">Số người chơi: ${tournament.maxPlayers || 'N/A'}</small>
+                        </div>
+                        <div style="font-size: 0.9rem; color: #666;">
+                            <div>Game: ${tournament.gameName || 'N/A'}</div>
+                            <div style="margin-top: 0.25rem;">Tạo: ${formatDate(tournament.createdAt)}</div>
+                        </div>
                     </div>
                 </div>
             `).join('');
+        }
+
+        function showSuccessMessage(message) {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: #48bb78;
+                color: white;
+                padding: 1rem 1.5rem;
+                border-radius: 8px;
+                font-weight: 500;
+                z-index: 10000;
+                animation: slideIn 0.3s ease;
+            `;
+            notification.textContent = message;
+
+            document.body.appendChild(notification);
+
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.3s ease';
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        notification.parentNode.removeChild(notification);
+                    }
+                }, 300);
+            }, 5000);
         }
 
         function renderNews(newsItems) {
@@ -478,12 +571,55 @@
         function getStatusText(status) {
             const statusMap = {
                 'upcoming': 'Sắp diễn ra',
-                'ongoing': 'Đang diễn ra', 
+                'ongoing': 'Đang diễn ra',
                 'completed': 'Đã kết thúc',
                 'cancelled': 'Đã hủy'
             };
-            return statusMap[status] || status;
+            return statusMap[status] || status || 'Chưa xác định';
         }
+
+        function getStatusColor(status) {
+            const colorMap = {
+                'upcoming': '#667eea',
+                'ongoing': '#48bb78',
+                'completed': '#999',
+                'cancelled': '#ef4444'
+            };
+            return colorMap[status] || '#667eea';
+        }
+
+        function formatDate(dateString) {
+            if (!dateString) return 'N/A';
+            try {
+                return new Date(dateString).toLocaleDateString('vi-VN', {
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: 'numeric'
+                });
+            } catch (error) {
+                return 'N/A';
+            }
+        }
+
+        // Add CSS animations
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideIn {
+                from { transform: translateX(100%); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+
+            @keyframes slideOut {
+                from { transform: translateX(0); opacity: 1; }
+                to { transform: translateX(100%); opacity: 0; }
+            }
+
+            .tournament-card:hover {
+                transform: translateY(-4px);
+                box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            }
+        `;
+        document.head.appendChild(style);
 
         function setupLogout() {
             const userAvatar = document.getElementById('userAvatar');
