@@ -548,6 +548,39 @@
 
                 showSuccess('Giải đấu đã được tạo thành công!');
 
+                // Save the created tournament to localStorage for offline access
+                try {
+                    // Create full tournament object with all data
+                    const fullTournament = {
+                        _id: tournament._id,
+                        name: tournament.name,
+                        gameName: tournament.gameName,
+                        description: tournament.description,
+                        maxPlayers: tournament.maxPlayers,
+                        format: tournament.format,
+                        status: tournament.status || 'upcoming',
+                        startDate: tournament.startDate,
+                        endDate: tournament.endDate,
+                        avatarUrl: tournament.avatarUrl,
+                        createdAt: tournament.createdAt || new Date().toISOString(),
+                        organizerId: tournament.organizerId || 'demo_organizer'
+                    };
+
+                    // Save to localStorage for persistence
+                    const existingTournaments = JSON.parse(localStorage.getItem('userTournaments') || '[]');
+                    const updatedTournaments = [fullTournament, ...existingTournaments.filter(t => t._id !== tournament._id)];
+                    localStorage.setItem('userTournaments', JSON.stringify(updatedTournaments));
+
+                    // Also save to sessionStorage for immediate access
+                    const newlyCreated = JSON.parse(sessionStorage.getItem('newlyCreatedTournaments') || '[]');
+                    newlyCreated.unshift(fullTournament);
+                    sessionStorage.setItem('newlyCreatedTournaments', JSON.stringify(newlyCreated));
+
+                    console.log('Tournament saved to local storage:', fullTournament);
+                } catch (storageError) {
+                    console.warn('Failed to save tournament to storage:', storageError);
+                }
+
                 // Clear saved data
                 localStorage.removeItem('tournamentCreationData');
 
@@ -579,7 +612,7 @@
             }
 
             if (new Date(startDate) >= new Date(endDate)) {
-                showError('Ngày kết thúc phải sau ngày bắt đầu.');
+                showError('Ngày kết thúc phải sau ngày b��t đầu.');
                 return false;
             }
 
