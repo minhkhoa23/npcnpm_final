@@ -19,7 +19,7 @@
                         <path d="M5 20H35M5 10H35M5 30H35" stroke="#F3F3F3" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
                     </svg>
                 </button>
-                <button class="home-button" style="background: none; border: none; cursor: pointer; padding: 0.5rem; border-radius: 8px; transition: all 0.3s ease;" onclick="window.location.href='dashboard.html';">
+                <button class="home-button" style="background: none; border: none; cursor: pointer; padding: 0.5rem; border-radius: 8px; transition: all 0.3s ease;" onclick="window.location.href='organizer-dashboard.html';">
                     <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
                         <path d="M15 36.6667V20H25V36.6667M5 15L20 3.33333L35 15V33.3333C35 34.2174 34.6488 35.0652 34.0237 35.6904C33.3986 36.3155 32.5507 36.6667 31.6667 36.6667H8.33333C7.44928 36.6667 6.60143 36.3155 5.97631 35.6904C5.35119 35.0652 5 34.2174 5 33.3333V15Z" stroke="#F5F5F5" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
                     </svg>
@@ -426,7 +426,7 @@
             const homeButton = document.querySelector('.home-button');
             if (homeButton) {
                 homeButton.addEventListener('click', function() {
-                    window.location.href = 'dashboard.html';
+                    window.location.href = 'organizer-dashboard.html';
                 });
             }
 
